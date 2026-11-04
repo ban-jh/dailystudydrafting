@@ -7,15 +7,23 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
 <style>
 :root {
-  --primary: #10B981; --primary-focus: #059669;
-  --secondary: #6366F1; --accent: #F59E0B;
-  --base-100: #FFFFFF; --base-200: #F3F4F6; --base-300: #E5E7EB;
-  --base-content: #1F2937; --success: #22C55E; --error: #EF4444; --info: #3B82F6;
+  --primary: #4555FF; --primary-focus: #3651DC;
+  --primary-light: #22B2FF; --secondary: #6366F1; --accent: #F59E0B;
+  --gradient: linear-gradient(90deg, #22B2FF, #4555FF);
+  --gradient-bg: linear-gradient(to right, #FFFFFF 0%, #E4F1FF 100%);
+  --dark: #0B1026;
+  --base-100: #FFFFFF; --base-200: #F2F3F6; --base-300: #E5E7EB;
+  --base-content: #1B1B20; --text-secondary: #6B7280;
+  --success: #22C55E; --error: #EF4444; --warning: #F59E0B; --info: #3B82F6;
+  --card-bg: #FFFFFF; --card-radius: 16px;
+  --card-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  --card-shadow-hover: 0 4px 16px rgba(69,85,255,0.15);
+  --btn-radius: 16px; --btn-shadow: 0 4px 12px rgba(69,85,255,0.3);
 }
 * { margin: 0; padding: 0; box-sizing: border-box; }
-body { font-family: "Pretendard", "Apple SD Gothic Neo", "Noto Sans KR", sans-serif; background: var(--base-200); color: var(--base-content); min-height: 100vh; }
+body { font-family: "Pretendard", "Apple SD Gothic Neo", "Noto Sans KR", sans-serif; background: var(--base-200); color: var(--base-content); min-height: 100vh; padding-bottom: 80px; }
 .hero {
-  background: linear-gradient(135deg, #10B981, #059669); color: #FFF;
+  background: var(--gradient); color: #FFF;
   padding: 48px 24px; text-align: center;
 }
 .hero-logo { width: 64px; height: 64px; background: rgba(255,255,255,0.2); border-radius: 16px; display: inline-flex; align-items: center; justify-content: center; font-size: 32px; margin-bottom: 16px; }
@@ -27,9 +35,9 @@ body { font-family: "Pretendard", "Apple SD Gothic Neo", "Noto Sans KR", sans-se
 .grid { display: grid; grid-template-columns: 1fr; gap: 16px; }
 .card {
   background: var(--base-100); border-radius: 16px; overflow: hidden;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.08); transition: all 0.2s; text-decoration: none; color: inherit; display: block;
+  box-shadow: var(--card-shadow); transition: all 0.2s; text-decoration: none; color: inherit; display: block;
 }
-.card:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.12); transform: translateY(-2px); }
+.card:hover { box-shadow: var(--card-shadow-hover); transform: translateY(-2px); }
 .card-thumb {
   height: 180px; display: flex; align-items: center; justify-content: center;
   font-size: 48px; position: relative; overflow: hidden;
@@ -40,13 +48,21 @@ body { font-family: "Pretendard", "Apple SD Gothic Neo", "Noto Sans KR", sans-se
 }
 .card-body { padding: 16px; }
 .card-title { font-size: 17px; font-weight: 600; margin-bottom: 4px; }
-.card-desc { font-size: 14px; color: #6B7280; line-height: 1.5; }
+.card-desc { font-size: 14px; color: var(--text-secondary); line-height: 1.5; }
 .card-num { font-size: 12px; font-weight: 700; color: var(--primary); margin-bottom: 4px; }
 @media (min-width: 640px) { .grid { grid-template-columns: 1fr 1fr; } }
 @media (min-width: 1024px) { .grid { grid-template-columns: 1fr 1fr 1fr; } }
+
+.promo-banner { background: var(--gradient); color: #FFF; padding: 10px 16px; text-align: center; font-size: 14px; font-weight: 500; display: flex; align-items: center; justify-content: center; gap: 12px; }
+
+/* CTA Bar */
+.cta-bar { position: fixed; bottom: 0; left: 0; right: 0; z-index: 60; padding: 12px 16px; background: rgba(255,255,255,0.95); backdrop-filter: blur(8px); border-top: 1px solid var(--base-200); max-width: 480px; margin: 0 auto; box-shadow: 0 -2px 8px rgba(0,0,0,0.04); }
+.cta-btn { width: 100%; padding: 14px; background: var(--gradient); color: #FFF; border: none; border-radius: var(--btn-radius); font-size: 16px; font-weight: 700; font-family: inherit; cursor: pointer; box-shadow: var(--btn-shadow); transition: opacity 0.2s; }
+.cta-btn:hover { opacity: 0.9; }
 </style>
 </head>
 <body>
+<div class="promo-banner"><span>🎁 Daily Study와 함께 매일 성장하세요!</span><a href="signup.html" style="color:#FFF;font-weight:600;text-decoration:none;font-size:13px;">무료 시작 →</a></div>
 <div class="hero">
   <div class="hero-logo">📚</div>
   <div class="hero-title">Daily Study</div>
@@ -65,7 +81,7 @@ body { font-family: "Pretendard", "Apple SD Gothic Neo", "Noto Sans KR", sans-se
       <div class="card-body"><div class="card-num">02</div><div class="card-title">회원가입</div><div class="card-desc">이메일, 비밀번호, 이름, 학년 선택, 관심 과목 다중 선택</div></div>
     </a>
     <a href="dashboard.html" class="card">
-      <div class="card-thumb" style="background:linear-gradient(135deg,#10B981,#059669);">🏠<div class="card-thumb-label">/dashboard</div></div>
+      <div class="card-thumb" style="background:linear-gradient(135deg,#22B2FF,#4555FF);">🏠<div class="card-thumb-label">/dashboard</div></div>
       <div class="card-body"><div class="card-num">03</div><div class="card-title">홈/대시보드</div><div class="card-desc">환영 메시지, 오늘의 추천, 학습 현황, 빠른 접근, 스트릭</div></div>
     </a>
     <a href="subjects.html" class="card">
@@ -77,11 +93,11 @@ body { font-family: "Pretendard", "Apple SD Gothic Neo", "Noto Sans KR", sans-se
       <div class="card-body"><div class="card-num">05</div><div class="card-title">단원 요약</div><div class="card-desc">핵심 개념 요약, 플래시카드 (3D flip), PDF 내보내기</div></div>
     </a>
     <a href="quiz.html" class="card">
-      <div class="card-thumb" style="background:linear-gradient(135deg,#F59E0B,#10B981);">✏️<div class="card-thumb-label">/quiz</div></div>
+      <div class="card-thumb" style="background:linear-gradient(135deg,#22B2FF,#4555FF);">✏️<div class="card-thumb-label">/quiz</div></div>
       <div class="card-body"><div class="card-num">06</div><div class="card-title">문제 풀이</div><div class="card-desc">설정(과목/단원/난이도/유형/문제수) → 풀이 세션(타이머)</div></div>
     </a>
     <a href="quiz-result.html" class="card">
-      <div class="card-thumb" style="background:linear-gradient(135deg,#22C55E,#10B981);">✅<div class="card-thumb-label">/quiz/result</div></div>
+      <div class="card-thumb" style="background:linear-gradient(135deg,#22B2FF,#4555FF);">✅<div class="card-thumb-label">/quiz/result</div></div>
       <div class="card-body"><div class="card-num">07</div><div class="card-title">문제 풀이 결과</div><div class="card-desc">정답/오답 배너, 해설, XP 획득, 세션 완료 요약</div></div>
     </a>
     <a href="wrong-answers.html" class="card">
@@ -93,14 +109,16 @@ body { font-family: "Pretendard", "Apple SD Gothic Neo", "Noto Sans KR", sans-se
       <div class="card-body"><div class="card-num">09</div><div class="card-title">실생활 영어</div><div class="card-desc">오늘의 문장, 상황별 카테고리, TTS 재생, 롤플레이 모드</div></div>
     </a>
     <a href="statistics.html" class="card">
-      <div class="card-thumb" style="background:linear-gradient(135deg,#3B82F6,#10B981);">📈<div class="card-thumb-label">/statistics</div></div>
+      <div class="card-thumb" style="background:linear-gradient(135deg,#22B2FF,#4555FF);">📈<div class="card-thumb-label">/statistics</div></div>
       <div class="card-body"><div class="card-num">10</div><div class="card-title">학습 통계</div><div class="card-desc">과목별 정답률 차트, 학습 시간, 연속 학습일, 히트맵</div></div>
     </a>
     <a href="mypage.html" class="card">
-      <div class="card-thumb" style="background:linear-gradient(135deg,#10B981,#6366F1);">⚙️<div class="card-thumb-label">/profile</div></div>
+      <div class="card-thumb" style="background:linear-gradient(135deg,#22B2FF,#4555FF);">⚙️<div class="card-thumb-label">/profile</div></div>
       <div class="card-body"><div class="card-num">11</div><div class="card-title">마이페이지</div><div class="card-desc">프로필, 학년 설정, 알림 설정, 배지 현황, TTS 자동재생</div></div>
     </a>
   </div>
 </div>
+
+<div class="cta-bar"><button class="cta-btn">학습 시작하기 →</button></div>
 </body>
 </html>

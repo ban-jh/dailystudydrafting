@@ -7,16 +7,24 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
 <style>
 :root {
-  --primary: #10B981; --primary-focus: #059669;
-  --secondary: #6366F1; --accent: #F59E0B;
-  --base-100: #FFFFFF; --base-200: #F3F4F6; --base-300: #E5E7EB;
-  --base-content: #1F2937; --success: #22C55E; --error: #EF4444; --info: #3B82F6;
+  --primary: #4555FF; --primary-focus: #3651DC;
+  --primary-light: #22B2FF; --secondary: #6366F1; --accent: #F59E0B;
+  --gradient: linear-gradient(90deg, #22B2FF, #4555FF);
+  --gradient-bg: linear-gradient(to right, #FFFFFF 0%, #E4F1FF 100%);
+  --dark: #0B1026;
+  --base-100: #FFFFFF; --base-200: #F2F3F6; --base-300: #E5E7EB;
+  --base-content: #1B1B20; --text-secondary: #6B7280;
+  --success: #22C55E; --error: #EF4444; --warning: #F59E0B; --info: #3B82F6;
+  --card-bg: #FFFFFF; --card-radius: 16px;
+  --card-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  --card-shadow-hover: 0 4px 16px rgba(69,85,255,0.15);
+  --btn-radius: 16px; --btn-shadow: 0 4px 12px rgba(69,85,255,0.3);
 }
 * { margin: 0; padding: 0; box-sizing: border-box; }
-body { font-family: "Pretendard", "Apple SD Gothic Neo", "Noto Sans KR", sans-serif; background: var(--base-200); color: var(--base-content); padding-bottom: 80px; }
+body { font-family: "Pretendard", "Apple SD Gothic Neo", "Noto Sans KR", sans-serif; background: var(--base-200); color: var(--base-content); padding-bottom: 140px; }
 .header { position: sticky; top: 0; z-index: 50; height: 56px; background: rgba(255,255,255,0.95); backdrop-filter: blur(8px); border-bottom: 1px solid var(--base-200); display: flex; align-items: center; justify-content: space-between; padding: 0 16px; }
 .header-left { display: flex; align-items: center; gap: 8px; }
-.header-logo { width: 28px; height: 28px; background: var(--primary); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 14px; }
+.header-logo { width: 28px; height: 28px; background: var(--gradient); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 14px; }
 .header-title { font-size: 18px; font-weight: 700; }
 .header-right { display: flex; align-items: center; gap: 12px; }
 .header-btn { width: 36px; height: 36px; border-radius: 50%; border: none; background: var(--base-200); cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 16px; }
@@ -24,7 +32,7 @@ body { font-family: "Pretendard", "Apple SD Gothic Neo", "Noto Sans KR", sans-se
 .content { max-width: 720px; margin: 0 auto; padding: 16px; }
 /* Profile Card */
 .profile-card {
-  background: linear-gradient(135deg, #10B981, #059669); border-radius: 16px;
+  background: linear-gradient(135deg, #22B2FF, #4555FF); border-radius: 16px;
   padding: 24px; color: #FFF; margin-bottom: 20px;
 }
 .profile-top { display: flex; align-items: center; gap: 16px; margin-bottom: 16px; }
@@ -38,24 +46,24 @@ body { font-family: "Pretendard", "Apple SD Gothic Neo", "Noto Sans KR", sans-se
 .profile-stats { display: flex; gap: 24px; font-size: 14px; }
 /* Tabs */
 .tabs { display: flex; gap: 4px; margin-bottom: 24px; border-bottom: 2px solid var(--base-200); }
-.tab { padding: 12px 16px; font-size: 15px; font-weight: 600; cursor: pointer; border-bottom: 3px solid transparent; margin-bottom: -2px; color: #6B7280; }
+.tab { padding: 12px 16px; font-size: 15px; font-weight: 600; cursor: pointer; border-bottom: 3px solid transparent; margin-bottom: -2px; color: var(--text-secondary); }
 .tab.active { color: var(--primary); border-bottom-color: var(--primary); }
 /* Info Cards */
-.info-card { background: var(--base-100); border-radius: 16px; padding: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); margin-bottom: 16px; }
+.info-card { background: var(--base-100); border-radius: 16px; padding: 20px; box-shadow: var(--card-shadow); margin-bottom: 16px; }
 .info-card-title { font-size: 16px; font-weight: 600; margin-bottom: 16px; }
 .info-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid var(--base-200); font-size: 15px; }
 .info-row:last-child { border-bottom: none; }
-.info-label { color: #6B7280; }
+.info-label { color: var(--text-secondary); }
 .info-value { font-weight: 600; }
 .form-select { padding: 10px 16px; border: 2px solid var(--base-300); border-radius: 8px; font-size: 15px; font-family: inherit; background: var(--base-100); cursor: pointer; appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%231F2937' viewBox='0 0 16 16'%3E%3Cpath d='M8 11L3 6h10z'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 12px center; padding-right: 36px; }
 .btn-outline { padding: 8px 20px; border: 2px solid var(--base-300); border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer; background: var(--base-100); }
 .info-caption { font-size: 12px; color: #9CA3AF; margin-top: 8px; }
 /* Badge Grid */
-.badge-count { font-size: 13px; color: #6B7280; margin-bottom: 16px; }
+.badge-count { font-size: 13px; color: var(--text-secondary); margin-bottom: 16px; }
 .badge-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
 .badge-item { text-align: center; }
 .badge-circle { width: 64px; height: 64px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 32px; margin: 0 auto 8px; }
-.badge-item.earned .badge-circle { background: linear-gradient(135deg, #F59E0B, #10B981); box-shadow: 0 2px 8px rgba(245,158,11,0.3); }
+.badge-item.earned .badge-circle { background: linear-gradient(135deg, #22B2FF, #4555FF); box-shadow: 0 2px 8px rgba(245,158,11,0.3); }
 .badge-item.locked .badge-circle { background: var(--base-200); filter: grayscale(1); opacity: 0.4; }
 .badge-name { font-size: 12px; font-weight: 600; }
 .badge-status { font-size: 11px; margin-top: 2px; }
@@ -81,9 +89,14 @@ body { font-family: "Pretendard", "Apple SD Gothic Neo", "Noto Sans KR", sans-se
 .nav-item { display: flex; flex-direction: column; align-items: center; gap: 2px; font-size: 11px; color: #9CA3AF; cursor: pointer; flex: 1; }
 .nav-item.active { color: var(--primary); }
 .nav-icon { font-size: 20px; }
-.nav-center-btn { width: 52px; height: 52px; background: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px; color: #FFF; margin-top: -20px; box-shadow: 0 4px 12px rgba(16,185,129,0.3); }
+.nav-center-btn { width: 52px; height: 52px; background: var(--gradient); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px; color: #FFF; margin-top: -20px; box-shadow: var(--btn-shadow); }
 .nav-center-label { font-size: 11px; color: var(--primary); font-weight: 600; margin-top: 2px; }
 @media (min-width: 1024px) { .bottom-nav { display: none; } body { padding-bottom: 0; } .content { padding: 32px; } }
+
+/* CTA Bar */
+.cta-bar { position: fixed; bottom: 64px; left: 0; right: 0; z-index: 60; padding: 10px 16px; background: rgba(255,255,255,0.95); backdrop-filter: blur(8px); border-top: 1px solid var(--base-200); max-width: 480px; margin: 0 auto; box-shadow: 0 -2px 8px rgba(0,0,0,0.04); }
+.cta-btn { width: 100%; padding: 14px; background: var(--gradient); color: #FFF; border: none; border-radius: var(--btn-radius); font-size: 16px; font-weight: 700; font-family: inherit; cursor: pointer; box-shadow: var(--btn-shadow); transition: opacity 0.2s; }
+.cta-btn:hover { opacity: 0.9; }
 </style>
 </head>
 <body>
@@ -193,7 +206,8 @@ body { font-family: "Pretendard", "Apple SD Gothic Neo", "Noto Sans KR", sans-se
     <button class="btn-ghost danger">로그아웃</button>
   </div>
 </div>
-<div class="bottom-nav">
+
+<div class="cta-bar"><button class="cta-btn">학습 시작하기 →</button></div><div class="bottom-nav">
   <div class="nav-item"><div class="nav-icon">🏠</div>홈</div>
   <div class="nav-item"><div class="nav-icon">📚</div>과목</div>
   <div class="nav-item center"><div class="nav-center-btn">✏️</div><div class="nav-center-label">풀기</div></div>

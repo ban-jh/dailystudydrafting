@@ -7,13 +7,21 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
 <style>
 :root {
-  --primary: #10B981; --primary-focus: #059669;
-  --secondary: #6366F1; --accent: #F59E0B;
-  --base-100: #FFFFFF; --base-200: #F3F4F6; --base-300: #E5E7EB;
-  --base-content: #1F2937; --success: #22C55E; --error: #EF4444; --info: #3B82F6;
+  --primary: #4555FF; --primary-focus: #3651DC;
+  --primary-light: #22B2FF; --secondary: #6366F1; --accent: #F59E0B;
+  --gradient: linear-gradient(90deg, #22B2FF, #4555FF);
+  --gradient-bg: linear-gradient(to right, #FFFFFF 0%, #E4F1FF 100%);
+  --dark: #0B1026;
+  --base-100: #FFFFFF; --base-200: #F2F3F6; --base-300: #E5E7EB;
+  --base-content: #1B1B20; --text-secondary: #6B7280;
+  --success: #22C55E; --error: #EF4444; --warning: #F59E0B; --info: #3B82F6;
+  --card-bg: #FFFFFF; --card-radius: 16px;
+  --card-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  --card-shadow-hover: 0 4px 16px rgba(69,85,255,0.15);
+  --btn-radius: 16px; --btn-shadow: 0 4px 12px rgba(69,85,255,0.3);
 }
 * { margin: 0; padding: 0; box-sizing: border-box; }
-body { font-family: "Pretendard", "Apple SD Gothic Neo", "Noto Sans KR", sans-serif; background: var(--base-200); color: var(--base-content); padding-bottom: 80px; }
+body { font-family: "Pretendard", "Apple SD Gothic Neo", "Noto Sans KR", sans-serif; background: var(--base-200); color: var(--base-content); padding-bottom: 140px; }
 .header { position: sticky; top: 0; z-index: 50; height: 56px; background: rgba(255,255,255,0.95); backdrop-filter: blur(8px); border-bottom: 1px solid var(--base-200); display: flex; align-items: center; justify-content: space-between; padding: 0 16px; }
 .header-left { display: flex; align-items: center; gap: 8px; font-size: 16px; font-weight: 600; }
 .header-back { width: 36px; height: 36px; border: none; background: transparent; cursor: pointer; font-size: 18px; }
@@ -22,10 +30,10 @@ body { font-family: "Pretendard", "Apple SD Gothic Neo", "Noto Sans KR", sans-se
 .unit-breadcrumb { font-size: 12px; color: #9CA3AF; margin-bottom: 8px; }
 .unit-title { font-size: 24px; font-weight: 700; margin-bottom: 20px; }
 .tabs { display: flex; gap: 4px; margin-bottom: 24px; border-bottom: 2px solid var(--base-200); }
-.tab { padding: 12px 20px; font-size: 15px; font-weight: 600; cursor: pointer; border-bottom: 3px solid transparent; margin-bottom: -2px; color: #6B7280; }
+.tab { padding: 12px 20px; font-size: 15px; font-weight: 600; cursor: pointer; border-bottom: 3px solid transparent; margin-bottom: -2px; color: var(--text-secondary); }
 .tab.active { color: var(--primary); border-bottom-color: var(--primary); }
 /* Summary Card */
-.summary-card { background: var(--base-100); border-radius: 16px; padding: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); margin-bottom: 16px; }
+.summary-card { background: var(--base-100); border-radius: 16px; padding: 20px; box-shadow: var(--card-shadow); margin-bottom: 16px; }
 .summary-card-title { font-size: 18px; font-weight: 600; margin-bottom: 12px; }
 .summary-item { margin-bottom: 16px; }
 .summary-item-title { font-size: 16px; font-weight: 600; margin-bottom: 4px; }
@@ -33,9 +41,9 @@ body { font-family: "Pretendard", "Apple SD Gothic Neo", "Noto Sans KR", sans-se
 .highlight-box { background: rgba(245,158,11,0.1); border-radius: 8px; padding: 12px 16px; margin-top: 12px; font-size: 14px; }
 .highlight-box strong { color: var(--accent); }
 .code-block { background: var(--base-200); border-radius: 8px; padding: 12px 16px; margin-top: 8px; font-family: "Courier New", monospace; font-size: 16px; }
-.btn-primary { display: block; width: 100%; padding: 14px; background: var(--primary); color: #FFF; border: none; border-radius: 12px; font-size: 16px; font-weight: 600; font-family: inherit; cursor: pointer; margin-top: 8px; }
+.btn-primary { display: block; width: 100%; padding: 14px; background: var(--gradient); color: #FFF; border: none; border-radius: var(--btn-radius); box-shadow: var(--btn-shadow); font-size: 16px; font-weight: 600; font-family: inherit; cursor: pointer; margin-top: 8px; }
 /* Flashcard */
-.flashcard-progress { font-size: 13px; color: #6B7280; margin-bottom: 8px; }
+.flashcard-progress { font-size: 13px; color: var(--text-secondary); margin-bottom: 8px; }
 .flashcard-dots { display: flex; gap: 6px; margin-bottom: 20px; }
 .flashcard-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--base-300); }
 .flashcard-dot.active { background: var(--primary); }
@@ -49,11 +57,11 @@ body { font-family: "Pretendard", "Apple SD Gothic Neo", "Noto Sans KR", sans-se
 @media (min-width: 1024px) {
   .content { padding: 32px; }
   .main-layout { display: grid; grid-template-columns: 1fr 280px; gap: 24px; }
-  .toc { display: block; background: var(--base-100); border-radius: 16px; padding: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); height: fit-content; position: sticky; top: 72px; }
+  .toc { display: block; background: var(--base-100); border-radius: 16px; padding: 20px; box-shadow: var(--card-shadow); height: fit-content; position: sticky; top: 72px; }
   .toc-title { font-size: 16px; font-weight: 600; margin-bottom: 12px; }
   .toc-item { padding: 8px 12px; font-size: 14px; cursor: pointer; border-radius: 8px; margin-bottom: 4px; }
   .toc-item:hover { background: var(--base-200); }
-  .toc-item.active { background: rgba(16,185,129,0.1); color: var(--primary); font-weight: 600; }
+  .toc-item.active { background: rgba(69,85,255,0.1); color: var(--primary); font-weight: 600; }
   .bottom-nav { display: none; }
   body { padding-bottom: 0; }
 }
@@ -62,8 +70,13 @@ body { font-family: "Pretendard", "Apple SD Gothic Neo", "Noto Sans KR", sans-se
 .nav-item { display: flex; flex-direction: column; align-items: center; gap: 2px; font-size: 11px; color: #9CA3AF; cursor: pointer; flex: 1; }
 .nav-item.active { color: var(--primary); }
 .nav-icon { font-size: 20px; }
-.nav-center-btn { width: 52px; height: 52px; background: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px; color: #FFF; margin-top: -20px; box-shadow: 0 4px 12px rgba(16,185,129,0.3); }
+.nav-center-btn { width: 52px; height: 52px; background: var(--gradient); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px; color: #FFF; margin-top: -20px; box-shadow: var(--btn-shadow); }
 .nav-center-label { font-size: 11px; color: var(--primary); font-weight: 600; margin-top: 2px; }
+
+/* CTA Bar */
+.cta-bar { position: fixed; bottom: 64px; left: 0; right: 0; z-index: 60; padding: 10px 16px; background: rgba(255,255,255,0.95); backdrop-filter: blur(8px); border-top: 1px solid var(--base-200); max-width: 480px; margin: 0 auto; box-shadow: 0 -2px 8px rgba(0,0,0,0.04); }
+.cta-btn { width: 100%; padding: 14px; background: var(--gradient); color: #FFF; border: none; border-radius: var(--btn-radius); font-size: 16px; font-weight: 700; font-family: inherit; cursor: pointer; box-shadow: var(--btn-shadow); transition: opacity 0.2s; }
+.cta-btn:hover { opacity: 0.9; }
 </style>
 </head>
 <body>
@@ -112,7 +125,8 @@ body { font-family: "Pretendard", "Apple SD Gothic Neo", "Noto Sans KR", sans-se
     </div>
   </div>
 </div>
-<div class="bottom-nav">
+
+<div class="cta-bar"><button class="cta-btn">학습 시작하기 →</button></div><div class="bottom-nav">
   <div class="nav-item"><div class="nav-icon">🏠</div>홈</div>
   <div class="nav-item active"><div class="nav-icon">📚</div>과목</div>
   <div class="nav-item center"><div class="nav-center-btn">✏️</div><div class="nav-center-label">풀기</div></div>
