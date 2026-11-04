@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Daily Study 화면설계서 — 마이페이지</title>
+<title>Daily Study 화면설계서 — 문제 풀이 결과</title>
 <style>
 
 @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
@@ -280,77 +280,56 @@ body {
 <div class="page">
   <div class="topbar">
     <span>Daily Study 화면설계서 v1.0</span>
-    <span class="nav-btns"><a href="screen-10-statistics.html">← 학습 통계</a><a href="index.html">목차</a></span>
+    <span class="nav-btns"><a href="screen-07-quiz.html">← 문제 풀이</a><a href="index.html">목차</a><a href="screen-09-wrong-answers.html">오답노트 →</a></span>
   </div>
   <div class="spec-header">
-    <div class="field"><div class="label">화면명</div><div class="value">마이페이지</div></div>
-    <div class="field"><div class="label">화면ID</div><div class="value" style="font-family:monospace;font-size:13px;">SCR-11-MYPAGE</div></div>
-    <div class="field"><div class="label">DESCRIPTION</div><div class="value" style="font-size:13px;">프로필/학년/알림/배지/TTS 설정을 관리하는 화면</div></div>
+    <div class="field"><div class="label">화면명</div><div class="value">문제 풀이 결과</div></div>
+    <div class="field"><div class="label">화면ID</div><div class="value" style="font-family:monospace;font-size:13px;">SCR-08-QUIZ-RESULT</div></div>
+    <div class="field"><div class="label">DESCRIPTION</div><div class="value" style="font-size:13px;">문제 풀이 후 정답률/오답/해설/XP 획득 결과를 표시하는 화면</div></div>
   </div>
   <div class="main-content">
     <div class="layout-section">
       <div class="device-frame">
   <div class="device-statusbar"><span>9:41</span><span>📶 🔋</span></div>
   <div class="device-content">
-    <div style="font-size:16px;font-weight:800;color:#1a1a2e;margin-bottom:16px;">마이페이지 ⚙️</div>
+    <div style="font-size:16px;font-weight:800;color:#1a1a2e;margin-bottom:16px;">풀이 결과</div>
     <div style="position:relative;margin-bottom:16px;">
       <span class="wf-num" style="top:0;left:-28px;">1</span>
-      <div class="wf-card" style="text-align:center;padding:16px;">
-        <div style="font-size:32px;">👤</div>
-        <div style="font-size:14px;font-weight:700;margin-top:4px;">홍길동</div>
-        <div style="font-size:10px;color:#889;">hong@example.com</div>
-        <div style="font-size:10px;color:#4555FF;margin-top:4px;">중1 · Lv.5 · 480 XP</div>
+      <div class="wf-card" style="background:linear-gradient(135deg,#22B2FF,#4555FF);color:#fff;text-align:center;padding:20px;">
+        <div style="font-size:32px;font-weight:800;">80%</div>
+        <div style="font-size:11px;opacity:.8;">정답률 (8/10문제)</div>
       </div>
     </div>
     <div style="position:relative;margin-bottom:12px;">
-      <span class="wf-num" style="top:4px;left:-28px;">2</span>
-      <div class="wf-label">학년 설정</div>
-      <div class="wf-input">중학교 1학년 ▾</div>
+      <span class="wf-num" style="top:0;left:-28px;">2</span>
+      <div class="wf-label">오답 목록</div>
+      <div class="wf-card" style="border-left:3px solid #F43F5E;font-size:11px;">
+        <div style="font-weight:600;">Q3. 다음 방정식의 해는?</div>
+        <div style="font-size:9px;color:#F43F5E;">내 답: x=3 (정답: x=5)</div>
+        <div style="font-size:9px;color:#4555FF;margin-top:4px;">📖 해설 보기</div>
+      </div>
+      <div class="wf-card" style="border-left:3px solid #F43F5E;font-size:11px;">
+        <div style="font-weight:600;">Q7. 부등식 2x+1&gt;7의 해는?</div>
+        <div style="font-size:9px;color:#F43F5E;">내 답: x&gt;2 (정답: x&gt;3)</div>
+        <div style="font-size:9px;color:#4555FF;margin-top:4px;">📖 해설 보기</div>
+      </div>
     </div>
     <div style="position:relative;margin-bottom:12px;">
       <span class="wf-num" style="top:4px;left:-28px;">3</span>
-      <div class="wf-label">알림 설정</div>
-      <div class="wf-card" style="font-size:11px;">
-        <div style="display:flex;justify-content:space-between;align-items:center;">
-          <span>학습 리마인더</span>
-          <span style="background:#4555FF;color:#fff;padding:2px 8px;border-radius:10px;font-size:9px;">ON</span>
-        </div>
-      </div>
-      <div class="wf-card" style="font-size:11px;">
-        <div style="display:flex;justify-content:space-between;align-items:center;">
-          <span>주간 리포트</span>
-          <span style="background:#e0e6f0;color:#889;padding:2px 8px;border-radius:10px;font-size:9px;">OFF</span>
-        </div>
-      </div>
-    </div>
-    <div style="position:relative;margin-bottom:12px;">
-      <span class="wf-num" style="top:4px;left:-28px;">4</span>
-      <div class="wf-label">배지 현황</div>
-      <div class="wf-grid3">
-        <div style="text-align:center;font-size:20px;">🏆</div>
-        <div style="text-align:center;font-size:20px;">🔥</div>
-        <div style="text-align:center;font-size:20px;">📚</div>
-        <div style="text-align:center;font-size:9px;color:#889;">첫 학습</div>
-        <div style="text-align:center;font-size:9px;color:#889;">7일 연속</div>
-        <div style="text-align:center;font-size:9px;color:#889;">10문제</div>
-        <div style="text-align:center;font-size:20px;opacity:.3;">🔒</div>
-        <div style="text-align:center;font-size:20px;opacity:.3;">🔒</div>
-        <div style="text-align:center;font-size:20px;opacity:.3;">🔒</div>
-      </div>
-    </div>
-    <div style="position:relative;margin-bottom:12px;">
-      <span class="wf-num" style="top:4px;left:-28px;">5</span>
-      <div class="wf-label">TTS 자동재생</div>
-      <div class="wf-card" style="font-size:11px;">
-        <div style="display:flex;justify-content:space-between;align-items:center;">
-          <span>영어 문장 자동 재생</span>
-          <span style="background:#4555FF;color:#fff;padding:2px 8px;border-radius:10px;font-size:9px;">ON</span>
-        </div>
+      <div class="wf-card" style="background:#fff8e1;text-align:center;">
+        <div style="font-size:20px;">🎯 +80 XP 획득!</div>
       </div>
     </div>
     <div style="position:relative;">
-      <span class="wf-num" style="top:8px;left:-28px;">6</span>
-      <div class="wf-btn wf-btn-secondary" style="color:#F43F5E;">로그아웃</div>
+      <span class="wf-num" style="top:8px;left:-28px;">4</span>
+      <div class="wf-btn wf-btn-primary">다음 문제 풀기 →</div>
+    </div>
+    <div class="wf-nav">
+      <div class="wf-nav-item">🏠 홈</div>
+      <div class="wf-nav-item">📚 과목</div>
+      <div class="wf-nav-item active" style="font-size:18px;">✏️</div>
+      <div class="wf-nav-item">❌ 오답</div>
+      <div class="wf-nav-item">💬 영어</div>
     </div>
   </div>
 </div>
@@ -358,68 +337,47 @@ body {
     <div class="events-section">
       <h3>이벤트 설명</h3>
       <div class="event-item">
-  <span class="event-num">1</span><span class="event-title">프로필 정보</span>
+  <span class="event-num">1</span><span class="event-title">정답률 요약</span>
   <div class="event-desc">
     <ul>
-      <li>GET /api/users/me 호출 — 프로필 정보 표시</li>
-      <li>이름, 이메일, 학년, 레벨, 누적 XP 표시</li>
-      <li>프로필 아바타는 기본 이모지 (Phase 3에서 이미지 업로드)</li>
-      <li>이름 클릭 시 수정 가능</li>
+      <li>GET /api/quiz/attempts/{attemptId}/result 호출</li>
+      <li>정답 수 / 전체 문제 수 + 백분율 표시</li>
+      <li>그라데이션 카드로 시각적 강조</li>
+      <li>정답률 80% 이상 시 축하 애니메이션</li>
     </ul>
   </div>
 </div>
 <div class="event-item">
-  <span class="event-num">2</span><span class="event-title">학년 설정</span>
+  <span class="event-num">2</span><span class="event-title">오답 목록 + 해설</span>
   <div class="event-desc">
     <ul>
-      <li>드롭다운: 중1~중3, 고1~고3</li>
-      <li>변경 시 PUT /api/users/grade 호출</li>
-      <li>학년 변경 시 추천 학습 콘텐츠 자동 갱신</li>
-      <li>변경 완료 토스트 표시</li>
+      <li>틀린 문제만 필터링하여 표시</li>
+      <li>문제 본문, 내 답, 정답 비교 표시</li>
+      <li>"해설 보기" 클릭 시 GET /api/quiz/{quizId}/explanation 호출</li>
+      <li>해설은 AI(GLM-5.2)가 생성한 상세 풀이 과정</li>
+      <li>틀린 문제는 자동으로 오답노트(QUIZ_ATTEMPT.is_wrong=true)에 등록</li>
     </ul>
   </div>
 </div>
 <div class="event-item">
-  <span class="event-num">3</span><span class="event-title">알림 설정</span>
+  <span class="event-num">3</span><span class="event-title">XP 획득 표시</span>
   <div class="event-desc">
     <ul>
-      <li>학습 리마인더: 매일 정해진 시간 학습 알림 (토글 ON/OFF)</li>
-      <li>주간 리포트: 매주 월요일 학습 요약 알림 (토글 ON/OFF)</li>
-      <li>PUT /api/users/settings 호출 — USER_SETTINGS 테이블 업데이트</li>
-      <li>알림 시간 설정 (리마인더 ON 시 시간 선택 가능)</li>
+      <li>맞춘 문제당 10 XP 계산 (정답 × 10)</li>
+      <li>POST /api/users/xp 호출 — 사용자 XP 누적</li>
+      <li>레벨업 시 추가 축하 메시지 표시</li>
+      <li>배지 획득 조건 충족 시 배지 알림</li>
     </ul>
   </div>
 </div>
 <div class="event-item">
-  <span class="event-num">4</span><span class="event-title">배지 현황</span>
+  <span class="event-num">4</span><span class="event-title">다음 문제 풀기 버튼</span>
   <div class="event-desc">
     <ul>
-      <li>GET /api/users/badges 호출 — 획득 배지 + 미획득 배지 표시</li>
-      <li>획득 배지: 컬러 아이콘, 미획득: 🔒 잠금 아이콘</li>
-      <li>배지 클릭 시 획득 조건 안내</li>
-      <li>BADGE 테이블 + USER_BADGE 조인 데이터</li>
-    </ul>
-  </div>
-</div>
-<div class="event-item">
-  <span class="event-num">5</span><span class="event-title">TTS 자동재생 설정</span>
-  <div class="event-desc">
-    <ul>
-      <li>실생활 영어 화면 진입 시 자동 TTS 재생 여부 토글</li>
-      <li>PUT /api/users/settings 호출 — USER_SETTINGS.tts_autoplay</li>
-      <li>ON: 영어 문장 로드 시 자동 음성 재생</li>
-      <li>OFF: 수동 🔊 버튼 클릭 시에만 재생</li>
-    </ul>
-  </div>
-</div>
-<div class="event-item">
-  <span class="event-num">6</span><span class="event-title">로그아웃 버튼</span>
-  <div class="event-desc">
-    <ul>
-      <li>클릭 시 "로그아웃 하시겠습니까?" 확인 다이얼로그</li>
-      <li>확인 시 로컬 스토리지 JWT 토큰 삭제</li>
-      <li>로그인 화면(SCR-01-LOGIN)로 이동</li>
-      <li>POST /api/auth/logout 호출 — 서버 세션 정리</li>
+      <li>클릭 시 동일 설정으로 새 문제 세트 생성</li>
+      <li>POST /api/quiz/generate 재호출</li>
+      <li>문제 풀이 설정(SCR-07-QUIZ)로 이동하여 설정 변경 가능</li>
+      <li>"결과 공유하기" 옵션 (선택)</li>
     </ul>
   </div>
 </div>

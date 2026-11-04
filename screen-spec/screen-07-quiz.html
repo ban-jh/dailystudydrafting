@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Daily Study 화면설계서 — 실생활 영어</title>
+<title>Daily Study 화면설계서 — 문제 풀이</title>
 <style>
 
 @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
@@ -280,117 +280,130 @@ body {
 <div class="page">
   <div class="topbar">
     <span>Daily Study 화면설계서 v1.0</span>
-    <span class="nav-btns"><a href="screen-08-wrong-answers.html">← 오답노트</a><a href="index.html">목차</a><a href="screen-10-statistics.html">학습 통계 →</a></span>
+    <span class="nav-btns"><a href="screen-06-unit-summary.html">← 단원 요약</a><a href="index.html">목차</a><a href="screen-08-quiz-result.html">문제 풀이 결과 →</a></span>
   </div>
   <div class="spec-header">
-    <div class="field"><div class="label">화면명</div><div class="value">실생활 영어</div></div>
-    <div class="field"><div class="label">화면ID</div><div class="value" style="font-family:monospace;font-size:13px;">SCR-09-ENGLISH</div></div>
-    <div class="field"><div class="label">DESCRIPTION</div><div class="value" style="font-size:13px;">오늘의 영어 문장과 상황별 카테고리, TTS 재생 기능</div></div>
+    <div class="field"><div class="label">화면명</div><div class="value">문제 풀이</div></div>
+    <div class="field"><div class="label">화면ID</div><div class="value" style="font-family:monospace;font-size:13px;">SCR-07-QUIZ</div></div>
+    <div class="field"><div class="label">DESCRIPTION</div><div class="value" style="font-size:13px;">승인된 문제 풀에서 즉시 풀이 세션을 제공하는 화면 (설정 화면 없음)</div></div>
   </div>
   <div class="main-content">
     <div class="layout-section">
       <div class="device-frame">
   <div class="device-statusbar"><span>9:41</span><span>📶 🔋</span></div>
   <div class="device-content">
-    <div style="font-size:16px;font-weight:800;color:#6366F1;margin-bottom:12px;">실생활 영어 💬</div>
-    <div style="position:relative;margin-bottom:16px;">
-      <span class="wf-num" style="top:0;left:-28px;">1</span>
-      <div class="wf-label">오늘의 문장</div>
-      <div class="wf-card" style="background:linear-gradient(135deg,#f0f4ff,#e4f1ff);">
-        <div style="font-size:13px;font-weight:700;color:#6366F1;">"Could you help me with this?"</div>
-        <div style="font-size:10px;color:#555;margin-top:4px;">도와주실 수 있나요?</div>
-        <div style="font-size:9px;color:#889;margin-top:4px;">카페 · 요청하기</div>
-        <div style="margin-top:8px;">
-          <span style="font-size:20px;cursor:pointer;">🔊</span>
-          <span style="font-size:11px;color:#4555FF;margin-left:4px;">TTS 재생</span>
-        </div>
+    <div style="font-size:16px;font-weight:800;color:#1a1a2e;margin-bottom:16px;">문제 풀이</div>
+    <div style="position:relative;margin-bottom:12px;">
+      <span class="wf-num" style="top:6px;left:-28px;">1</span>
+      <div class="wf-label">과목 선택 <span style="color:#F43F5E;">*</span></div>
+      <div class="wf-row" style="flex-wrap:wrap;">
+        <span style="font-size:10px;padding:6px 10px;background:#f0f2f5;border-radius:8px;">국어</span>
+        <span style="font-size:10px;padding:6px 10px;background:linear-gradient(90deg,#22B2FF,#4555FF);color:#fff;border-radius:8px;">수학</span>
+        <span style="font-size:10px;padding:6px 10px;background:#f0f2f5;border-radius:8px;">영어</span>
+        <span style="font-size:10px;padding:6px 10px;background:#f0f2f5;border-radius:8px;">과학</span>
       </div>
     </div>
     <div style="position:relative;margin-bottom:12px;">
-      <span class="wf-num" style="top:4px;left:-28px;">2</span>
-      <div class="wf-label">상황별 카테고리</div>
+      <span class="wf-num" style="top:6px;left:-28px;">2</span>
+      <div class="wf-label">단원 선택 <span style="color:#F43F5E;">*</span></div>
+      <div class="wf-input">2. 방정식과 부등식 ▾</div>
+    </div>
+    <div style="position:relative;margin-bottom:12px;">
+      <span class="wf-num" style="top:6px;left:-28px;">3</span>
+      <div class="wf-label">난이도</div>
       <div class="wf-grid3">
-        <div class="wf-card" style="text-align:center;padding:8px;font-size:10px;">☕ 카페</div>
-        <div class="wf-card" style="text-align:center;padding:8px;font-size:10px;">🏪 편의점</div>
-        <div class="wf-card" style="text-align:center;padding:8px;font-size:10px;">🏫 학교</div>
-        <div class="wf-card" style="text-align:center;padding:8px;font-size:10px;">📞 전화</div>
-        <div class="wf-card" style="text-align:center;padding:8px;font-size:10px;">🍽️ 식당</div>
-        <div class="wf-card" style="text-align:center;padding:8px;font-size:10px;">✈️ 여행</div>
+        <span style="font-size:10px;padding:6px;text-align:center;background:linear-gradient(90deg,#22B2FF,#4555FF);color:#fff;border-radius:8px;">쉬움</span>
+        <span style="font-size:10px;padding:6px;text-align:center;background:#f0f2f5;border-radius:8px;">보통</span>
+        <span style="font-size:10px;padding:6px;text-align:center;background:#f0f2f5;border-radius:8px;">어려움</span>
       </div>
     </div>
     <div style="position:relative;margin-bottom:12px;">
-      <span class="wf-num" style="top:4px;left:-28px;">3</span>
-      <div class="wf-label">추가 문장</div>
-      <div class="wf-card" style="font-size:11px;">
-        <div style="font-weight:600;color:#6366F1;">"Can I get a latte, please?"</div>
-        <div style="font-size:9px;color:#889;">라떼 한 잔 주세요.</div>
-        <span style="font-size:14px;">🔊</span>
+      <span class="wf-num" style="top:6px;left:-28px;">4</span>
+      <div class="wf-label">문제 유형</div>
+      <div class="wf-grid2">
+        <span style="font-size:10px;padding:6px;text-align:center;background:linear-gradient(90deg,#22B2FF,#4555FF);color:#fff;border-radius:8px;">객관식</span>
+        <span style="font-size:10px;padding:6px;text-align:center;background:#f0f2f5;border-radius:8px;">주관식</span>
       </div>
-      <div class="wf-card" style="font-size:11px;">
-        <div style="font-weight:600;color:#6366F1;">"How much is it?"</div>
-        <div style="font-size:9px;color:#889;">얼마인가요?</div>
-        <span style="font-size:14px;">🔊</span>
+    </div>
+    <div style="position:relative;margin-bottom:12px;">
+      <span class="wf-num" style="top:6px;left:-28px;">5</span>
+      <div class="wf-label">문제 수</div>
+      <div class="wf-row" style="align-items:center;">
+        <span style="font-size:16px;font-weight:800;color:#4555FF;">10</span>
+        <span style="font-size:10px;color:#889;">문제 (5~20)</span>
       </div>
+      <div class="wf-progress"><div class="wf-progress-fill" style="width:33%;"></div></div>
     </div>
     <div style="position:relative;">
-      <span class="wf-num" style="top:8px;left:-28px;">4</span>
-      <div class="wf-btn wf-btn-primary" style="background:linear-gradient(90deg,#6366F1,#4555FF);">🎭 롤플레이 시작</div>
+      <span class="wf-num" style="top:8px;left:-28px;">6</span>
+      <div class="wf-btn wf-btn-primary">문제 풀기 →</div>
     </div>
-    <div class="wf-nav">
-      <div class="wf-nav-item">🏠 홈</div>
-      <div class="wf-nav-item">📚 과목</div>
-      <div class="wf-nav-item" style="font-size:18px;">✏️</div>
-      <div class="wf-nav-item">❌ 오답</div>
-      <div class="wf-nav-item active">💬 영어</div>
-    </div>
+    <div style="font-size:9px;color:#889;text-align:center;margin-top:6px;">승인된 문제 풀에서 제공됩니다</div>
   </div>
 </div>
     </div>
     <div class="events-section">
       <h3>이벤트 설명</h3>
       <div class="event-item">
-  <span class="event-num">1</span><span class="event-title">오늘의 영어 문장</span>
+  <span class="event-num">1</span><span class="event-title">과목 선택</span>
   <div class="event-desc">
     <ul>
-      <li>GET /api/english/today 호출 — 매일 1개 문장 자동 갱신</li>
-      <li>영어 문장 + 한국어 해석 + 상황 태그 표시</li>
-      <li>🔊 버튼 클릭 시 TTS 음성 재생</li>
-      <li>TTS 엔진: Edge TTS(무료) / OpenAI TTS(고품질) 설정 가능</li>
-      <li>사용자 설정의 TTS 자동재생 여부에 따라 진입 시 자동 재생</li>
-      <li>3-layer 캐싱: Redis → DB → 파일시스템</li>
+      <li>6개 과목 중 택 1 (국어/수학/영어/과학/사회/역사)</li>
+      <li>선택 시 해당 과목의 단원 목록 로드</li>
+      <li>필수 선택 — 미선택 시 다음 단계 비활성화</li>
     </ul>
   </div>
 </div>
 <div class="event-item">
-  <span class="event-num">2</span><span class="event-title">상황별 카테고리</span>
+  <span class="event-num">2</span><span class="event-title">단원 선택</span>
   <div class="event-desc">
     <ul>
-      <li>6개 카테고리: 카페 / 편의점 / 학교 / 전화 / 식당 / 여행</li>
-      <li>카테고리 클릭 시 GET /api/english?category={} 호출</li>
-      <li>해당 카테고리의 문장 목록으로 화면 전환</li>
-      <li>각 문장마다 개별 TTS 재생 버튼</li>
+      <li>GET /api/subjects/{id}/units 호출 — 단원 드롭다운</li>
+      <li>전체 단원 옵션 포함 (단원 전체 문제 풀기)</li>
+      <li>필수 선택 — 미선택 시 "단원을 선택하세요" 에러</li>
     </ul>
   </div>
 </div>
 <div class="event-item">
-  <span class="event-num">3</span><span class="event-title">추가 문장 목록</span>
+  <span class="event-num">3</span><span class="event-title">난이도 선택</span>
   <div class="event-desc">
     <ul>
-      <li>선택한 카테고리 내 문장들을 스크롤 목록으로 표시</li>
-      <li>각 문장별 TTS 재생 버튼 (🔊)</li>
-      <li>북마크 기능 — 저장한 문장은 마이페이지에서 확인</li>
-      <li>문장 출처: AI 생성(GPT-4o-mini) + 웹 크롤링(Spring Batch)</li>
+      <li>쉬움 / 보통 / 어려움 3단계</li>
+      <li>기본값: 보통</li>
+      <li>선택한 난이도에 해당하는 status=PUBLISHED 문제만 필터링</li>
     </ul>
   </div>
 </div>
 <div class="event-item">
-  <span class="event-num">4</span><span class="event-title">롤플레이 버튼</span>
+  <span class="event-num">4</span><span class="event-title">문제 유형 선택</span>
   <div class="event-desc">
     <ul>
-      <li>AI와 대화형 영어 연습 모드 시작</li>
-      <li>상황(카페 주문 등)에 맞는 역할극 시나리오 제공</li>
-      <li>사용자 응답 → AI(GPT-4o-mini) 응답 → TTS 재생</li>
-      <li>대화 종료 후 피드백 및 교정 제안</li>
+      <li>객관식(4지선다) / 주관식(단답형) 선택</li>
+      <li>기본값: 객관식</li>
+      <li>주관식 선택 시 AI 채점 (GLM-5.2) 적용</li>
+    </ul>
+  </div>
+</div>
+<div class="event-item">
+  <span class="event-num">5</span><span class="event-title">문제 수 슬라이더</span>
+  <div class="event-desc">
+    <ul>
+      <li>5~20문제 범위에서 슬라이더로 조절</li>
+      <li>기본값: 10문제</li>
+      <li>선택한 범위 내에서 랜덤 출제</li>
+      <li>문제 풀에 충분한 문제가 없을 경우 최대 가능 수 표시</li>
+    </ul>
+  </div>
+</div>
+<div class="event-item">
+  <span class="event-num">6</span><span class="event-title">문제 풀기 버튼</span>
+  <div class="event-desc">
+    <ul>
+      <li>POST /api/quiz/generate 호출 — 설정 조건으로 문제 세트 생성</li>
+      <li>승인된(status=PUBLISHED) 문제 풀에서만 출제</li>
+      <li>AI 생성 문제(source_type=AI) + 관리자 직접 등록 문제(source_type=MANUAL) 혼합</li>
+      <li>로딩 화면 표시 후 문제 풀이 진행</li>
+      <li>문제 풀이 완료 후 결과 화면(SCR-08-QUIZ-RESULT)로 이동</li>
     </ul>
   </div>
 </div>

@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>단원 목차 및 요약 — Daily Study</title>
+<title>3단원: 함수와 그래프 요약 — Daily Study</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
 <style>
 :root {
@@ -33,24 +33,6 @@ body { font-family:"Pretendard","Apple SD Gothic Neo","Noto Sans KR",sans-serif;
 /* Section Title */
 .section-title { font-size:18px; font-weight:700; margin-bottom:12px; display:flex; align-items:center; gap:6px; }
 .section { margin-bottom:24px; }
-/* Unit List (목차) */
-.unit-list { display:flex; flex-direction:column; gap:12px; }
-.unit-item { background:var(--base-100); border-radius:16px; padding:16px; box-shadow:var(--card-shadow); transition:box-shadow 0.2s; }
-.unit-item:hover { box-shadow:var(--card-shadow-hover); }
-.unit-item.current { border:2px solid var(--primary); }
-.unit-item-head { display:flex; align-items:flex-start; gap:12px; margin-bottom:8px; }
-.unit-num { width:32px; height:32px; border-radius:8px; background:var(--gradient); color:#FFF; display:flex; align-items:center; justify-content:center; font-size:14px; font-weight:700; flex-shrink:0; }
-.unit-item-title { font-size:16px; font-weight:600; flex:1; }
-.unit-progress-badge { font-size:13px; font-weight:700; padding:4px 10px; border-radius:999px; flex-shrink:0; }
-.unit-progress-badge.done { background:rgba(34,197,94,0.1); color:var(--success); }
-.unit-progress-badge.partial { background:rgba(69,85,255,0.1); color:var(--primary); }
-.unit-progress-badge.todo { background:var(--base-200); color:#9CA3AF; }
-.unit-progress-bar { height:6px; background:var(--base-200); border-radius:3px; overflow:hidden; margin-bottom:10px; }
-.unit-progress-fill { height:100%; border-radius:3px; background:var(--primary); }
-.unit-item-btns { display:flex; gap:8px; }
-.btn-summary { padding:8px 16px; border:2px solid var(--base-300); border-radius:10px; font-size:13px; font-weight:600; cursor:pointer; background:var(--base-100); flex:1; text-decoration:none; color:var(--base-content); text-align:center; }
-.btn-summary:hover { border-color:var(--primary); color:var(--primary); }
-.btn-quiz-sm { padding:8px 16px; background:var(--gradient); color:#FFF; border:none; border-radius:10px; font-size:13px; font-weight:600; cursor:pointer; flex:1; text-decoration:none; text-align:center; }
 /* Summary Content */
 .summary-card { background:var(--base-100); border-radius:16px; padding:20px; box-shadow:var(--card-shadow); margin-bottom:16px; }
 .summary-card-title { font-size:18px; font-weight:600; margin-bottom:16px; }
@@ -72,8 +54,9 @@ body { font-family:"Pretendard","Apple SD Gothic Neo","Noto Sans KR",sans-serif;
 /* CTA Button */
 .btn-primary { display:block; width:100%; padding:16px; background:var(--gradient); color:#FFF; border:none; border-radius:var(--btn-radius); box-shadow:var(--btn-shadow); font-size:17px; font-weight:700; font-family:inherit; cursor:pointer; margin-top:8px; text-decoration:none; text-align:center; }
 .btn-primary:hover { opacity:0.9; }
-/* Divider */
-.divider { height:1px; background:var(--base-300); margin:32px 0; }
+/* Secondary Button */
+.btn-secondary { display:block; width:100%; padding:14px; background:var(--base-100); color:var(--primary); border:2px solid var(--primary); border-radius:var(--btn-radius); font-size:16px; font-weight:600; font-family:inherit; cursor:pointer; margin-top:12px; text-decoration:none; text-align:center; }
+.btn-secondary:hover { background:rgba(69,85,255,0.05); }
 /* Bottom Nav */
 .bottom-nav { position:fixed; bottom:0; left:0; right:0; height:64px; background:var(--base-100); border-top:1px solid var(--base-200); display:flex; align-items:center; justify-content:space-around; z-index:50; max-width:480px; margin:0 auto; }
 .nav-item { display:flex; flex-direction:column; align-items:center; gap:2px; font-size:11px; color:#9CA3AF; cursor:pointer; flex:1; text-decoration:none; }
@@ -86,11 +69,9 @@ body { font-family:"Pretendard","Apple SD Gothic Neo","Noto Sans KR",sans-serif;
 }
 @media (min-width:1024px) {
   .content { padding:32px; }
-  .main-layout { display:grid; grid-template-columns:1fr 280px; gap:24px; }
   .bottom-nav { display:none; }
   body { padding-bottom:0; }
 }
-
 /* CTA Bar */
 .cta-bar { position:fixed; bottom:64px; left:0; right:0; z-index:60; padding:10px 16px; background:rgba(255,255,255,0.95); backdrop-filter:blur(8px); border-top:1px solid var(--base-200); max-width:480px; margin:0 auto; box-shadow:0 -2px 8px rgba(0,0,0,0.04); }
 .cta-btn { width:100%; padding:14px; background:var(--gradient); color:#FFF; border:none; border-radius:var(--btn-radius); font-size:16px; font-weight:700; font-family:inherit; cursor:pointer; box-shadow:var(--btn-shadow); transition:opacity 0.2s; }
@@ -99,91 +80,17 @@ body { font-family:"Pretendard","Apple SD Gothic Neo","Noto Sans KR",sans-serif;
 </head>
 <body>
 <div class="header">
-  <div class="header-left"><a href="subjects.html" class="header-back">←</a> 수학</div>
+  <div class="header-left"><a href="subjects.html" class="header-back">&larr;</a> 수학 &gt; 함수와 그래프</div>
   <button class="header-pdf">📄 PDF</button>
 </div>
 <div class="content">
-  <div class="unit-breadcrumb">중학교 2학년 > 수학</div>
-  <div class="unit-title">수학 — 단원 목차</div>
-  <div class="unit-subtitle">20개 단원 · 12개 완료 (60%)</div>
-
-  <!-- 단원 목차 (목록 형태) -->
-  <div class="section">
-    <div class="section-title">📋 단원 목차</div>
-    <div class="unit-list">
-      <!-- Unit 1: 완료 -->
-      <div class="unit-item">
-        <div class="unit-item-head">
-          <div class="unit-num">1</div>
-          <div class="unit-item-title">유리수와 소수</div>
-          <div class="unit-progress-badge done">100%</div>
-        </div>
-        <div class="unit-progress-bar"><div class="unit-progress-fill" style="width:100%;background:var(--success);"></div></div>
-        <div class="unit-item-btns">
-          <a href="unit-summary.html" class="btn-summary">📖 단원 요약</a>
-          <a href="quiz.html" class="btn-quiz-sm">✏️ 문제 풀기</a>
-        </div>
-      </div>
-      <!-- Unit 2: 완료 -->
-      <div class="unit-item">
-        <div class="unit-item-head">
-          <div class="unit-num">2</div>
-          <div class="unit-item-title">식의 계산</div>
-          <div class="unit-progress-badge done">100%</div>
-        </div>
-        <div class="unit-progress-bar"><div class="unit-progress-fill" style="width:100%;background:var(--success);"></div></div>
-        <div class="unit-item-btns">
-          <a href="unit-summary.html" class="btn-summary">📖 단원 요약</a>
-          <a href="quiz.html" class="btn-quiz-sm">✏️ 문제 풀기</a>
-        </div>
-      </div>
-      <!-- Unit 3: 진행 중 (현재 단원) -->
-      <div class="unit-item current">
-        <div class="unit-item-head">
-          <div class="unit-num">3</div>
-          <div class="unit-item-title">함수와 그래프</div>
-          <div class="unit-progress-badge partial">60%</div>
-        </div>
-        <div class="unit-progress-bar"><div class="unit-progress-fill" style="width:60%;"></div></div>
-        <div class="unit-item-btns">
-          <a href="unit-summary.html" class="btn-summary">📖 단원 요약</a>
-          <a href="quiz.html" class="btn-quiz-sm">✏️ 문제 풀기</a>
-        </div>
-      </div>
-      <!-- Unit 4: 미진행 -->
-      <div class="unit-item">
-        <div class="unit-item-head">
-          <div class="unit-num">4</div>
-          <div class="unit-item-title">일차함수</div>
-          <div class="unit-progress-badge todo">0%</div>
-        </div>
-        <div class="unit-progress-bar"><div class="unit-progress-fill" style="width:0%;"></div></div>
-        <div class="unit-item-btns">
-          <a href="unit-summary.html" class="btn-summary">📖 단원 요약</a>
-          <a href="quiz.html" class="btn-quiz-sm">✏️ 문제 풀기</a>
-        </div>
-      </div>
-      <!-- Unit 5: 미진행 -->
-      <div class="unit-item">
-        <div class="unit-item-head">
-          <div class="unit-num">5</div>
-          <div class="unit-item-title">일차방정식</div>
-          <div class="unit-progress-badge todo">0%</div>
-        </div>
-        <div class="unit-progress-bar"><div class="unit-progress-fill" style="width:0%;"></div></div>
-        <div class="unit-item-btns">
-          <a href="unit-summary.html" class="btn-summary">📖 단원 요약</a>
-          <a href="quiz.html" class="btn-quiz-sm">✏️ 문제 풀기</a>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="divider"></div>
+  <div class="unit-breadcrumb">중학교 2학년 &gt; 수학 &gt; 3단원</div>
+  <div class="unit-title">3단원: 함수와 그래프</div>
+  <div class="unit-subtitle">중학교 2학년 &gt; 수학 &gt; 3단원</div>
 
   <!-- 3단원 상세 요약 -->
   <div class="section">
-    <div class="section-title">📖 3단원: 함수와 그래프 — 요약</div>
+    <div class="section-title">📖 3단원: 함수와 그래프 &mdash; 요약</div>
 
     <!-- 핵심 개념 카드 -->
     <div class="summary-card">
@@ -218,7 +125,7 @@ body { font-family:"Pretendard","Apple SD Gothic Neo","Noto Sans KR",sans-serif;
       </div>
       <div class="formula-box">
         <div class="formula-box-title">함수의 대응 관계</div>
-        <div class="formula-text">f: X → Y, &nbsp; y = f(x)</div>
+        <div class="formula-text">f: X &rarr; Y, &nbsp; y = f(x)</div>
         <div class="formula-desc">입력 x에 대해 출력 y = f(x)가 정확히 하나 대응</div>
       </div>
     </div>
@@ -230,9 +137,9 @@ body { font-family:"Pretendard","Apple SD Gothic Neo","Noto Sans KR",sans-serif;
         <div class="example-label">예시 1: 함수인 경우</div>
         <div class="example-body">
           <strong>y = 2x + 1</strong><br>
-          x = 1 → y = 3<br>
-          x = 2 → y = 5<br>
-          x = 3 → y = 7<br>
+          x = 1 &rarr; y = 3<br>
+          x = 2 &rarr; y = 5<br>
+          x = 3 &rarr; y = 7<br>
           각 x에 대해 y가 하나씩 정해지므로 ✅ 함수이다.
         </div>
       </div>
@@ -240,8 +147,8 @@ body { font-family:"Pretendard","Apple SD Gothic Neo","Noto Sans KR",sans-serif;
         <div class="example-label">예시 2: 함수가 아닌 경우</div>
         <div class="example-body">
           <strong>y² = x</strong><br>
-          x = 4 → y = 2 또는 y = -2<br>
-          하나의 x에 대해 y값이 2개 → ❌ 함수가 아니다.
+          x = 4 &rarr; y = 2 또는 y = -2<br>
+          하나의 x에 대해 y값이 2개 &rarr; ❌ 함수가 아니다.
         </div>
       </div>
     </div>
@@ -252,7 +159,7 @@ body { font-family:"Pretendard","Apple SD Gothic Neo","Noto Sans KR",sans-serif;
       <div class="highlight-box">
         <strong>💡 시험에 자주 나오는 포인트</strong>
         <div class="highlight-box-body">
-          ① 함수의 조건: 입력 1개 → 출력 1개 (일대일 또는 다대일)<br>
+          ① 함수의 조건: 입력 1개 &rarr; 출력 1개 (일대일 또는 다대일)<br>
           ② y² = x 형태는 함수가 아님 (일대다 대응)<br>
           ③ 그래프에서 세로선 그었을 때 점이 1개만 만나면 함수<br>
           ④ 일차함수 y = ax + b의 그래프는 직선
@@ -261,11 +168,13 @@ body { font-family:"Pretendard","Apple SD Gothic Neo","Noto Sans KR",sans-serif;
     </div>
 
     <!-- 이 단원 문제 풀기 버튼 -->
-    <a href="quiz.html" class="btn-primary">✏️ 이 단원 문제 풀기 →</a>
+    <a href="quiz.html" class="btn-primary">✏️ 이 단원 문제 풀기 &rarr;</a>
+    <!-- 목차로 돌아가기 버튼 -->
+    <a href="unit-list.html" class="btn-secondary">📋 목차로 돌아가기</a>
   </div>
 </div>
 
-<div class="cta-bar"><button class="cta-btn">학습 시작하기 →</button></div>
+<div class="cta-bar"><button class="cta-btn">학습 시작하기 &rarr;</button></div>
 <div class="bottom-nav">
   <a href="dashboard.html" class="nav-item"><div class="nav-icon">🏠</div>홈</a>
   <a href="subjects.html" class="nav-item active"><div class="nav-icon">📚</div>과목</a>

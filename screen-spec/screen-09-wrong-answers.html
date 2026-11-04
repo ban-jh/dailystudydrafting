@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Daily Study 화면설계서 — 문제 풀이 결과</title>
+<title>Daily Study 화면설계서 — 오답노트</title>
 <style>
 
 @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
@@ -280,55 +280,65 @@ body {
 <div class="page">
   <div class="topbar">
     <span>Daily Study 화면설계서 v1.0</span>
-    <span class="nav-btns"><a href="screen-06-quiz.html">← 문제 풀이 설정</a><a href="index.html">목차</a><a href="screen-08-wrong-answers.html">오답노트 →</a></span>
+    <span class="nav-btns"><a href="screen-08-quiz-result.html">← 문제 풀이 결과</a><a href="index.html">목차</a><a href="screen-10-english.html">실생활 영어 →</a></span>
   </div>
   <div class="spec-header">
-    <div class="field"><div class="label">화면명</div><div class="value">문제 풀이 결과</div></div>
-    <div class="field"><div class="label">화면ID</div><div class="value" style="font-family:monospace;font-size:13px;">SCR-07-QUIZ-RESULT</div></div>
-    <div class="field"><div class="label">DESCRIPTION</div><div class="value" style="font-size:13px;">문제 풀이 후 정답률/오답/해설/XP 획득 결과를 표시하는 화면</div></div>
+    <div class="field"><div class="label">화면명</div><div class="value">오답노트</div></div>
+    <div class="field"><div class="label">화면ID</div><div class="value" style="font-family:monospace;font-size:13px;">SCR-09-WRONG-ANSWERS</div></div>
+    <div class="field"><div class="label">DESCRIPTION</div><div class="value" style="font-size:13px;">틀린 문제 목록과 재풀이/해설 기능을 제공하는 화면</div></div>
   </div>
   <div class="main-content">
     <div class="layout-section">
       <div class="device-frame">
   <div class="device-statusbar"><span>9:41</span><span>📶 🔋</span></div>
   <div class="device-content">
-    <div style="font-size:16px;font-weight:800;color:#1a1a2e;margin-bottom:16px;">풀이 결과</div>
-    <div style="position:relative;margin-bottom:16px;">
-      <span class="wf-num" style="top:0;left:-28px;">1</span>
-      <div class="wf-card" style="background:linear-gradient(135deg,#22B2FF,#4555FF);color:#fff;text-align:center;padding:20px;">
-        <div style="font-size:32px;font-weight:800;">80%</div>
-        <div style="font-size:11px;opacity:.8;">정답률 (8/10문제)</div>
+    <div style="font-size:16px;font-weight:800;color:#1a1a2e;margin-bottom:12px;">오답노트 📝</div>
+    <div style="position:relative;margin-bottom:12px;">
+      <span class="wf-num" style="top:4px;left:-28px;">1</span>
+      <div class="wf-label">필터</div>
+      <div class="wf-row">
+        <div class="wf-input" style="font-size:10px;padding:6px 10px;margin:0;">과목 ▾</div>
+        <div class="wf-input" style="font-size:10px;padding:6px 10px;margin:0;">기간 ▾</div>
       </div>
     </div>
     <div style="position:relative;margin-bottom:12px;">
-      <span class="wf-num" style="top:0;left:-28px;">2</span>
-      <div class="wf-label">오답 목록</div>
+      <span class="wf-num" style="top:4px;left:-28px;">2</span>
+      <div class="wf-label">오답 목록 (8건)</div>
       <div class="wf-card" style="border-left:3px solid #F43F5E;font-size:11px;">
-        <div style="font-weight:600;">Q3. 다음 방정식의 해는?</div>
-        <div style="font-size:9px;color:#F43F5E;">내 답: x=3 (정답: x=5)</div>
-        <div style="font-size:9px;color:#4555FF;margin-top:4px;">📖 해설 보기</div>
+        <div style="display:flex;justify-content:space-between;">
+          <span style="font-weight:600;">Q. 방정식의 해 구하기</span>
+          <span style="font-size:8px;color:#F43F5E;">수학</span>
+        </div>
+        <div style="font-size:9px;color:#889;margin-top:2px;">2026-11-03 · 오답 2회</div>
+        <div class="wf-row" style="margin-top:6px;">
+          <div class="wf-btn wf-btn-secondary" style="font-size:9px;padding:4px 8px;margin:0;">📖 해설</div>
+          <div class="wf-btn wf-btn-primary" style="font-size:9px;padding:4px 8px;margin:0;">🔄 재풀이</div>
+        </div>
+      </div>
+      <div class="wf-card" style="border-left:3px solid #6366F1;font-size:11px;">
+        <div style="display:flex;justify-content:space-between;">
+          <span style="font-weight:600;">Q. 현재완료 시제</span>
+          <span style="font-size:8px;color:#6366F1;">영어</span>
+        </div>
+        <div style="font-size:9px;color:#889;margin-top:2px;">2026-11-02 · 오답 1회</div>
+        <div class="wf-row" style="margin-top:6px;">
+          <div class="wf-btn wf-btn-secondary" style="font-size:9px;padding:4px 8px;margin:0;">📖 해설</div>
+          <div class="wf-btn wf-btn-primary" style="font-size:9px;padding:4px 8px;margin:0;">🔄 재풀이</div>
+        </div>
       </div>
       <div class="wf-card" style="border-left:3px solid #F43F5E;font-size:11px;">
-        <div style="font-weight:600;">Q7. 부등식 2x+1&gt;7의 해는?</div>
-        <div style="font-size:9px;color:#F43F5E;">내 답: x&gt;2 (정답: x&gt;3)</div>
-        <div style="font-size:9px;color:#4555FF;margin-top:4px;">📖 해설 보기</div>
+        <div style="display:flex;justify-content:space-between;">
+          <span style="font-weight:600;">Q. 부등식의 해집합</span>
+          <span style="font-size:8px;color:#F43F5E;">수학</span>
+        </div>
+        <div style="font-size:9px;color:#889;margin-top:2px;">2026-11-01 · 오답 3회</div>
       </div>
-    </div>
-    <div style="position:relative;margin-bottom:12px;">
-      <span class="wf-num" style="top:4px;left:-28px;">3</span>
-      <div class="wf-card" style="background:#fff8e1;text-align:center;">
-        <div style="font-size:20px;">🎯 +80 XP 획득!</div>
-      </div>
-    </div>
-    <div style="position:relative;">
-      <span class="wf-num" style="top:8px;left:-28px;">4</span>
-      <div class="wf-btn wf-btn-primary">다음 문제 풀기 →</div>
     </div>
     <div class="wf-nav">
       <div class="wf-nav-item">🏠 홈</div>
       <div class="wf-nav-item">📚 과목</div>
-      <div class="wf-nav-item active" style="font-size:18px;">✏️</div>
-      <div class="wf-nav-item">❌ 오답</div>
+      <div class="wf-nav-item" style="font-size:18px;">✏️</div>
+      <div class="wf-nav-item active">❌ 오답</div>
       <div class="wf-nav-item">💬 영어</div>
     </div>
   </div>
@@ -337,47 +347,47 @@ body {
     <div class="events-section">
       <h3>이벤트 설명</h3>
       <div class="event-item">
-  <span class="event-num">1</span><span class="event-title">정답률 요약</span>
+  <span class="event-num">1</span><span class="event-title">과목 / 기간 필터</span>
   <div class="event-desc">
     <ul>
-      <li>GET /api/quiz/attempts/{attemptId}/result 호출</li>
-      <li>정답 수 / 전체 문제 수 + 백분율 표시</li>
-      <li>그라데이션 카드로 시각적 강조</li>
-      <li>정답률 80% 이상 시 축하 애니메이션</li>
+      <li>과목 필터: 전체 / 국어 / 수학 / 영어 / 과학 / 사회 / 역사</li>
+      <li>기간 필터: 오늘 / 1주일 / 1개월 / 전체</li>
+      <li>GET /api/wrong-answers?subject={}&period={} 호출</li>
+      <li>필터 변경 시 목록 즉시 갱신</li>
     </ul>
   </div>
 </div>
 <div class="event-item">
-  <span class="event-num">2</span><span class="event-title">오답 목록 + 해설</span>
+  <span class="event-num">2</span><span class="event-title">오답 목록</span>
   <div class="event-desc">
     <ul>
-      <li>틀린 문제만 필터링하여 표시</li>
-      <li>문제 본문, 내 답, 정답 비교 표시</li>
-      <li>"해설 보기" 클릭 시 GET /api/quiz/{quizId}/explanation 호출</li>
-      <li>해설은 AI(GLM-5.2)가 생성한 상세 풀이 과정</li>
-      <li>틀린 문제는 자동으로 오답노트(QUIZ_ATTEMPT.is_wrong=true)에 등록</li>
+      <li>틀린 문제 목록을 최신순 정렬</li>
+      <li>각 항목: 문제 제목, 과목 색상 라벨, 날짜, 오답 횟수</li>
+      <li>오답 횟수가 높을수록 상단 정렬 옵션</li>
+      <li>무한 스크롤 또는 더보기 버튼으로 페이지네이션</li>
+      <li>빈 목록 시 "오답이 없습니다. 문제를 풀어보세요!" 안내</li>
     </ul>
   </div>
 </div>
 <div class="event-item">
-  <span class="event-num">3</span><span class="event-title">XP 획득 표시</span>
+  <span class="event-num">3</span><span class="event-title">해설 보기 버튼</span>
   <div class="event-desc">
     <ul>
-      <li>맞춘 문제당 10 XP 계산 (정답 × 10)</li>
-      <li>POST /api/users/xp 호출 — 사용자 XP 누적</li>
-      <li>레벨업 시 추가 축하 메시지 표시</li>
-      <li>배지 획득 조건 충족 시 배지 알림</li>
+      <li>GET /api/quiz/{quizId}/explanation 호출</li>
+      <li>모달/하단 시트로 상세 해설 표시</li>
+      <li>AI 생성 풀이 과정 + 정답 도출 순서</li>
+      <li>관련 단원 개념 요약 링크 제공</li>
     </ul>
   </div>
 </div>
 <div class="event-item">
-  <span class="event-num">4</span><span class="event-title">다음 문제 풀기 버튼</span>
+  <span class="event-num">4</span><span class="event-title">재풀이 버튼</span>
   <div class="event-desc">
     <ul>
-      <li>클릭 시 동일 설정으로 새 문제 세트 생성</li>
-      <li>POST /api/quiz/generate 재호출</li>
-      <li>문제 풀이 설정(SCR-06-QUIZ)로 이동하여 설정 변경 가능</li>
-      <li>"결과 공유하기" 옵션 (선택)</li>
+      <li>해당 오답 문제를 다시 풀 수 있는 화면으로 이동</li>
+      <li>재풀이 시 새로운 QUIZ_ATTEMPT 생성</li>
+      <li>정답 시 오답 목록에서 제거 (is_resolved=true)</li>
+      <li>오답 3회 이상 시 "집중 학습 권장" 배지 표시</li>
     </ul>
   </div>
 </div>

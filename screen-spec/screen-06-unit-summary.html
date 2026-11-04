@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Daily Study 화면설계서 — 문제 풀이 설정</title>
+<title>Daily Study 화면설계서 — 단원 요약</title>
 <style>
 
 @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
@@ -280,136 +280,171 @@ body {
 <div class="page">
   <div class="topbar">
     <span>Daily Study 화면설계서 v1.0</span>
-    <span class="nav-btns"><a href="screen-05-unit-summary.html">← 단원 요약</a><a href="index.html">목차</a><a href="screen-07-quiz-result.html">문제 풀이 결과 →</a></span>
+    <span class="nav-btns"><a href="screen-05-unit-list.html">&larr; 단원 목차</a><a href="index.html">목차</a><a href="screen-07-quiz.html">문제 풀이 &rarr;</a></span>
   </div>
   <div class="spec-header">
-    <div class="field"><div class="label">화면명</div><div class="value">문제 풀이 설정</div></div>
-    <div class="field"><div class="label">화면ID</div><div class="value" style="font-family:monospace;font-size:13px;">SCR-06-QUIZ</div></div>
-    <div class="field"><div class="label">DESCRIPTION</div><div class="value" style="font-size:13px;">과목/단원/난이도/유형/문제수를 설정하여 문제를 푸는 화면 (승인된 문제 풀에서 제공)</div></div>
+    <div class="field"><div class="label">화면명</div><div class="value">단원 요약</div></div>
+    <div class="field"><div class="label">화면ID</div><div class="value" style="font-family:monospace;font-size:13px;">SCR-06-UNIT-SUMMARY</div></div>
+    <div class="field"><div class="label">DESCRIPTION</div><div class="value" style="font-size:13px;">선택한 단원의 핵심 개념, 공식, 예시, 핵심 포인트를 표시하는 화면</div></div>
   </div>
   <div class="main-content">
     <div class="layout-section">
       <div class="device-frame">
   <div class="device-statusbar"><span>9:41</span><span>📶 🔋</span></div>
   <div class="device-content">
-    <div style="font-size:16px;font-weight:800;color:#1a1a2e;margin-bottom:16px;">문제 풀이 설정</div>
+    <div style="font-size:13px;font-weight:800;color:#3B82F6;margin-bottom:2px;">← 수학 > 함수와 그래프</div>
+    <div style="font-size:10px;color:#889;margin-bottom:12px;">중학교 2학년 > 수학 > 3단원</div>
+    <div style="font-size:15px;font-weight:800;margin-bottom:12px;">3단원: 함수와 그래프</div>
+    
     <div style="position:relative;margin-bottom:12px;">
-      <span class="wf-num" style="top:6px;left:-28px;">1</span>
-      <div class="wf-label">과목 선택 <span style="color:#F43F5E;">*</span></div>
-      <div class="wf-row" style="flex-wrap:wrap;">
-        <span style="font-size:10px;padding:6px 10px;background:#f0f2f5;border-radius:8px;">국어</span>
-        <span style="font-size:10px;padding:6px 10px;background:linear-gradient(90deg,#22B2FF,#4555FF);color:#fff;border-radius:8px;">수학</span>
-        <span style="font-size:10px;padding:6px 10px;background:#f0f2f5;border-radius:8px;">영어</span>
-        <span style="font-size:10px;padding:6px 10px;background:#f0f2f5;border-radius:8px;">과학</span>
+      <span class="wf-num" style="top:4px;left:-28px;">1</span>
+      <div class="wf-label">핵심 개념 카드</div>
+      <div class="wf-card" style="border-left:3px solid #4555FF;font-size:11px;">
+        <div style="font-weight:700;color:#4555FF;">함수의 정의</div>
+        <div style="font-size:9px;color:#889;margin-top:2px;">X의 각 원소에 Y의 원소가 하나씩 대응</div>
+      </div>
+      <div class="wf-card" style="border-left:3px solid #4555FF;font-size:11px;">
+        <div style="font-weight:700;color:#4555FF;">정의역과 공역</div>
+        <div style="font-size:9px;color:#889;margin-top:2px;">x값의 집합, y값의 집합</div>
       </div>
     </div>
+    
     <div style="position:relative;margin-bottom:12px;">
-      <span class="wf-num" style="top:6px;left:-28px;">2</span>
-      <div class="wf-label">단원 선택 <span style="color:#F43F5E;">*</span></div>
-      <div class="wf-input">2. 방정식과 부등식 ▾</div>
-    </div>
-    <div style="position:relative;margin-bottom:12px;">
-      <span class="wf-num" style="top:6px;left:-28px;">3</span>
-      <div class="wf-label">난이도</div>
-      <div class="wf-grid3">
-        <span style="font-size:10px;padding:6px;text-align:center;background:linear-gradient(90deg,#22B2FF,#4555FF);color:#fff;border-radius:8px;">쉬움</span>
-        <span style="font-size:10px;padding:6px;text-align:center;background:#f0f2f5;border-radius:8px;">보통</span>
-        <span style="font-size:10px;padding:6px;text-align:center;background:#f0f2f5;border-radius:8px;">어려움</span>
+      <span class="wf-num" style="top:4px;left:-28px;">2</span>
+      <div class="wf-label">공식 박스</div>
+      <div class="wf-card" style="background:#0B1026;color:#fff;text-align:center;padding:14px;">
+        <div style="font-size:9px;color:rgba(255,255,255,0.6);">일차함수</div>
+        <div style="font-size:16px;font-weight:700;color:#22B2FF;font-family:monospace;margin-top:4px;">y = ax + b</div>
       </div>
     </div>
+    
     <div style="position:relative;margin-bottom:12px;">
-      <span class="wf-num" style="top:6px;left:-28px;">4</span>
-      <div class="wf-label">문제 유형</div>
-      <div class="wf-grid2">
-        <span style="font-size:10px;padding:6px;text-align:center;background:linear-gradient(90deg,#22B2FF,#4555FF);color:#fff;border-radius:8px;">객관식</span>
-        <span style="font-size:10px;padding:6px;text-align:center;background:#f0f2f5;border-radius:8px;">주관식</span>
+      <span class="wf-num" style="top:4px;left:-28px;">3</span>
+      <div class="wf-label">예시</div>
+      <div class="wf-card" style="background:rgba(34,197,94,0.05);border:1px solid rgba(34,197,94,0.2);font-size:10px;">
+        <div style="font-weight:700;color:#22C55E;">예시 1: 함수인 경우</div>
+        <div style="margin-top:4px;color:#555;">y = 2x + 1 → ✅ 함수</div>
       </div>
     </div>
+    
     <div style="position:relative;margin-bottom:12px;">
-      <span class="wf-num" style="top:6px;left:-28px;">5</span>
-      <div class="wf-label">문제 수</div>
-      <div class="wf-row" style="align-items:center;">
-        <span style="font-size:16px;font-weight:800;color:#4555FF;">10</span>
-        <span style="font-size:10px;color:#889;">문제 (5~20)</span>
+      <span class="wf-num" style="top:4px;left:-28px;">4</span>
+      <div class="wf-label">핵심 포인트</div>
+      <div class="wf-card" style="background:rgba(245,158,11,0.1);font-size:10px;">
+        <div style="font-weight:700;color:#F59E0B;">시험에 자주 나오는 포인트</div>
+        <div style="margin-top:4px;color:#555;">① 입력1→출력1 ② y²=x는 함수 아님</div>
       </div>
-      <div class="wf-progress"><div class="wf-progress-fill" style="width:33%;"></div></div>
     </div>
-    <div style="position:relative;">
-      <span class="wf-num" style="top:8px;left:-28px;">6</span>
-      <div class="wf-btn wf-btn-primary">문제 풀기 →</div>
+    
+    <div style="position:relative;margin-bottom:8px;">
+      <span class="wf-num" style="top:4px;left:-28px;">5</span>
+      <div class="wf-btn wf-btn-secondary" style="font-size:11px;padding:8px;">📄 PDF 다운로드</div>
     </div>
-    <div style="font-size:9px;color:#889;text-align:center;margin-top:6px;">승인된 문제 풀에서 제공됩니다</div>
+    
+    <div style="position:relative;margin-bottom:8px;">
+      <span class="wf-num" style="top:4px;left:-28px;">6</span>
+      <div class="wf-btn wf-btn-primary" style="font-size:11px;padding:8px;">✏️ 이 단원 문제 풀기 →</div>
+    </div>
+    
+    <div style="position:relative;margin-bottom:8px;">
+      <span class="wf-num" style="top:4px;left:-28px;">7</span>
+      <div class="wf-btn wf-btn-secondary" style="font-size:11px;padding:8px;">📋 목차로 돌아가기</div>
+    </div>
+    
+    <div class="wf-nav">
+      <div class="wf-nav-item">🏠 홈</div>
+      <div class="wf-nav-item active">📚 과목</div>
+      <div class="wf-nav-item" style="font-size:18px;">✏️</div>
+      <div class="wf-nav-item">📝 오답</div>
+      <div class="wf-nav-item">📊 통계</div>
+    </div>
   </div>
 </div>
     </div>
     <div class="events-section">
       <h3>이벤트 설명</h3>
       <div class="event-item">
-  <span class="event-num">1</span><span class="event-title">과목 선택</span>
+  <span class="event-num">1</span><span class="event-title">단원 요약 버튼 클릭 (목차에서)</span>
   <div class="event-desc">
     <ul>
-      <li>6개 과목 중 택 1 (국어/수학/영어/과학/사회/역사)</li>
-      <li>선택 시 해당 과목의 단원 목록 로드</li>
-      <li>필수 선택 — 미선택 시 다음 단계 비활성화</li>
+      <li>단원 목차(SCR-05-UNIT-LIST)에서 '📖 단원 요약' 버튼 클릭 시 이 화면으로 이동</li>
+      <li>GET /api/units/{unitId}/summaries 호출 — 단원 핵심 개념 요약 데이터 조회</li>
+      <li>단원 제목, breadcrumb(학년 > 과목 > 단원) 표시</li>
     </ul>
   </div>
 </div>
 <div class="event-item">
-  <span class="event-num">2</span><span class="event-title">단원 선택</span>
+  <span class="event-num">2</span><span class="event-title">PDF 다운로드 버튼</span>
   <div class="event-desc">
     <ul>
-      <li>GET /api/subjects/{id}/units 호출 — 단원 드롭다운</li>
-      <li>전체 단원 옵션 포함 (단원 전체 문제 풀기)</li>
-      <li>필수 선택 — 미선택 시 "단원을 선택하세요" 에러</li>
+      <li>헤더 우측 '📄 PDF' 버튼 또는 본문 '📄 PDF 다운로드' 버튼 클릭</li>
+      <li>GET /api/units/{unitId}/export-pdf 호출 — 현재 단원 요약을 PDF로 다운로드</li>
+      <li>다운로드 진행률 표시, 완료 시 "PDF가 다운로드되었습니다" 토스트</li>
     </ul>
   </div>
 </div>
 <div class="event-item">
-  <span class="event-num">3</span><span class="event-title">난이도 선택</span>
+  <span class="event-num">3</span><span class="event-title">핵심 개념 카드</span>
   <div class="event-desc">
     <ul>
-      <li>쉬움 / 보통 / 어려움 3단계</li>
-      <li>기본값: 보통</li>
-      <li>선택한 난이도에 해당하는 status=PUBLISHED 문제만 필터링</li>
+      <li>단원의 핵심 개념을 카드 형태로 표시 (제목 + 설명)</li>
+      <li>좌측 파란색 테두리로 개념 카드 강조</li>
+      <li>768px 이상에서 2열 그리드 배치</li>
     </ul>
   </div>
 </div>
 <div class="event-item">
-  <span class="event-num">4</span><span class="event-title">문제 유형 선택</span>
+  <span class="event-num">4</span><span class="event-title">공식 박스</span>
   <div class="event-desc">
     <ul>
-      <li>객관식(4지선다) / 주관식(단답형) 선택</li>
-      <li>기본값: 객관식</li>
-      <li>주관식 선택 시 AI 채점 (GLM-5.2) 적용</li>
+      <li>다크 배경(#0B1026)에 주요 공식을 강조 표시</li>
+      <li>공식 제목, 공식 본문(모노스페이스), 설명 포함</li>
+      <li>GET /api/units/{unitId}/formulas — 공식 데이터 조회</li>
     </ul>
   </div>
 </div>
 <div class="event-item">
-  <span class="event-num">5</span><span class="event-title">문제 수 슬라이더</span>
+  <span class="event-num">5</span><span class="event-title">예시</span>
   <div class="event-desc">
     <ul>
-      <li>5~20문제 범위에서 슬라이더로 조절</li>
-      <li>기본값: 10문제</li>
-      <li>선택한 범위 내에서 랜덤 출제</li>
-      <li>문제 풀에 충분한 문제가 없을 경우 최대 가능 수 표시</li>
+      <li>녹색 배경 박스에 함수인 경우/함수가 아닌 경우 예시 표시</li>
+      <li>개념 이해를 돕는 구체적인 수학 예제 제공</li>
+      <li>✅ / ❌ 이모지로 직관적인 판별 결과 표시</li>
     </ul>
   </div>
 </div>
 <div class="event-item">
-  <span class="event-num">6</span><span class="event-title">문제 풀기 버튼</span>
+  <span class="event-num">6</span><span class="event-title">핵심 포인트</span>
   <div class="event-desc">
     <ul>
-      <li>POST /api/quiz/generate 호출 — 설정 조건으로 문제 세트 생성</li>
-      <li>승인된(status=PUBLISHED) 문제 풀에서만 출제</li>
-      <li>AI 생성 문제(source_type=AI) + 관리자 직접 등록 문제(source_type=MANUAL) 혼합</li>
-      <li>로딩 화면 표시 후 문제 풀이 진행</li>
-      <li>문제 풀이 완료 후 결과 화면(SCR-07-QUIZ-RESULT)로 이동</li>
+      <li>주황색 배경 박스에 시험에 자주 나오는 포인트 정리</li>
+      <li>번호(①②③④)가 매겨진 핵심 체크 사항 목록</li>
+      <li>학습 완료 시 STUDY_LOG에 기록 (type=SUMMARY)</li>
+    </ul>
+  </div>
+</div>
+<div class="event-item">
+  <span class="event-num">7</span><span class="event-title">이 단원 문제 풀기 버튼</span>
+  <div class="event-desc">
+    <ul>
+      <li>'✏️ 이 단원 문제 풀기 →' 버튼 클릭 시 문제 풀이 화면(SCR-07-QUIZ)으로 이동</li>
+      <li>현재 단원 ID를 파라미터로 전달 (unitId)</li>
+      <li>승인된 문제(status=PUBLISHED)만 문제 풀에서 즉시 제공</li>
+    </ul>
+  </div>
+</div>
+<div class="event-item">
+  <span class="event-num">8</span><span class="event-title">목차로 돌아가기 버튼</span>
+  <div class="event-desc">
+    <ul>
+      <li>'📋 목차로 돌아가기' 버튼 클릭 시 단원 목차(SCR-05-UNIT-LIST)로 이동</li>
+      <li>이전 화면(단원 목차)으로 복귀 — 뒤로가기와 동일</li>
     </ul>
   </div>
 </div>
     </div>
   </div>
-  <div class="footer">Copyright © 2026 Daily Study. All rights reserved.</div>
+  <div class="footer">Copyright &copy; 2026 Daily Study. All rights reserved.</div>
 </div>
 </body>
 </html>
