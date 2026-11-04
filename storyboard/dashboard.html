@@ -143,7 +143,7 @@ body {
   </div>
   <div class="header-right">
     <button class="header-btn">🔔<span class="header-badge">3</span></button>
-    <div class="header-avatar">민</div>
+    <a href="mypage.html" class="header-avatar" style="text-decoration:none;color:#FFF;">민</a>
   </div>
 </div>
 <div class="promo-banner"><span>🎁 신규 가입 시 7일 무료 체험!</span><a href="signup.html" style="color:#FFF;font-weight:600;text-decoration:none;font-size:13px;">지금 시작 →</a></div>
@@ -151,14 +151,14 @@ body {
 <div class="sidebar">
   <div class="sidebar-section">
     <div class="sidebar-section-title">메인</div>
-    <div class="sidebar-item active">🏠 홈</div>
-    <div class="sidebar-item">📚 과목 목록</div>
-    <div class="sidebar-item">📝 오답노트</div>
-    <div class="sidebar-item">📊 학습 통계</div>
+    <a href="dashboard.html" class="sidebar-item active" style="text-decoration:none;color:inherit;">🏠 홈</a>
+    <a href="subjects.html" class="sidebar-item" style="text-decoration:none;color:inherit;">📚 과목 목록</a>
+    <a href="wrong-answers.html" class="sidebar-item" style="text-decoration:none;color:inherit;">📝 오답노트</a>
+    <a href="statistics.html" class="sidebar-item" style="text-decoration:none;color:inherit;">📊 학습 통계</a>
   </div>
   <div class="sidebar-section">
     <div class="sidebar-section-title">계정</div>
-    <div class="sidebar-item">⚙️ 마이페이지</div>
+    <a href="mypage.html" class="sidebar-item" style="text-decoration:none;color:inherit;">⚙️ 마이페이지</a>
   </div>
   <div class="sidebar-streak">
     <div style="font-size:14px;font-weight:600;">🔥 12일 연속 학습 중!</div>
@@ -195,14 +195,14 @@ body {
         <div class="recommend-subject" style="color:#3B82F6;">수학</div>
         <div class="recommend-unit">함수와 그래프</div>
         <div class="progress-bar"><div class="progress-fill" style="width:60%;background:#3B82F6;"></div></div>
-        <button class="recommend-btn" style="border-color:#3B82F6;color:#3B82F6;">계속하기</button>
+        <a href="quiz.html" style="text-decoration:none;"><button class="recommend-btn" style="border-color:#3B82F6;color:#3B82F6;">계속하기</button></a>
       </div>
       <div class="recommend-card">
         <div class="recommend-icon" style="background:rgba(16,185,129,0.1);">🔬</div>
         <div class="recommend-subject" style="color:#10B981;">과학</div>
         <div class="recommend-unit">광합성</div>
         <div class="progress-bar"><div class="progress-fill" style="width:0%;background:#10B981;"></div></div>
-        <button class="recommend-btn" style="border-color:#10B981;color:#10B981;">시작하기</button>
+        <a href="quiz.html" style="text-decoration:none;"><button class="recommend-btn" style="border-color:#10B981;color:#10B981;">시작하기</button></a>
       </div>
     </div>
   </div>
@@ -228,13 +228,16 @@ body {
   <div class="section">
     <div class="section-title">빠른 접근</div>
     <div class="quick-grid">
-      <div class="quick-card"><div class="quick-icon">📚</div><div class="quick-label">과목</div></div>
-      <div class="quick-card"><div class="quick-icon">📊</div><div class="quick-label">통계</div></div>
+      <a href="subjects.html" class="quick-card" style="text-decoration:none;color:inherit;"><div class="quick-icon">📚</div><div class="quick-label">과목</div></a>
+      <a href="quiz.html" class="quick-card" style="text-decoration:none;color:inherit;"><div class="quick-icon">✏️</div><div class="quick-label">풀기</div></a>
+      <a href="wrong-answers.html" class="quick-card" style="text-decoration:none;color:inherit;"><div class="quick-icon">📝</div><div class="quick-label">오답노트</div></a>
+      <a href="statistics.html" class="quick-card" style="text-decoration:none;color:inherit;"><div class="quick-icon">📊</div><div class="quick-label">통계</div></a>
+      <a href="mypage.html" class="quick-card" style="text-decoration:none;color:inherit;"><div class="quick-icon">👤</div><div class="quick-label">마이페이지</div></a>
     </div>
   </div>
   <!-- English Today -->
   <div class="section">
-    <div class="section-title">오늘의 영어 문장</div>
+    <div class="section-title">오늘의 영어 문장 <a href="english.html" style="font-size:14px;color:var(--primary);text-decoration:none;font-weight:500;">더보기 →</a></div>
     <div class="english-card">
       <div class="english-quote">"Could you help me with this problem?"</div>
       <div class="english-trans">도와주실 수 있나요?</div>
@@ -244,7 +247,7 @@ body {
 </div>
 <!-- Bottom Nav -->
 
-<div class="cta-bar"><button class="cta-btn">학습 시작하기 →</button></div>
+<div class="cta-bar"><a href="subjects.html"><button class="cta-btn">학습 시작하기 →</button></a></div>
 <div class="bottom-nav">
   <a href="dashboard.html" class="nav-item active"><div class="nav-icon">🏠</div>홈</a>
   <a href="subjects.html" class="nav-item"><div class="nav-icon">📚</div>과목</a>

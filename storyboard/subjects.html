@@ -21,7 +21,7 @@
   --btn-radius: 16px; --btn-shadow: 0 4px 12px rgba(69,85,255,0.3);
 }
 * { margin: 0; padding: 0; box-sizing: border-box; }
-body { font-family: "Pretendard", "Apple SD Gothic Neo", "Noto Sans KR", sans-serif; background: var(--base-200); color: var(--base-content); padding-bottom: 140px; }
+body { font-family: "Pretendard", "Apple SD Gothic Neo", "Noto Sans KR", sans-serif; background: var(--base-200); color: var(--base-content); padding-bottom: 80px; }
 .header { position: sticky; top: 0; z-index: 50; height: 56px; background: rgba(255,255,255,0.95); backdrop-filter: blur(8px); border-bottom: 1px solid var(--base-200); display: flex; align-items: center; justify-content: space-between; padding: 0 16px; }
 .header-left { display: flex; align-items: center; gap: 8px; }
 .header-logo { width: 28px; height: 28px; background: var(--gradient); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 14px; }
@@ -72,8 +72,8 @@ body { font-family: "Pretendard", "Apple SD Gothic Neo", "Noto Sans KR", sans-se
 </head>
 <body>
 <div class="header">
-  <div class="header-left"><div class="header-logo">📚</div><div class="header-title">Daily Study</div></div>
-  <div class="header-right"><button class="header-btn">🔔</button><div class="header-avatar">민</div></div>
+  <div class="header-left"><a href="dashboard.html" style="text-decoration:none;color:inherit;display:flex;align-items:center;gap:8px;"><div class="header-logo">📚</div><div class="header-title">Daily Study</div></a></div>
+  <div class="header-right"><button class="header-btn">🔔</button><a href="mypage.html" class="header-avatar" style="text-decoration:none;color:#FFF;">민</a></div>
 </div>
 <div class="content">
   <div class="page-title">과목</div>
@@ -153,7 +153,6 @@ body { font-family: "Pretendard", "Apple SD Gothic Neo", "Noto Sans KR", sans-se
   </div>
 </div>
 
-<div class="cta-bar"><button class="cta-btn">학습 시작하기 →</button></div>
 <div class="bottom-nav">
   <a href="dashboard.html" class="nav-item"><div class="nav-icon">🏠</div>홈</a>
   <a href="subjects.html" class="nav-item active"><div class="nav-icon">📚</div>과목</a>
