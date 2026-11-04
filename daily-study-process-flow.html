@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Daily Study — 전체 프로세스 플로우</title>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'JetBrains Mono', monospace; background: #020617; min-height: 100vh; padding: 2rem; color: white; }
+    .container { max-width: 1400px; margin: 0 auto; }
+    .header { margin-bottom: 2rem; }
+    .header-row { display: flex; align-items: center; gap: 1rem; margin-bottom: 0.5rem; }
+    .pulse-dot { width: 12px; height: 12px; background: #22d3ee; border-radius: 50%; animation: pulse 2s infinite; }
+    @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+    h1 { font-size: 1.5rem; font-weight: 700; letter-spacing: -0.025em; }
+    .subtitle { color: #94a3b8; font-size: 0.875rem; margin-left: 1.75rem; }
+    .diagram-container { background: rgba(15, 23, 42, 0.5); border-radius: 1rem; border: 1px solid #1e293b; padding: 1.5rem; overflow-x: auto; }
+    svg { width: 100%; min-width: 1100px; display: block; }
+    .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem; margin-top: 2rem; }
+    .card { background: rgba(15, 23, 42, 0.5); border-radius: 0.75rem; border: 1px solid #1e293b; padding: 1.25rem; }
+    .card-header { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.75rem; }
+    .card-dot { width: 8px; height: 8px; border-radius: 50%; }
+    .card-dot.cyan { background: #22d3ee; }
+    .card-dot.emerald { background: #34d399; }
+    .card-dot.violet { background: #a78bfa; }
+    .card-dot.amber { background: #fbbf24; }
+    .card-dot.rose { background: #fb7185; }
+    .card-dot.orange { background: #fb923c; }
+    .card h3 { font-size: 0.875rem; font-weight: 600; }
+    .card ul { list-style: none; color: #94a3b8; font-size: 0.75rem; }
+    .card li { margin-bottom: 0.375rem; }
+    .footer { text-align: center; margin-top: 1.5rem; color: #475569; font-size: 0.75rem; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <div class="header-row">
+        <div class="pulse-dot"></div>
+        <h1>Daily Study — 전체 프로세스 플로우</h1>
+      </div>
+      <p class="subtitle">사용자(학생/학부모) · 관리자 화면 구성 및 학습 프로세스</p>
+    </div>
+
+    <div class="diagram-container">
+      <svg viewBox="0 0 1100 1050">
+        <defs>
+          <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+            <polygon points="0 0, 10 3.5, 0 7" fill="#64748b" />
+          </marker>
+          <marker id="arrowhead-cyan" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+            <polygon points="0 0, 10 3.5, 0 7" fill="#22d3ee" />
+          </marker>
+          <marker id="arrowhead-emerald" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+            <polygon points="0 0, 10 3.5, 0 7" fill="#34d399" />
+          </marker>
+          <marker id="arrowhead-amber" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+            <polygon points="0 0, 10 3.5, 0 7" fill="#fbbf24" />
+          </marker>
+          <marker id="arrowhead-rose" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+            <polygon points="0 0, 10 3.5, 0 7" fill="#fb7185" />
+          </marker>
+          <marker id="arrowhead-orange" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+            <polygon points="0 0, 10 3.5, 0 7" fill="#fb923c" />
+          </marker>
+          <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+            <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#1e293b" stroke-width="0.5"/>
+          </pattern>
+        </defs>
+
+        <!-- Background Grid -->
+        <rect width="100%" height="100%" fill="url(#grid)" />
+
+        <!-- ===================== -->
+        <!-- TOP LEVEL: ROLES   -->
+        <!-- ===================== -->
+
+        <!-- User Boundary -->
+        <rect x="20" y="20" width="510" height="980" rx="12" fill="rgba(8, 51, 68, 0.08)" stroke="#22d3ee" stroke-width="1" stroke-dasharray="8,4"/>
+        <text x="35" y="42" fill="#22d3ee" font-size="11" font-weight="700">사용자 (User)</text>
+
+        <!-- Admin Boundary -->
+        <rect x="560" y="20" width="520" height="980" rx="12" fill="rgba(120, 53, 15, 0.06)" stroke="#fbbf24" stroke-width="1" stroke-dasharray="8,4"/>
+        <text x="575" y="42" fill="#fbbf24" font-size="11" font-weight="700">관리자 (Admin)</text>
+
+        <!-- ===================== -->
+        <!-- USER: Student       -->
+        <!-- ===================== -->
+
+        <rect x="40" y="60" width="230" height="50" rx="6" fill="rgba(8, 51, 68, 0.4)" stroke="#22d3ee" stroke-width="1.5"/>
+        <text x="155" y="80" fill="white" font-size="12" font-weight="700" text-anchor="middle">학생 (Student)</text>
+        <text x="155" y="97" fill="#94a3b8" font-size="9" text-anchor="middle">학습 · 문제 풀이 · 오답</text>
+
+        <!-- ===================== -->
+        <!-- USER: Parent        -->
+        <!-- ===================== -->
+
+        <rect x="290" y="60" width="220" height="50" rx="6" fill="rgba(8, 51, 68, 0.4)" stroke="#22d3ee" stroke-width="1.5"/>
+        <text x="400" y="80" fill="white" font-size="12" font-weight="700" text-anchor="middle">학부모 (Parent)</text>
+        <text x="400" y="97" fill="#94a3b8" font-size="9" text-anchor="middle">학습 현황 · 리포트 조회</text>
+
+        <!-- Student → Dashboard -->
+        <line x1="155" y1="110" x2="155" y2="140" stroke="#22d3ee" stroke-width="1.5" marker-end="url(#arrowhead-cyan)"/>
+        <text x="170" y="130" fill="#94a3b8" font-size="8">로그인</text>
+
+        <!-- ===================== -->
+        <!-- STUDENT FLOW         -->
+        <!-- ===================== -->
+
+        <!-- Dashboard -->
+        <rect x="50" y="145" width="210" height="60" rx="6" fill="rgba(6, 78, 59, 0.4)" stroke="#34d399" stroke-width="1.5"/>
+        <text x="155" y="168" fill="white" font-size="11" font-weight="600" text-anchor="middle">대시보드</text>
+        <text x="155" y="184" fill="#94a3b8" font-size="9" text-anchor="middle">오늘의 추천 · 현황 요약</text>
+        <text x="155" y="197" fill="#34d399" font-size="8" text-anchor="middle">→ 과목 선택</text>
+
+        <!-- Dashboard → Subjects -->
+        <line x1="155" y1="205" x2="155" y2="235" stroke="#34d399" stroke-width="1.5" marker-end="url(#arrowhead-emerald)"/>
+
+        <!-- Subjects -->
+        <rect x="50" y="240" width="210" height="60" rx="6" fill="rgba(6, 78, 59, 0.4)" stroke="#34d399" stroke-width="1.5"/>
+        <text x="155" y="263" fill="white" font-size="11" font-weight="600" text-anchor="middle">과목 목록</text>
+        <text x="155" y="279" fill="#94a3b8" font-size="9" text-anchor="middle">6과목 카드 · 진행률 %</text>
+        <text x="155" y="292" fill="#34d399" font-size="8" text-anchor="middle">→ 단원 목차</text>
+
+        <!-- Subjects → Unit List -->
+        <line x1="155" y1="300" x2="155" y2="330" stroke="#34d399" stroke-width="1.5" marker-end="url(#arrowhead-emerald)"/>
+
+        <!-- Unit List -->
+        <rect x="50" y="335" width="210" height="70" rx="6" fill="rgba(6, 78, 59, 0.4)" stroke="#34d399" stroke-width="1.5"/>
+        <text x="155" y="358" fill="white" font-size="11" font-weight="600" text-anchor="middle">단원 목차</text>
+        <text x="155" y="374" fill="#94a3b8" font-size="9" text-anchor="middle">단원 카드 · 진행률 %</text>
+        <text x="155" y="388" fill="#94a3b8" font-size="8" text-anchor="middle">📖 요약 / ✏️ 문제 풀기</text>
+        <text x="155" y="398" fill="#34d399" font-size="8" text-anchor="middle">2개 버튼 분기</text>
+
+        <!-- Unit List → Unit Summary (left branch) -->
+        <line x1="120" y1="405" x2="90" y2="440" stroke="#34d399" stroke-width="1.5" marker-end="url(#arrowhead-emerald)"/>
+        <text x="78" y="428" fill="#94a3b8" font-size="8">요약</text>
+
+        <!-- Unit List → Quiz (right branch) -->
+        <line x1="190" y1="405" x2="220" y2="440" stroke="#34d399" stroke-width="1.5" marker-end="url(#arrowhead-emerald)"/>
+        <text x="208" y="428" fill="#94a3b8" font-size="8">문제</text>
+
+        <!-- Unit Summary -->
+        <rect x="40" y="445" width="130" height="60" rx="6" fill="rgba(6, 78, 59, 0.4)" stroke="#34d399" stroke-width="1.5"/>
+        <text x="105" y="468" fill="white" font-size="11" font-weight="600" text-anchor="middle">단원 요약</text>
+        <text x="105" y="484" fill="#94a3b8" font-size="8" text-anchor="middle">핵심개념·공식</text>
+        <text x="105" y="496" fill="#94a3b8" font-size="8" text-anchor="middle">예시·포인트</text>
+
+        <!-- Unit Summary → Quiz (문제 풀기 버튼) -->
+        <line x1="130" y1="475" x2="195" y2="475" stroke="#34d399" stroke-width="1.5" marker-end="url(#arrowhead-emerald)"/>
+        <text x="162" y="469" fill="#94a3b8" font-size="7">문제풀기</text>
+
+        <!-- Quiz (문제 풀이 세션) -->
+        <rect x="195" y="445" width="150" height="60" rx="6" fill="rgba(6, 78, 59, 0.4)" stroke="#34d399" stroke-width="1.5"/>
+        <text x="270" y="468" fill="white" font-size="11" font-weight="600" text-anchor="middle">문제 풀이</text>
+        <text x="270" y="484" fill="#94a3b8" font-size="8" text-anchor="middle">승인된 문제 풀</text>
+        <text x="270" y="496" fill="#94a3b8" font-size="8" text-anchor="middle">객관식·주관식</text>
+
+        <!-- Quiz → Quiz Result -->
+        <line x1="270" y1="505" x2="270" y2="535" stroke="#34d399" stroke-width="1.5" marker-end="url(#arrowhead-emerald)"/>
+        <text x="285" y="525" fill="#94a3b8" font-size="8">제출</text>
+
+        <!-- Quiz Result -->
+        <rect x="195" y="540" width="150" height="70" rx="6" fill="rgba(6, 78, 59, 0.4)" stroke="#34d399" stroke-width="1.5"/>
+        <text x="270" y="563" fill="white" font-size="11" font-weight="600" text-anchor="middle">풀이 결과</text>
+        <text x="270" y="579" fill="#94a3b8" font-size="8" text-anchor="middle">정답률 · 해설</text>
+        <text x="270" y="591" fill="#94a3b8" font-size="8" text-anchor="middle">XP 획득</text>
+        <text x="270" y="603" fill="#34d399" font-size="8" text-anchor="middle">오답노트 / 다시풀기</text>
+
+        <!-- Quiz Result → Wrong Answers (left) -->
+        <line x1="230" y1="610" x2="155" y2="640" stroke="#34d399" stroke-width="1.5" marker-end="url(#arrowhead-emerald)"/>
+        <text x="170" y="630" fill="#94a3b8" font-size="7">오답</text>
+
+        <!-- Quiz Result → Quiz again (right) -->
+        <line x1="310" y1="610" x2="310" y2="640" stroke="#34d399" stroke-width="1.5" marker-end="url(#arrowhead-emerald)"/>
+        <text x="325" y="630" fill="#94a3b8" font-size="7">재풀이</text>
+
+        <!-- Wrong Answers -->
+        <rect x="80" y="645" width="150" height="60" rx="6" fill="rgba(6, 78, 59, 0.4)" stroke="#34d399" stroke-width="1.5"/>
+        <text x="155" y="668" fill="white" font-size="11" font-weight="600" text-anchor="middle">오답노트</text>
+        <text x="155" y="684" fill="#94a3b8" font-size="8" text-anchor="middle">오답 목록·필터</text>
+        <text x="155" y="696" fill="#94a3b8" font-size="8" text-anchor="middle">해설·재풀이</text>
+
+        <!-- Wrong Answers → Quiz (재풀이) -->
+        <line x1="200" y1="675" x2="260" y2="475" stroke="#34d399" stroke-width="1" stroke-dasharray="3,3" marker-end="url(#arrowhead-emerald)"/>
+        <text x="245" y="580" fill="#94a3b8" font-size="7">재풀이 루프</text>
+
+        <!-- Statistics -->
+        <rect x="245" y="645" width="140" height="60" rx="6" fill="rgba(6, 78, 59, 0.4)" stroke="#34d399" stroke-width="1.5"/>
+        <text x="315" y="668" fill="white" font-size="11" font-weight="600" text-anchor="middle">학습 통계</text>
+        <text x="315" y="684" fill="#94a3b8" font-size="8" text-anchor="middle">정답률·학습시간</text>
+        <text x="315" y="696" fill="#94a3b8" font-size="8" text-anchor="middle">스트릭·리포트</text>
+
+        <!-- Quiz Result → Statistics -->
+        <line x1="295" y1="610" x2="315" y2="640" stroke="#34d399" stroke-width="1.5" marker-end="url(#arrowhead-emerald)"/>
+
+        <!-- ===================== -->
+        <!-- PARENT FLOW          -->
+        <!-- ===================== -->
+
+        <!-- Parent → Dashboard -->
+        <line x1="400" y1="110" x2="400" y2="145" stroke="#22d3ee" stroke-width="1.5" marker-end="url(#arrowhead-cyan)"/>
+        <text x="415" y="132" fill="#94a3b8" font-size="8">로그인</text>
+
+        <!-- Parent Dashboard (상황 요약) -->
+        <rect x="300" y="150" width="200" height="60" rx="6" fill="rgba(8, 51, 68, 0.4)" stroke="#22d3ee" stroke-width="1.5"/>
+        <text x="400" y="173" fill="white" font-size="11" font-weight="600" text-anchor="middle">학부모 대시보드</text>
+        <text x="400" y="189" fill="#94a3b8" font-size="9" text-anchor="middle">자녀 학습 현황 요약</text>
+        <text x="400" y="202" fill="#22d3ee" font-size="8" text-anchor="middle">→ 통계 / 리포트</text>
+
+        <!-- Parent Dashboard → Statistics -->
+        <line x1="380" y1="210" x2="345" y2="640" stroke="#22d3ee" stroke-width="1" stroke-dasharray="4,4" marker-end="url(#arrowhead-cyan)"/>
+        <text x="355" y="430" fill="#22d3b8" font-size="8" fill="#94a3b8">조회</text>
+
+        <!-- Parent Report -->
+        <rect x="300" y="230" width="200" height="60" rx="6" fill="rgba(8, 51, 68, 0.4)" stroke="#22d3ee" stroke-width="1.5"/>
+        <text x="400" y="253" fill="white" font-size="11" font-weight="600" text-anchor="middle">학습 리포트</text>
+        <text x="400" y="269" fill="#94a3b8" font-size="9" text-anchor="middle">주간·월간 리포트</text>
+        <text x="400" y="282" fill="#94a3b8" font-size="8" text-anchor="middle">과목별 약점 분석</text>
+
+        <!-- Parent Dashboard → Report -->
+        <line x1="400" y1="210" x2="400" y2="225" stroke="#22d3ee" stroke-width="1.5" marker-end="url(#arrowhead-cyan)"/>
+
+        <!-- ===================== -->
+        <!-- ADMIN FLOW            -->
+        <!-- ===================== -->
+
+        <!-- Admin Dashboard -->
+        <rect x="580" y="60" width="230" height="55" rx="6" fill="rgba(120, 53, 15, 0.3)" stroke="#fbbf24" stroke-width="1.5"/>
+        <text x="695" y="83" fill="white" font-size="12" font-weight="700" text-anchor="middle">관리자 대시보드</text>
+        <text x="695" y="100" fill="#94a3b8" font-size="9" text-anchor="middle">운영 지표 · 콘텐츠 현황</text>
+
+        <!-- Admin Dashboard → Content Management -->
+        <line x1="695" y1="115" x2="695" y2="150" stroke="#fbbf24" stroke-width="1.5" marker-end="url(#arrowhead-amber)"/>
+
+        <!-- Content Management -->
+        <rect x="580" y="155" width="230" height="55" rx="6" fill="rgba(120, 53, 15, 0.3)" stroke="#fbbf24" stroke-width="1.5"/>
+        <text x="695" y="178" fill="white" font-size="11" font-weight="600" text-anchor="middle">콘텐츠 관리</text>
+        <text x="695" y="194" fill="#94a3b8" font-size="9" text-anchor="middle">과목·단원·요약 CRUD</text>
+
+        <!-- Content Management → 3 branches -->
+        <line x1="620" y1="210" x2="580" y2="245" stroke="#fbbf24" stroke-width="1.5" marker-end="url(#arrowhead-amber)"/>
+        <text x="588" y="232" fill="#94a3b8" font-size="8">과목/단원</text>
+        <line x1="695" y1="210" x2="695" y2="245" stroke="#fbbf24" stroke-width="1.5" marker-end="url(#arrowhead-amber)"/>
+        <text x="710" y="232" fill="#94a3b8" font-size="8">문제 생성</text>
+        <line x1="770" y1="210" x2="810" y2="245" stroke="#fbbf24" stroke-width="1.5" marker-end="url(#arrowhead-amber)"/>
+        <text x="800" y="232" fill="#94a3b8" font-size="8">영어 문장</text>
+
+        <!-- Subject/Unit Management -->
+        <rect x="570" y="250" width="120" height="55" rx="6" fill="rgba(120, 53, 15, 0.3)" stroke="#fbbf24" stroke-width="1.5"/>
+        <text x="630" y="273" fill="white" font-size="10" font-weight="600" text-anchor="middle">과목·단원 등록</text>
+        <text x="630" y="289" fill="#94a3b8" font-size="8" text-anchor="middle">과목·단원 CRUD</text>
+        <text x="630" y="299" fill="#fbbf24" font-size="7" text-anchor="middle">→ 승인 대기</text>
+
+        <!-- Quiz Generation (3 methods) -->
+        <rect x="700" y="250" width="160" height="120" rx="6" fill="rgba(120, 53, 15, 0.3)" stroke="#fbbf24" stroke-width="1.5"/>
+        <text x="780" y="272" fill="white" font-size="11" font-weight="600" text-anchor="middle">문제 생성 (3가지)</text>
+
+        <!-- 3 method sub-boxes -->
+        <rect x="710" y="280" width="140" height="24" rx="4" fill="rgba(6, 78, 59, 0.3)" stroke="#34d399" stroke-width="1"/>
+        <text x="780" y="296" fill="#34d399" font-size="9" text-anchor="middle">🤖 AI 생성 (GLM-5.2)</text>
+
+        <rect x="710" y="310" width="140" height="24" rx="4" fill="rgba(251, 146, 60, 0.2)" stroke="#fb923c" stroke-width="1"/>
+        <text x="780" y="326" fill="#fb923c" font-size="9" text-anchor="middle">🕷️ 크롤링 수집</text>
+
+        <rect x="710" y="340" width="140" height="24" rx="4" fill="rgba(136, 19, 55, 0.3)" stroke="#fb7185" stroke-width="1"/>
+        <text x="780" y="356" fill="#fb7185" font-size="9" text-anchor="middle">✍️ 직접 입력 (Excel)</text>
+
+        <!-- English Sentence Management -->
+        <rect x="870" y="250" width="130" height="55" rx="6" fill="rgba(120, 53, 15, 0.3)" stroke="#fbbf24" stroke-width="1.5"/>
+        <text x="935" y="273" fill="white" font-size="10" font-weight="600" text-anchor="middle">영어 문장 관리</text>
+        <text x="935" y="289" fill="#94a3b8" font-size="8" text-anchor="middle">크롤링·AI정제</text>
+        <text x="935" y="299" fill="#fbbf24" font-size="7" text-anchor="middle">→ 승인 대기</text>
+
+        <!-- All 3 → Approval Queue -->
+        <line x1="630" y1="305" x2="695" y2="390" stroke="#fbbf24" stroke-width="1.5" stroke-dasharray="4,4" marker-end="url(#arrowhead-amber)"/>
+        <line x1="780" y1="370" x2="715" y2="390" stroke="#fbbf24" stroke-width="1.5" stroke-dasharray="4,4" marker-end="url(#arrowhead-amber)"/>
+        <line x1="935" y1="305" x2="780" y2="390" stroke="#fbbf24" stroke-width="1.5" stroke-dasharray="4,4" marker-end="url(#arrowhead-amber)"/>
+
+        <!-- Approval Queue -->
+        <rect x="630" y="395" width="180" height="70" rx="6" fill="rgba(136, 19, 55, 0.4)" stroke="#fb7185" stroke-width="1.5"/>
+        <text x="720" y="420" fill="white" font-size="12" font-weight="700" text-anchor="middle">검수 큐 (Approval)</text>
+        <text x="720" y="438" fill="#94a3b8" font-size="9" text-anchor="middle">status: PENDING</text>
+        <text x="720" y="452" fill="#fb7185" font-size="8" text-anchor="middle">품질 검수 → 승인/반려</text>
+        <text x="720" y="463" fill="#94a3b8" font-size="7" text-anchor="middle">반려 시 reject_reason</text>
+
+        <!-- Approval → Published (승인) -->
+        <line x1="720" y1="465" x2="720" y2="500" stroke="#34d399" stroke-width="2" marker-end="url(#arrowhead-emerald)"/>
+        <text x="740" y="488" fill="#34d399" font-size="9" font-weight="600">승인 PUBLISHED</text>
+
+        <!-- Approval → Rejected (반려) -->
+        <line x1="640" y1="450" x2="580" y2="490" stroke="#fb7185" stroke-width="1.5" stroke-dasharray="5,5" marker-end="url(#arrowhead-rose)"/>
+        <text x="585" y="475" fill="#fb7185" font-size="8">반려 REJECTED</text>
+
+        <!-- Rejected → back to generation -->
+        <rect x="530" y="495" width="100" height="40" rx="6" fill="rgba(136, 19, 55, 0.3)" stroke="#fb7185" stroke-width="1"/>
+        <text x="580" y="513" fill="#fb7185" font-size="9" font-weight="600" text-anchor="middle">반려 처리</text>
+        <text x="580" y="527" fill="#94a3b8" font-size="7" text-anchor="middle">수정 후 재등록</text>
+
+        <!-- Published Quiz Pool -->
+        <rect x="660" y="505" width="170" height="60" rx="6" fill="rgba(6, 78, 59, 0.4)" stroke="#34d399" stroke-width="1.5"/>
+        <text x="745" y="528" fill="white" font-size="12" font-weight="700" text-anchor="middle">승인된 문제 풀</text>
+        <text x="745" y="544" fill="#94a3b8" font-size="9" text-anchor="middle">PUBLISHED 문제만</text>
+        <text x="745" y="557" fill="#34d399" font-size="8" text-anchor="middle">→ 학생에게 제공</text>
+
+        <!-- Published Pool → Student Quiz (crossing boundary) -->
+        <path d="M 660 535 L 400 535 Q 380 535 380 515 L 380 490 Q 380 470 360 475 L 345 475" fill="none" stroke="#34d399" stroke-width="2" stroke-dasharray="6,3" marker-end="url(#arrowhead-emerald)"/>
+        <text x="500" y="525" fill="#34d399" font-size="9" font-weight="600">승인된 문제 제공</text>
+
+        <!-- Admin: User Management -->
+        <rect x="850" y="395" width="180" height="55" rx="6" fill="rgba(120, 53, 15, 0.3)" stroke="#fbbf24" stroke-width="1.5"/>
+        <text x="940" y="418" fill="white" font-size="11" font-weight="600" text-anchor="middle">사용자 관리</text>
+        <text x="940" y="434" fill="#94a3b8" font-size="9" text-anchor="middle">계정 정지·권한·학년</text>
+        <text x="940" y="444" fill="#fbbf24" font-size="7" text-anchor="middle">학생/학부모/관리자</text>
+
+        <!-- Admin: Crawler Management -->
+        <rect x="850" y="465" width="180" height="55" rx="6" fill="rgba(120, 53, 15, 0.3)" stroke="#fbbf24" stroke-width="1.5"/>
+        <text x="940" y="488" fill="white" font-size="11" font-weight="600" text-anchor="middle">크롤링 관리</text>
+        <text x="940" y="504" fill="#94a3b8" font-size="9" text-anchor="middle">소스·스케줄·로그</text>
+        <text x="940" y="514" fill="#fbbf24" font-size="7" text-anchor="middle">Spring Batch</text>
+
+        <!-- ===================== -->
+        <!-- SHARED: Auth        -->
+        <!-- ===================== -->
+
+        <rect x="370" y="740" width="320" height="50" rx="6" fill="rgba(136, 19, 55, 0.4)" stroke="#fb7185" stroke-width="1.5"/>
+        <text x="530" y="763" fill="white" font-size="11" font-weight="600" text-anchor="middle">Spring Security + JWT 인증</text>
+        <text x="530" y="779" fill="#94a3b8" font-size="9" text-anchor="middle">학생·학부모·관리자 권한 분기</text>
+
+        <!-- Auth arrows to Student/Parent/Admin -->
+        <line x1="430" y1="740" x2="155" y2="110" stroke="#fb7185" stroke-width="1" stroke-dasharray="3,3" marker-end="url(#arrowhead-rose)"/>
+        <line x1="490" y1="740" x2="400" y2="110" stroke="#fb7185" stroke-width="1" stroke-dasharray="3,3" marker-end="url(#arrowhead-rose)"/>
+        <line x1="610" y1="740" x2="695" y2="115" stroke="#fb7185" stroke-width="1" stroke-dasharray="3,3" marker-end="url(#arrowhead-rose)"/>
+
+        <!-- ===================== -->
+        <!-- SHARED: DB           -->
+        <!-- ===================== -->
+
+        <rect x="370" y="810" width="320" height="50" rx="6" fill="rgba(76, 29, 149, 0.4)" stroke="#a78bfa" stroke-width="1.5"/>
+        <text x="530" y="833" fill="white" font-size="11" font-weight="600" text-anchor="middle">MariaDB + Redis</text>
+        <text x="530" y="849" fill="#94a3b8" font-size="9" text-anchor="middle">사용자·문제·학습로그·캐싱</text>
+
+        <!-- DB arrows -->
+        <line x1="440" y1="810" x2="155" y2="700" stroke="#a78bfa" stroke-width="1" stroke-dasharray="3,3" marker-end="url(#arrowhead)"/>
+        <line x1="530" y1="810" x2="745" y2="565" stroke="#a78bfa" stroke-width="1" stroke-dasharray="3,3" marker-end="url(#arrowhead)"/>
+        <line x1="600" y1="810" x2="940" y2="520" stroke="#a78bfa" stroke-width="1" stroke-dasharray="3,3" marker-end="url(#arrowhead)"/>
+
+        <!-- ===================== -->
+        <!-- SHARED: AI/External  -->
+        <!-- ===================== -->
+
+        <rect x="720" y="810" width="300" height="50" rx="6" fill="rgba(251, 146, 60, 0.2)" stroke="#fb923c" stroke-width="1.5"/>
+        <text x="870" y="833" fill="white" font-size="11" font-weight="600" text-anchor="middle">AI / 크롤링 / TTS</text>
+        <text x="870" y="849" fill="#94a3b8" font-size="9" text-anchor="middle">GLM-5.2·GPT-4o-mini·JSoup·Edge TTS</text>
+
+        <!-- AI arrows to Admin quiz generation -->
+        <line x1="800" y1="810" x2="780" y2="370" stroke="#fb923c" stroke-width="1" stroke-dasharray="3,3" marker-end="url(#arrowhead-orange)"/>
+
+        <!-- ===================== -->
+        <!-- LEGEND               -->
+        <!-- ===================== -->
+
+        <text x="40" y="900" fill="white" font-size="10" font-weight="700">Legend</text>
+
+        <rect x="40" y="912" width="16" height="10" rx="2" fill="rgba(8, 51, 68, 0.4)" stroke="#22d3ee" stroke-width="1"/>
+        <text x="62" y="920" fill="#94a3b8" font-size="8">사용자 (학생/학부모)</text>
+
+        <rect x="40" y="928" width="16" height="10" rx="2" fill="rgba(6, 78, 59, 0.4)" stroke="#34d399" stroke-width="1"/>
+        <text x="62" y="936" fill="#94a3b8" font-size="8">학습 플로우 (학생)</text>
+
+        <rect x="40" y="944" width="16" height="10" rx="2" fill="rgba(120, 53, 15, 0.3)" stroke="#fbbf24" stroke-width="1"/>
+        <text x="62" y="952" fill="#94a3b8" font-size="8">관리자</text>
+
+        <rect x="40" y="960" width="16" height="10" rx="2" fill="rgba(136, 19, 55, 0.4)" stroke="#fb7185" stroke-width="1"/>
+        <text x="62" y="968" fill="#94a3b8" font-size="8">검수/보안</text>
+
+        <rect x="40" y="976" width="16" height="10" rx="2" fill="rgba(76, 29, 149, 0.4)" stroke="#a78bfa" stroke-width="1"/>
+        <text x="62" y="984" fill="#94a3b8" font-size="8">데이터베이스</text>
+
+        <rect x="40" y="992" width="16" height="10" rx="2" fill="rgba(251, 146, 60, 0.2)" stroke="#fb923c" stroke-width="1"/>
+        <text x="62" y="1000" fill="#94a3b8" font-size="8">AI/외부 API</text>
+
+        <line x1="180" y1="917" x2="196" y2="917" stroke="#34d399" stroke-width="2" marker-end="url(#arrowhead-emerald)"/>
+        <text x="202" y="920" fill="#94a3b8" font-size="8">승인된 데이터 흐름</text>
+
+        <line x1="180" y1="933" x2="196" y2="933" stroke="#fb7185" stroke-width="1.5" stroke-dasharray="5,5" marker-end="url(#arrowhead-rose)"/>
+        <text x="202" y="936" fill="#94a3b8" font-size="8">반려/보안 흐름</text>
+
+        <line x1="180" y1="949" x2="196" y2="949" stroke="#a78bfa" stroke-width="1" stroke-dasharray="3,3" marker-end="url(#arrowhead)"/>
+        <text x="202" y="952" fill="#94a3b8" font-size="8">데이터베이스 연결</text>
+
+        <line x1="180" y1="965" x2="196" y2="965" stroke="#fb923c" stroke-width="1" stroke-dasharray="3,3" marker-end="url(#arrowhead-orange)"/>
+        <text x="202" y="968" fill="#94a3b8" font-size="8">AI/크롤링 호출</text>
+
+        <line x1="350" y1="917" x2="366" y2="917" stroke="#34d399" stroke-width="2" stroke-dasharray="6,3" marker-end="url(#arrowhead-emerald)"/>
+        <text x="372" y="920" fill="#94a3b8" font-size="8">경계 통과 (관리자→학생)</text>
+
+      </svg>
+    </div>
+
+    <!-- Info Cards -->
+    <div class="cards">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-dot cyan"></div>
+          <h3>사용자 (학생 / 학부모)</h3>
+        </div>
+        <ul>
+          <li>• 학생: 대시보드 → 과목 → 단원 목차 → 요약/문제 → 풀이 → 결과 → 오답</li>
+          <li>• 학부모: 자녀 학습 현황, 주간/월간 리포트 조회</li>
+          <li>• 실시간 AI 호출 없이 승인된 문제만 풀이</li>
+          <li>• 학습 통계: 정답률, 학습시간, 스트릭</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div class="card-dot amber"></div>
+          <h3>관리자</h3>
+        </div>
+        <ul>
+          <li>• 과목·단원·요약 CRUD 등록 관리</li>
+          <li>• 문제 생성 3가지: AI(GLM-5.2) / 크롤링 / 직접 입력(Excel)</li>
+          <li>• 검수 큐: PENDING → 승인(PUBLISHED) / 반려(REJECTED)</li>
+          <li>• 승인된 문제만 학생에게 제공</li>
+          <li>• 사용자 관리, 크롤링 파이프라인 관리</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div class="card-dot rose"></div>
+          <h3>공통 인프라</h3>
+        </div>
+        <ul>
+          <li>• Spring Security + JWT: 학생/학부모/관리자 권한 분기</li>
+          <li>• MariaDB: 사용자·문제·학습로그 영구 저장</li>
+          <li>• Redis: 캐싱, 세션, Rate Limiting</li>
+          <li>• AI: GLM-5.2(한국어), GPT-4o-mini(영어), Edge TTS</li>
+          <li>• Spring Batch: 크롤링 자동화, 통계 집계</li>
+        </ul>
+      </div>
+    </div>
+
+    <p class="footer">
+      Daily Study • 전체 프로세스 플로우 v1.0 • 2026-11-04
+    </p>
+  </div>
+</body>
+</html>
