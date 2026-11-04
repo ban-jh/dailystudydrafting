@@ -100,8 +100,8 @@
           </tr>
           <tr>
             <td class="td-num">2</td>
-            <td class="td-label">AI 문제 출제</td>
-            <td>단원/주제/난이도 선택 후 GLM-5.2 기반 객관식·주관식·서술형 자동 생성, 즉시 채점 및 해설, 오답노트 자동 구성</td>
+            <td class="td-label">문제 관리 시스템</td>
+            <td>관리자가 AI 생성·크롤링·직접 입력 3가지 방식으로 문제를 미리 생성 → 검수 승인(PUBLISHED) 후 학생에게 제공, 즉시 채점 및 해설, 오답노트 자동 구성</td>
             <td><span class="badge badge-green">P1</span> <span class="badge badge-blue">P2</span></td>
           </tr>
           <tr>
@@ -152,14 +152,15 @@
         </div>
         <div class="card">
           <div class="card-icon">🤖</div>
-          <div class="card-title">② AI 문제 출제 <span class="badge badge-green">P1</span> <span class="badge badge-blue">P2</span></div>
+          <div class="card-title">② 문제 관리 시스템 <span class="badge badge-green">P1</span> <span class="badge badge-blue">P2</span></div>
           <div class="card-desc">
             <ul>
-              <li>단원/주제/난이도/문제 유형 선택 UI</li>
-              <li>GLM-5.2 기반 객관식 문제 자동 생성 (P1)</li>
-              <li>주관식·서술형 문제 생성 및 AI 채점 (P2)</li>
-              <li>즉시 채점, 정답/오답 해설 제공</li>
-              <li>오답노트 자동 구성 및 재도출 기능</li>
+              <li><strong>3가지 문제 생성 방식:</strong> AI 생성(GLM-5.2) / 크롤링 수집+AI 정제 / 관리자 직접 입력(Excel 일괄 업로드 포함)</li>
+              <li>생성된 모든 문제는 status=PENDING으로 검수 큐에 등록</li>
+              <li>관리자 검수 → 승인(PUBLISHED) 또는 반려(REJECTED)</li>
+              <li>승인된 문제만 학생 화면에 노출 — 승인된 문제 풀에서 랜덤/순차 제공</li>
+              <li>학생은 실시간 AI 생성을 호출하지 않음 — 즉시 채점, 정답/오답 해설 제공</li>
+              <li>주관식·서술형 AI 채점 (P2), 오답노트 자동 구성 및 재도출</li>
             </ul>
           </div>
         </div>
@@ -246,8 +247,8 @@
         <ul class="phase-items">
           <li>이메일 회원가입 / 로그인 (Spring Security + JWT)</li>
           <li>3과목(수학/영어/과학) 단원 구조 및 요약 콘텐츠</li>
-          <li>AI 객관식 문제 출제 (GLM-5.2 연동)</li>
-          <li>관리자 문제 직접 등록 기능 (객관식/주관식, Excel 일괄 업로드)</li>
+          <li>관리자 문제 생성 시스템 — AI 생성(GLM-5.2) / 크롤링 수집 / 직접 입력(Excel 일괄)</li>
+          <li>문제 승인 워크플로우 — PENDING → PUBLISHED / REJECTED</li>
           <li>기본 학습 대시보드 (일일 목표, 학습 시간, 정답률)</li>
         </ul>
       </div>
@@ -373,7 +374,7 @@
           <tr><td class="td-num">2</td><td class="td-label">SUBJECT</td><td>subject_id, name, school_type, icon, sort_order</td></tr>
           <tr><td class="td-num">3</td><td class="td-label">UNIT</td><td>unit_id, subject_id, grade, title, description, sort_order</td></tr>
           <tr><td class="td-num">4</td><td class="td-label">SUMMARY</td><td>summary_id, unit_id, content_md, keywords, pdf_url, status</td></tr>
-          <tr><td class="td-num">5</td><td class="td-label">QUIZ</td><td>quiz_id, unit_id, type(multiple/subjective/essay), difficulty, question, answer, explanation, source_type(AI/MANUAL), status(DRAFT/PUBLISHED/ARCHIVED), created_by</td></tr>
+          <tr><td class="td-num">5</td><td class="td-label">QUIZ</td><td>quiz_id, unit_id, type(multiple/subjective/essay), difficulty, question, answer, explanation, source_type(AI/CRAWL/MANUAL), status(PENDING/PUBLISHED/REJECTED), created_by, reviewed_by, reviewed_at</td></tr>
           <tr><td class="td-num">6</td><td class="td-label">QUIZ_OPTION</td><td>option_id, quiz_id, label, content, is_correct</td></tr>
           <tr><td class="td-num">7</td><td class="td-label">QUIZ_ATTEMPT</td><td>attempt_id, user_id, quiz_id, selected_answer, is_correct, time_spent, created_at</td></tr>
           <tr><td class="td-num">8</td><td class="td-label">ENGLISH_SENTENCE</td><td>sentence_id, category, situation, english, korean, difficulty, tts_url, source, status</td></tr>

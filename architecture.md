@@ -216,24 +216,33 @@ org.shaloman.pj.dailystudy/
 │   └── mapper/
 │       └── SummaryMapper.java
 │
-├── quiz/                                  # 문제/풀이 도메인
+├── quiz/                                  # 문제/풀이 도메인 (관리자 생성→승인→학생 제공)
 │   ├── controller/
-│   │   ├── QuizController.java            # /api/quizzes, /api/quizzes/{id}
+│   │   ├── QuizController.java            # /api/quizzes (학생용 — 승인된 문제만)
+│   │   ├── AdminQuizController.java       # /api/admin/quizzes/* (관리자용 — 생성/승인/반려)
 │   │   └── QuizAttemptController.java     # /api/quiz-attempts, /api/quiz-attempts/wrong
 │   ├── service/
-│   │   ├── QuizService.java               # 문제 조회
+│   │   ├── QuizPoolService.java           # 승인된 문제 풀 조회 (학생용, Redis 캐싱)
+│   │   ├── AiQuizGenerator.java           # AI 문제 일괄 생성 (GLM-5.2) → PENDING
+│   │   ├── CrawlingQuizCollector.java     # 크롤링 수집 + AI 정제 → PENDING
+│   │   ├── ManualQuizService.java         # 관리자 직접 입력/Excel 업로드 → PENDING
+│   │   ├── QuizApprovalService.java       # 승인/반려 워크플로우 (PENDING→PUBLISHED/REJECTED)
 │   │   ├── QuizAttemptService.java        # 풀이 기록, 채점
 │   │   ├── WrongNoteService.java          # 오답노트
-│   │   └── QuizGenerationService.java     # AI 문제 출제 orchestration
+│   │   └── GradingService.java            # 객관식/주관식/서술형 채점
 │   ├── domain/
-│   │   ├── Quiz.java                      # 문제 (객관식/주관식)
+│   │   ├── Quiz.java                      # 문제 (source_type, status, reviewed_by, reviewed_at)
 │   │   ├── QuizOption.java               # 보기
 │   │   └── QuizAttempt.java               # 풀이 기록
 │   ├── dto/
 │   │   ├── QuizResponseDto.java
 │   │   ├── QuizSubmitDto.java
 │   │   ├── QuizAttemptResultDto.java
-│   │   └── WrongNoteDto.java
+│   │   ├── WrongNoteDto.java
+│   │   ├── AiGenerateDto.java             # AI 생성 요청 (subject_id, unit_id, difficulty, type, count)
+│   │   ├── CrawlDto.java                  # 크롤링 요청 (source_url, subject_id, unit_id)
+│   │   ├── ManualQuizDto.java             # 직접 입력 요청
+│   │   └── ApproveDto.java                # 승인/반려 요청 (reason 옵션)
 │   └── mapper/
 │       ├── QuizMapper.java
 │       └── QuizAttemptMapper.java
@@ -441,13 +450,21 @@ src/main/resources/
 
 | Method | Endpoint | 설명 | 권한 | Phase |
 |--------|----------|------|------|-------|
-| GET | `/api/quizzes` | 문제 목록 (필터: subjectId, unitId, type, difficulty) | Authenticated | 1 |
-| GET | `/api/quizzes/{id}` | 문제 상세 | Authenticated | 1 |
-| POST | `/api/quizzes/generate` | AI 문제 출제 요청 | Authenticated | 1 |
-| GET | `/api/quizzes/by-unit/{unitId}` | 단원별 문제 목록 | Authenticated | 1 |
-| GET | `/api/quizzes/random` | 랜덤 문제 (필터: subjectId, count) | Authenticated | 1 |
-| POST | `/api/quizzes/{id}` | 문제 수정 (관리자) | Admin | 3 |
-| DELETE | `/api/quizzes/{id}` | 문제 삭제 (관리자) | Admin | 3 |
+| GET | `/api/quizzes` | 문제 목록 — **승인된 문제만** (status=PUBLISHED, 필터: subjectId, unitId, type, difficulty) | Authenticated | 1 |
+| GET | `/api/quizzes/{id}` | 문제 상세 (승인된 문제만) | Authenticated | 1 |
+| GET | `/api/quizzes/by-unit/{unitId}` | 단원별 승인된 문제 목록 | Authenticated | 1 |
+| GET | `/api/quizzes/random` | 랜덤 문제 (승인된 풀에서, 필터: subjectId, count) | Authenticated | 1 |
+| POST | `/api/admin/quizzes/generate-ai` | **관리자 AI 문제 일괄 생성** (subject_id, unit_id, difficulty, type, count) | Admin | 1 |
+| POST | `/api/admin/quizzes/crawl` | **관리자 크롤링 수집** (source_url, subject_id, unit_id) | Admin | 1 |
+| POST | `/api/admin/quizzes/manual` | **관리자 직접 입력** (type, difficulty, question, options, answer, explanation) | Admin | 1 |
+| POST | `/api/admin/quizzes/batch` | **관리자 Excel/CSV 일괄 업로드** | Admin | 1 |
+| GET | `/api/admin/quizzes` | 관리자 문제 목록 (전체 상태, 필터: status, source_type) | Admin | 1 |
+| GET | `/api/admin/quizzes/pending` | 검수 대기 문제 목록 (status=PENDING) | Admin | 1 |
+| POST | `/api/admin/quizzes/{id}/approve` | **문제 승인** (PENDING → PUBLISHED) | Admin | 1 |
+| POST | `/api/admin/quizzes/{id}/reject` | **문제 반려** (PENDING → REJECTED, reason 옵션) | Admin | 1 |
+| POST | `/api/admin/quizzes/batch-approve` | 일괄 승인 (quizIds 배열) | Admin | 1 |
+| PUT | `/api/admin/quizzes/{id}` | 문제 수정 (관리자) | Admin | 1 |
+| DELETE | `/api/admin/quizzes/{id}` | 문제 삭제 (관리자) | Admin | 1 |
 | POST | `/api/quiz-attempts` | 문제 풀이 제출 (채점) | Authenticated | 1 |
 | GET | `/api/quiz-attempts` | 내 풀이 기록 (필터: subjectId, dateRange) | Authenticated | 1 |
 | GET | `/api/quiz-attempts/wrong` | 오답노트 목록 | Authenticated | 2 |
@@ -707,14 +724,19 @@ src/main/resources/
 |--------|------|------|------|
 | quiz_id | BIGINT | PK, AUTO_INCREMENT | 문제 ID |
 | unit_id | BIGINT | FK → UNIT, NOT NULL | 단원 ID |
-| quiz_type | VARCHAR(20) | NOT NULL | MULTIPLE_CHOICE / SHORT_ANSWER |
+| quiz_type | VARCHAR(20) | NOT NULL | MULTIPLE_CHOICE / SHORT_ANSWER / ESSAY |
 | question | LONGTEXT | NOT NULL | 문제 내용 |
 | difficulty | VARCHAR(10) | DEFAULT 'MEDIUM' | EASY / MEDIUM / HARD |
 | answer | VARCHAR(500) | NOT NULL | 정답 |
 | explanation | TEXT | NULL | 해설 |
-| ai_model | VARCHAR(50) | NULL | AI 모델명 |
-| ai_generated | BOOLEAN | DEFAULT FALSE | AI 생성 여부 |
-| status | VARCHAR(10) | DEFAULT 'PUBLISHED' | DRAFT / PUBLISHED / ARCHIVED |
+| source_type | VARCHAR(10) | NOT NULL, DEFAULT 'AI' | AI / CRAWL / MANUAL — 문제 생성 방식 |
+| ai_model | VARCHAR(50) | NULL | AI 모델명 (AI/CRAWL 정제 시) |
+| ai_generated | BOOLEAN | DEFAULT FALSE | AI 생성 여부 (AI/CRAWL true, MANUAL false) |
+| status | VARCHAR(10) | NOT NULL, DEFAULT 'PENDING' | PENDING / PUBLISHED / REJECTED — 승인 워크플로우 |
+| created_by | BIGINT | FK → USER, NULL | 생성자 ID (관리자) |
+| reviewed_by | BIGINT | FK → USER, NULL | 검수자 ID (관리자) |
+| reviewed_at | DATETIME | NULL | 검수 완료 일시 |
+| reject_reason | TEXT | NULL | 반려 사유 (REJECTED 시) |
 | created_at | DATETIME | NOT NULL, DEFAULT CURRENT_TIMESTAMP | 생성일시 |
 | updated_at | DATETIME | NOT NULL, DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP | 수정일시 |
 
@@ -843,12 +865,15 @@ CREATE INDEX idx_studylog_type ON STUDY_LOG(log_type);
 
 ## 5. AI 콘텐츠 생성 파이프라인
 
+> **문제 출제 정책 변경:** 문제 출제는 관리자 주도로 운영됩니다. 학생은 실시간 AI 생성을 호출하지 않으며, 관리자가 AI 생성/크롤링/직접 입력으로 미리 생성하고 승인한 문제 풀에서 제공받습니다. 아래 파이프라인은 요약 생성(학생 직접 호출 가능)과 관리자용 문제 일괄 생성에 공통으로 적용됩니다.
+
 ### 5.1 파이프라인 아키텍처
 
 ```
 ┌──────────────────────────────────────────────────────────────────┐
 │                        클라이언트 요청                              │
 │   POST /api/summaries/generate  { unitId, difficulty }           │
+│   POST /api/admin/quizzes/generate-ai { unitId, difficulty, ... }│  ← 관리자용
 └──────────────────────────┬───────────────────────────────────────┘
                            ▼
 ┌──────────────────────────────────────────────────────────────────┐
@@ -925,8 +950,8 @@ public class OpenAiClient implements AiClient {
 | 콘텐츠 타입 | 1순위 (Primary) | 2순위 (Fallback) | 비고 |
 |-------------|-----------------|-------------------|------|
 | 단원 요약 (한국어) | GLM-5.2 | GPT-4o-mini | 한국어 품질 우수 |
-| 객관식 문제 (한국어) | GLM-5.2 | GPT-4o-mini | 한국어 교과서 표현 |
-| 주관식 문제 (한국어) | GLM-5.2 | GPT-4o-mini | - |
+| 객관식 문제 (한국어) | GLM-5.2 | GPT-4o-mini | 관리자 일괄 생성 — 학생 실시간 호출 아님 |
+| 주관식 문제 (한국어) | GLM-5.2 | GPT-4o-mini | 관리자 일괄 생성 |
 | 실생활 영어 문장 | GPT-4o-mini | GLM-5.2 | 영어 자연스러움 |
 | 영어 해설 | GPT-4o-mini | GLM-5.2 | - |
 | 품질 검증 (교차 검증) | 상대 모델 | - | 1순위 모델 응답을 2순위 모델로 검증 |
@@ -2023,19 +2048,16 @@ export const useQuizStore = defineStore('quiz', () => {
       : 0
   )
 
-  async function fetchQuizzes(params: { unitId?: number; difficulty?: string }) {
+  async function fetchQuizzes(params: { unitId?: number; difficulty?: string; type?: string }) {
     loading.value = true
+    // 학생용 — 승인된 문제만 조회 (status=PUBLISHED)
     const res = await quizApi.getAll(params)
     quizzes.value = res.data.items
     loading.value = false
   }
 
-  async function generateQuiz(data: { unitId: number; count: number; difficulty: string }) {
-    loading.value = true
-    const res = await quizApi.generate(data)
-    quizzes.value = res.data
-    loading.value = false
-  }
+  // 학생은 실시간 AI 생성을 호출하지 않습니다 — 승인된 문제 풀에서만 제공
+  // 관리자 생성/승인은 별도 adminApi를 통해 처리됩니다
 
   async function submitAnswer(quizId: number, answer: string, timeSpent: number) {
     const res = await quizApi.submit({
@@ -2515,7 +2537,7 @@ curl http://localhost/
 | 인증 | 이메일 회원가입/로그인, JWT |
 | 과목 | 3과목 (수학, 영어, 과학) + 단원 구조 |
 | 요약 | AI 요약 생성 (GLM-5.2), 요약 조회 |
-| 문제 | AI 객관식 출제 (GLM-5.2), 문제 풀이, 채점 |
+| 문제 | 관리자 문제 생성(AI/크롤링/직접) + 승인 시스템, 승인된 문제 풀이, 채점 |
 | 대시보드 | 학습 통계, 최근 활동 |
 | 프론트엔드 | 로그인, 대시보드, 과목목록, 요약, 문제풀이 |
 | 인프라 | Docker Compose (MariaDB + Backend + Nginx) |
