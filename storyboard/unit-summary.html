@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>단원 요약 — Daily Study</title>
+<title>단원 목차 및 요약 — Daily Study</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
 <style>
 :root {
@@ -20,118 +20,258 @@
   --card-shadow-hover: 0 4px 16px rgba(69,85,255,0.15);
   --btn-radius: 16px; --btn-shadow: 0 4px 12px rgba(69,85,255,0.3);
 }
-* { margin: 0; padding: 0; box-sizing: border-box; }
-body { font-family: "Pretendard", "Apple SD Gothic Neo", "Noto Sans KR", sans-serif; background: var(--base-200); color: var(--base-content); padding-bottom: 140px; }
-.header { position: sticky; top: 0; z-index: 50; height: 56px; background: rgba(255,255,255,0.95); backdrop-filter: blur(8px); border-bottom: 1px solid var(--base-200); display: flex; align-items: center; justify-content: space-between; padding: 0 16px; }
-.header-left { display: flex; align-items: center; gap: 8px; font-size: 16px; font-weight: 600; }
-.header-back { width: 36px; height: 36px; border: none; background: transparent; cursor: pointer; font-size: 18px; }
-.header-pdf { padding: 6px 12px; border: 2px solid var(--base-300); border-radius: 8px; background: var(--base-100); cursor: pointer; font-size: 14px; font-weight: 600; }
-.content { max-width: 1024px; margin: 0 auto; padding: 16px; }
-.unit-breadcrumb { font-size: 12px; color: #9CA3AF; margin-bottom: 8px; }
-.unit-title { font-size: 24px; font-weight: 700; margin-bottom: 20px; }
-.tabs { display: flex; gap: 4px; margin-bottom: 24px; border-bottom: 2px solid var(--base-200); }
-.tab { padding: 12px 20px; font-size: 15px; font-weight: 600; cursor: pointer; border-bottom: 3px solid transparent; margin-bottom: -2px; color: var(--text-secondary); }
-.tab.active { color: var(--primary); border-bottom-color: var(--primary); }
-/* Summary Card */
-.summary-card { background: var(--base-100); border-radius: 16px; padding: 20px; box-shadow: var(--card-shadow); margin-bottom: 16px; }
-.summary-card-title { font-size: 18px; font-weight: 600; margin-bottom: 12px; }
-.summary-item { margin-bottom: 16px; }
-.summary-item-title { font-size: 16px; font-weight: 600; margin-bottom: 4px; }
-.summary-item-body { font-size: 14px; line-height: 1.6; color: #4B5563; }
-.highlight-box { background: rgba(245,158,11,0.1); border-radius: 8px; padding: 12px 16px; margin-top: 12px; font-size: 14px; }
-.highlight-box strong { color: var(--accent); }
-.code-block { background: var(--base-200); border-radius: 8px; padding: 12px 16px; margin-top: 8px; font-family: "Courier New", monospace; font-size: 16px; }
-.btn-primary { display: block; width: 100%; padding: 14px; background: var(--gradient); color: #FFF; border: none; border-radius: var(--btn-radius); box-shadow: var(--btn-shadow); font-size: 16px; font-weight: 600; font-family: inherit; cursor: pointer; margin-top: 8px; }
-/* Flashcard */
-.flashcard-progress { font-size: 13px; color: var(--text-secondary); margin-bottom: 8px; }
-.flashcard-dots { display: flex; gap: 6px; margin-bottom: 20px; }
-.flashcard-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--base-300); }
-.flashcard-dot.active { background: var(--primary); }
-.flashcard { background: var(--base-100); border-radius: 16px; padding: 40px 24px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); min-height: 256px; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; margin-bottom: 16px; }
-.flashcard-question { font-size: 22px; font-weight: 700; margin-bottom: 16px; }
-.flashcard-hint { font-size: 14px; color: #9CA3AF; }
-.flashcard-nav { display: flex; justify-content: space-between; gap: 12px; }
-.btn-outline { padding: 12px 24px; border: 2px solid var(--base-300); border-radius: 12px; font-size: 15px; font-weight: 600; cursor: pointer; background: var(--base-100); flex: 1; }
-/* TOC sidebar */
-.toc { display: none; }
-@media (min-width: 1024px) {
-  .content { padding: 32px; }
-  .main-layout { display: grid; grid-template-columns: 1fr 280px; gap: 24px; }
-  .toc { display: block; background: var(--base-100); border-radius: 16px; padding: 20px; box-shadow: var(--card-shadow); height: fit-content; position: sticky; top: 72px; }
-  .toc-title { font-size: 16px; font-weight: 600; margin-bottom: 12px; }
-  .toc-item { padding: 8px 12px; font-size: 14px; cursor: pointer; border-radius: 8px; margin-bottom: 4px; }
-  .toc-item:hover { background: var(--base-200); }
-  .toc-item.active { background: rgba(69,85,255,0.1); color: var(--primary); font-weight: 600; }
-  .bottom-nav { display: none; }
-  body { padding-bottom: 0; }
-}
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:"Pretendard","Apple SD Gothic Neo","Noto Sans KR",sans-serif; background:var(--base-200); color:var(--base-content); padding-bottom:140px; }
+.header { position:sticky; top:0; z-index:50; height:56px; background:rgba(255,255,255,0.95); backdrop-filter:blur(8px); border-bottom:1px solid var(--base-200); display:flex; align-items:center; justify-content:space-between; padding:0 16px; }
+.header-left { display:flex; align-items:center; gap:8px; font-size:16px; font-weight:600; }
+.header-back { width:36px; height:36px; border:none; background:transparent; cursor:pointer; font-size:18px; text-decoration:none; color:inherit; }
+.header-pdf { padding:6px 12px; border:2px solid var(--base-300); border-radius:8px; background:var(--base-100); cursor:pointer; font-size:14px; font-weight:600; }
+.content { max-width:1024px; margin:0 auto; padding:16px; }
+.unit-breadcrumb { font-size:12px; color:#9CA3AF; margin-bottom:8px; }
+.unit-title { font-size:24px; font-weight:700; margin-bottom:4px; }
+.unit-subtitle { font-size:14px; color:var(--text-secondary); margin-bottom:20px; }
+/* Section Title */
+.section-title { font-size:18px; font-weight:700; margin-bottom:12px; display:flex; align-items:center; gap:6px; }
+.section { margin-bottom:24px; }
+/* Unit List (목차) */
+.unit-list { display:flex; flex-direction:column; gap:12px; }
+.unit-item { background:var(--base-100); border-radius:16px; padding:16px; box-shadow:var(--card-shadow); transition:box-shadow 0.2s; }
+.unit-item:hover { box-shadow:var(--card-shadow-hover); }
+.unit-item.current { border:2px solid var(--primary); }
+.unit-item-head { display:flex; align-items:flex-start; gap:12px; margin-bottom:8px; }
+.unit-num { width:32px; height:32px; border-radius:8px; background:var(--gradient); color:#FFF; display:flex; align-items:center; justify-content:center; font-size:14px; font-weight:700; flex-shrink:0; }
+.unit-item-title { font-size:16px; font-weight:600; flex:1; }
+.unit-progress-badge { font-size:13px; font-weight:700; padding:4px 10px; border-radius:999px; flex-shrink:0; }
+.unit-progress-badge.done { background:rgba(34,197,94,0.1); color:var(--success); }
+.unit-progress-badge.partial { background:rgba(69,85,255,0.1); color:var(--primary); }
+.unit-progress-badge.todo { background:var(--base-200); color:#9CA3AF; }
+.unit-progress-bar { height:6px; background:var(--base-200); border-radius:3px; overflow:hidden; margin-bottom:10px; }
+.unit-progress-fill { height:100%; border-radius:3px; background:var(--primary); }
+.unit-item-btns { display:flex; gap:8px; }
+.btn-summary { padding:8px 16px; border:2px solid var(--base-300); border-radius:10px; font-size:13px; font-weight:600; cursor:pointer; background:var(--base-100); flex:1; text-decoration:none; color:var(--base-content); text-align:center; }
+.btn-summary:hover { border-color:var(--primary); color:var(--primary); }
+.btn-quiz-sm { padding:8px 16px; background:var(--gradient); color:#FFF; border:none; border-radius:10px; font-size:13px; font-weight:600; cursor:pointer; flex:1; text-decoration:none; text-align:center; }
+/* Summary Content */
+.summary-card { background:var(--base-100); border-radius:16px; padding:20px; box-shadow:var(--card-shadow); margin-bottom:16px; }
+.summary-card-title { font-size:18px; font-weight:600; margin-bottom:16px; }
+.concept-grid { display:grid; grid-template-columns:1fr; gap:12px; }
+.concept-card { background:var(--base-200); border-radius:12px; padding:16px; border-left:4px solid var(--primary); }
+.concept-card-title { font-size:15px; font-weight:700; margin-bottom:6px; color:var(--primary); }
+.concept-card-body { font-size:14px; line-height:1.6; color:#4B5563; }
+.formula-box { background:var(--dark); border-radius:12px; padding:16px 20px; margin-bottom:12px; }
+.formula-box-title { font-size:13px; color:rgba(255,255,255,0.6); margin-bottom:8px; }
+.formula-text { font-size:20px; font-weight:700; color:var(--primary-light); font-family:"Courier New",monospace; }
+.formula-desc { font-size:13px; color:rgba(255,255,255,0.7); margin-top:6px; }
+.example-box { background:rgba(34,197,94,0.05); border:1px solid rgba(34,197,94,0.2); border-radius:12px; padding:16px; margin-bottom:12px; }
+.example-label { font-size:13px; font-weight:700; color:var(--success); margin-bottom:8px; }
+.example-body { font-size:14px; line-height:1.6; color:#4B5563; }
+.example-body strong { color:var(--base-content); }
+.highlight-box { background:rgba(245,158,11,0.1); border-radius:12px; padding:16px; }
+.highlight-box strong { color:var(--accent); display:block; margin-bottom:6px; }
+.highlight-box-body { font-size:14px; line-height:1.6; color:#4B5563; }
+/* CTA Button */
+.btn-primary { display:block; width:100%; padding:16px; background:var(--gradient); color:#FFF; border:none; border-radius:var(--btn-radius); box-shadow:var(--btn-shadow); font-size:17px; font-weight:700; font-family:inherit; cursor:pointer; margin-top:8px; text-decoration:none; text-align:center; }
+.btn-primary:hover { opacity:0.9; }
+/* Divider */
+.divider { height:1px; background:var(--base-300); margin:32px 0; }
 /* Bottom Nav */
-.bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; height: 64px; background: var(--base-100); border-top: 1px solid var(--base-200); display: flex; align-items: center; justify-content: space-around; z-index: 50; max-width: 480px; margin: 0 auto; }
-.nav-item { display: flex; flex-direction: column; align-items: center; gap: 2px; font-size: 11px; color: #9CA3AF; cursor: pointer; flex: 1; }
-.nav-item.active { color: var(--primary); }
-.nav-icon { font-size: 20px; }
-.nav-center-btn { width: 52px; height: 52px; background: var(--gradient); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px; color: #FFF; margin-top: -20px; box-shadow: var(--btn-shadow); }
-.nav-center-label { font-size: 11px; color: var(--primary); font-weight: 600; margin-top: 2px; }
+.bottom-nav { position:fixed; bottom:0; left:0; right:0; height:64px; background:var(--base-100); border-top:1px solid var(--base-200); display:flex; align-items:center; justify-content:space-around; z-index:50; max-width:480px; margin:0 auto; }
+.nav-item { display:flex; flex-direction:column; align-items:center; gap:2px; font-size:11px; color:#9CA3AF; cursor:pointer; flex:1; text-decoration:none; }
+.nav-item.active { color:var(--primary); }
+.nav-icon { font-size:20px; }
+.nav-center-btn { width:52px; height:52px; background:var(--gradient); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:24px; color:#FFF; margin-top:-20px; box-shadow:var(--btn-shadow); }
+.nav-center-label { font-size:11px; color:var(--primary); font-weight:600; margin-top:2px; }
+@media (min-width:768px) {
+  .concept-grid { grid-template-columns:1fr 1fr; }
+}
+@media (min-width:1024px) {
+  .content { padding:32px; }
+  .main-layout { display:grid; grid-template-columns:1fr 280px; gap:24px; }
+  .bottom-nav { display:none; }
+  body { padding-bottom:0; }
+}
 
 /* CTA Bar */
-.cta-bar { position: fixed; bottom: 64px; left: 0; right: 0; z-index: 60; padding: 10px 16px; background: rgba(255,255,255,0.95); backdrop-filter: blur(8px); border-top: 1px solid var(--base-200); max-width: 480px; margin: 0 auto; box-shadow: 0 -2px 8px rgba(0,0,0,0.04); }
-.cta-btn { width: 100%; padding: 14px; background: var(--gradient); color: #FFF; border: none; border-radius: var(--btn-radius); font-size: 16px; font-weight: 700; font-family: inherit; cursor: pointer; box-shadow: var(--btn-shadow); transition: opacity 0.2s; }
-.cta-btn:hover { opacity: 0.9; }
+.cta-bar { position:fixed; bottom:64px; left:0; right:0; z-index:60; padding:10px 16px; background:rgba(255,255,255,0.95); backdrop-filter:blur(8px); border-top:1px solid var(--base-200); max-width:480px; margin:0 auto; box-shadow:0 -2px 8px rgba(0,0,0,0.04); }
+.cta-btn { width:100%; padding:14px; background:var(--gradient); color:#FFF; border:none; border-radius:var(--btn-radius); font-size:16px; font-weight:700; font-family:inherit; cursor:pointer; box-shadow:var(--btn-shadow); transition:opacity 0.2s; }
+.cta-btn:hover { opacity:0.9; }
 </style>
 </head>
 <body>
 <div class="header">
-  <div class="header-left"><button class="header-back">←</button> 수학 > 함수와 그래프</div>
+  <div class="header-left"><a href="subjects.html" class="header-back">←</a> 수학</div>
   <button class="header-pdf">📄 PDF</button>
 </div>
 <div class="content">
-  <div class="unit-breadcrumb">중학교 2학년 > 수학 > 3단원</div>
-  <div class="unit-title">함수와 그래프</div>
-  <div class="tabs">
-    <div class="tab active">📖 요약</div>
-    <div class="tab">🎴 플래시카드</div>
+  <div class="unit-breadcrumb">중학교 2학년 > 수학</div>
+  <div class="unit-title">수학 — 단원 목차</div>
+  <div class="unit-subtitle">20개 단원 · 12개 완료 (60%)</div>
+
+  <!-- 단원 목차 (목록 형태) -->
+  <div class="section">
+    <div class="section-title">📋 단원 목차</div>
+    <div class="unit-list">
+      <!-- Unit 1: 완료 -->
+      <div class="unit-item">
+        <div class="unit-item-head">
+          <div class="unit-num">1</div>
+          <div class="unit-item-title">유리수와 소수</div>
+          <div class="unit-progress-badge done">100%</div>
+        </div>
+        <div class="unit-progress-bar"><div class="unit-progress-fill" style="width:100%;background:var(--success);"></div></div>
+        <div class="unit-item-btns">
+          <a href="unit-summary.html" class="btn-summary">📖 단원 요약</a>
+          <a href="quiz.html" class="btn-quiz-sm">✏️ 문제 풀기</a>
+        </div>
+      </div>
+      <!-- Unit 2: 완료 -->
+      <div class="unit-item">
+        <div class="unit-item-head">
+          <div class="unit-num">2</div>
+          <div class="unit-item-title">식의 계산</div>
+          <div class="unit-progress-badge done">100%</div>
+        </div>
+        <div class="unit-progress-bar"><div class="unit-progress-fill" style="width:100%;background:var(--success);"></div></div>
+        <div class="unit-item-btns">
+          <a href="unit-summary.html" class="btn-summary">📖 단원 요약</a>
+          <a href="quiz.html" class="btn-quiz-sm">✏️ 문제 풀기</a>
+        </div>
+      </div>
+      <!-- Unit 3: 진행 중 (현재 단원) -->
+      <div class="unit-item current">
+        <div class="unit-item-head">
+          <div class="unit-num">3</div>
+          <div class="unit-item-title">함수와 그래프</div>
+          <div class="unit-progress-badge partial">60%</div>
+        </div>
+        <div class="unit-progress-bar"><div class="unit-progress-fill" style="width:60%;"></div></div>
+        <div class="unit-item-btns">
+          <a href="unit-summary.html" class="btn-summary">📖 단원 요약</a>
+          <a href="quiz.html" class="btn-quiz-sm">✏️ 문제 풀기</a>
+        </div>
+      </div>
+      <!-- Unit 4: 미진행 -->
+      <div class="unit-item">
+        <div class="unit-item-head">
+          <div class="unit-num">4</div>
+          <div class="unit-item-title">일차함수</div>
+          <div class="unit-progress-badge todo">0%</div>
+        </div>
+        <div class="unit-progress-bar"><div class="unit-progress-fill" style="width:0%;"></div></div>
+        <div class="unit-item-btns">
+          <a href="unit-summary.html" class="btn-summary">📖 단원 요약</a>
+          <a href="quiz.html" class="btn-quiz-sm">✏️ 문제 풀기</a>
+        </div>
+      </div>
+      <!-- Unit 5: 미진행 -->
+      <div class="unit-item">
+        <div class="unit-item-head">
+          <div class="unit-num">5</div>
+          <div class="unit-item-title">일차방정식</div>
+          <div class="unit-progress-badge todo">0%</div>
+        </div>
+        <div class="unit-progress-bar"><div class="unit-progress-fill" style="width:0%;"></div></div>
+        <div class="unit-item-btns">
+          <a href="unit-summary.html" class="btn-summary">📖 단원 요약</a>
+          <a href="quiz.html" class="btn-quiz-sm">✏️ 문제 풀기</a>
+        </div>
+      </div>
+    </div>
   </div>
-  <div class="main-layout">
-    <div>
-      <!-- Summary Tab -->
-      <div class="summary-card">
-        <div class="summary-card-title">핵심 요약</div>
-        <div class="summary-item">
-          <div class="summary-item-title">1. 함수의 정의</div>
-          <div class="summary-item-body">함수는 어떤 입력값(x)에 대해 정확히 하나의 출력값(y)를 대응시키는 관계이다.</div>
+
+  <div class="divider"></div>
+
+  <!-- 3단원 상세 요약 -->
+  <div class="section">
+    <div class="section-title">📖 3단원: 함수와 그래프 — 요약</div>
+
+    <!-- 핵심 개념 카드 -->
+    <div class="summary-card">
+      <div class="summary-card-title">🔑 핵심 개념</div>
+      <div class="concept-grid">
+        <div class="concept-card">
+          <div class="concept-card-title">함수의 정의</div>
+          <div class="concept-card-body">어떤 집합 X의 각 원소에 대해 집합 Y의 원소가 정확히 하나씩 대응되는 관계. x가 변하면 y도 규칙에 따라 변한다.</div>
         </div>
-        <div class="summary-item">
-          <div class="summary-item-title">2. 함수의 그래프</div>
-          <div class="summary-item-body">좌표평면 위에 함수의 대응 관계를 나타낸 것. x축과 y축으로 구성된 평면에 점들을 찍어 나타낸다.</div>
+        <div class="concept-card">
+          <div class="concept-card-title">정의역과 공역</div>
+          <div class="concept-card-body">정의역: x가 취할 수 있는 값의 집합. 공역: y가 취할 수 있는 값의 집합. 치역: 실제로 대응되는 y값의 집합.</div>
         </div>
-        <div class="highlight-box">
-          <strong>💡 핵심 포인트</strong><br>
-          x값이 주어지면 y값은 하나만 대응되어야 함!
+        <div class="concept-card">
+          <div class="concept-card-title">좌표평면</div>
+          <div class="concept-card-body">x축(가로)과 y축(세로)이 직각으로 만나는 평면. 점 (x, y)로 위치를 나타낸다.</div>
+        </div>
+        <div class="concept-card">
+          <div class="concept-card-title">함수의 그래프</div>
+          <div class="concept-card-body">좌표평면 위에 함수의 대응 관계를 점들로 나타낸 것. 순서쌍 (x, y)의 그래프를 시각적으로 표현한다.</div>
         </div>
       </div>
-      <div class="summary-card">
-        <div class="summary-card-title">주요 공식</div>
-        <div class="code-block">y = ax + b &nbsp;&nbsp;(일차함수)</div>
+    </div>
+
+    <!-- 공식 박스 -->
+    <div class="summary-card">
+      <div class="summary-card-title">📝 주요 공식</div>
+      <div class="formula-box">
+        <div class="formula-box-title">일차함수</div>
+        <div class="formula-text">y = ax + b</div>
+        <div class="formula-desc">a: 기울기(방향과 경사), b: y절편(그래프가 y축과 만나는 점)</div>
       </div>
-      <button class="btn-primary">문제 풀러 가기 →</button>
+      <div class="formula-box">
+        <div class="formula-box-title">함수의 대응 관계</div>
+        <div class="formula-text">f: X → Y, &nbsp; y = f(x)</div>
+        <div class="formula-desc">입력 x에 대해 출력 y = f(x)가 정확히 하나 대응</div>
+      </div>
     </div>
-    <div class="toc">
-      <div class="toc-title">단원 목차</div>
-      <div class="toc-item">1. 함수의 정의</div>
-      <div class="toc-item active">2. 함수의 그래프</div>
-      <div class="toc-item">3. 일차함수</div>
-      <div class="toc-item">4. 일차함수의 그래프</div>
-      <div class="toc-item">5. 함수의 활용</div>
+
+    <!-- 예시 -->
+    <div class="summary-card">
+      <div class="summary-card-title">💡 예시</div>
+      <div class="example-box">
+        <div class="example-label">예시 1: 함수인 경우</div>
+        <div class="example-body">
+          <strong>y = 2x + 1</strong><br>
+          x = 1 → y = 3<br>
+          x = 2 → y = 5<br>
+          x = 3 → y = 7<br>
+          각 x에 대해 y가 하나씩 정해지므로 ✅ 함수이다.
+        </div>
+      </div>
+      <div class="example-box">
+        <div class="example-label">예시 2: 함수가 아닌 경우</div>
+        <div class="example-body">
+          <strong>y² = x</strong><br>
+          x = 4 → y = 2 또는 y = -2<br>
+          하나의 x에 대해 y값이 2개 → ❌ 함수가 아니다.
+        </div>
+      </div>
     </div>
+
+    <!-- 핵심 포인트 -->
+    <div class="summary-card">
+      <div class="summary-card-title">⚠️ 핵심 포인트</div>
+      <div class="highlight-box">
+        <strong>💡 시험에 자주 나오는 포인트</strong>
+        <div class="highlight-box-body">
+          ① 함수의 조건: 입력 1개 → 출력 1개 (일대일 또는 다대일)<br>
+          ② y² = x 형태는 함수가 아님 (일대다 대응)<br>
+          ③ 그래프에서 세로선 그었을 때 점이 1개만 만나면 함수<br>
+          ④ 일차함수 y = ax + b의 그래프는 직선
+        </div>
+      </div>
+    </div>
+
+    <!-- 이 단원 문제 풀기 버튼 -->
+    <a href="quiz.html" class="btn-primary">✏️ 이 단원 문제 풀기 →</a>
   </div>
 </div>
 
-<div class="cta-bar"><button class="cta-btn">학습 시작하기 →</button></div><div class="bottom-nav">
-  <div class="nav-item"><div class="nav-icon">🏠</div>홈</div>
-  <div class="nav-item active"><div class="nav-icon">📚</div>과목</div>
-  <div class="nav-item center"><div class="nav-center-btn">✏️</div><div class="nav-center-label">풀기</div></div>
-  <div class="nav-item"><div class="nav-icon">📝</div>오답</div>
-  <div class="nav-item"><div class="nav-icon">💬</div>영어</div>
+<div class="cta-bar"><button class="cta-btn">학습 시작하기 →</button></div>
+<div class="bottom-nav">
+  <a href="dashboard.html" class="nav-item"><div class="nav-icon">🏠</div>홈</a>
+  <a href="subjects.html" class="nav-item active"><div class="nav-icon">📚</div>과목</a>
+  <a href="quiz.html" class="nav-item"><div class="nav-center-btn">✏️</div><div class="nav-center-label">풀기</div></a>
+  <a href="wrong-answers.html" class="nav-item"><div class="nav-icon">📝</div>오답</a>
+  <a href="statistics.html" class="nav-item"><div class="nav-icon">📊</div>통계</a>
 </div>
 </body>
 </html>
