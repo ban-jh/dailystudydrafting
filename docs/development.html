@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Daily Study 개발계획서 — 2. 프로젝트 개발 내용</title>
+<style>
+  :root { --primary: #10B981; --primary-dark: #059669; --primary-light: #D1FAE5; --text-dark: #1F2937; --text-gray: #4B5563; --text-light: #6B7280; --bg-white: #FFFFFF; --bg-gray: #F9FAFB; --border: #E5E7EB; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: "Pretendard", "Noto Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif; color: var(--text-dark); background: var(--bg-gray); line-height: 1.7; }
+  .page { max-width: 210mm; min-height: 297mm; margin: 0 auto; background: var(--bg-white); padding: 0; box-shadow: 0 2px 20px rgba(0,0,0,0.08); position: relative; }
+  .navbar { background: var(--primary); color: #fff; padding: 14px 30mm; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 8px rgba(0,0,0,0.12); }
+  .navbar-brand { font-size: 16px; font-weight: 700; }
+  .navbar-brand a { color: #fff; text-decoration: none; }
+  .nav-links { display: flex; gap: 8px; }
+  .nav-links a { color: rgba(255,255,255,0.9); text-decoration: none; font-size: 13px; padding: 6px 14px; border-radius: 6px; }
+  .nav-links a:hover { background: rgba(255,255,255,0.15); }
+  .nav-links a.active { background: rgba(255,255,255,0.2); font-weight: 600; }
+  .content { padding: 30mm 30mm 20mm; }
+  .section-header { margin-bottom: 32px; border-bottom: 3px solid var(--primary); padding-bottom: 12px; }
+  .section-number { font-size: 14px; color: var(--primary); font-weight: 700; letter-spacing: 2px; text-transform: uppercase; }
+  .section-title { font-size: 32px; font-weight: 800; margin-top: 4px; letter-spacing: -1px; }
+  .subsection { margin-bottom: 40px; }
+  .subsection-title { font-size: 22px; font-weight: 700; margin-bottom: 16px; padding-left: 16px; border-left: 5px solid var(--primary); }
+  .sub-subsection-title { font-size: 17px; font-weight: 700; color: var(--primary-dark); margin: 24px 0 12px; }
+  p { margin-bottom: 12px; color: var(--text-gray); }
+  table { width: 100%; border-collapse: collapse; margin: 16px 0 24px; font-size: 13px; }
+  thead th { background: var(--primary); color: #fff; padding: 10px 12px; text-align: left; font-weight: 700; font-size: 13px; }
+  thead th:first-child { border-radius: 8px 0 0 0; }
+  thead th:last-child { border-radius: 0 8px 0 0; }
+  tbody td { padding: 10px 12px; border-bottom: 1px solid var(--border); color: var(--text-gray); vertical-align: top; }
+  tbody tr:nth-child(even) { background: var(--bg-gray); }
+  tbody tr:hover { background: var(--primary-light); }
+  .td-num { text-align: center; font-weight: 600; color: var(--primary); width: 40px; }
+  .td-label { font-weight: 600; color: var(--text-dark); }
+  .card-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin: 16px 0; }
+  .card { border: 1px solid var(--border); border-radius: 10px; padding: 20px; background: var(--bg-white); transition: box-shadow 0.2s; }
+  .card:hover { box-shadow: 0 4px 16px rgba(16,185,129,0.12); }
+  .card-icon { width: 44px; height: 44px; border-radius: 10px; background: var(--primary-light); color: var(--primary-dark); display: flex; align-items: center; justify-content: center; font-size: 22px; font-weight: 800; margin-bottom: 12px; }
+  .card-title { font-size: 16px; font-weight: 700; margin-bottom: 6px; }
+  .card-desc { font-size: 13px; color: var(--text-light); line-height: 1.6; }
+  .badge { display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 700; }
+  .badge-green { background: var(--primary-light); color: var(--primary-dark); }
+  .badge-blue { background: #DBEAFE; color: #1E40AF; }
+  .badge-purple { background: #EDE9FE; color: #5B21B6; }
+  .badge-orange { background: #FFEDD5; color: #C2410C; }
+  .info-box { background: var(--primary-light); border-left: 5px solid var(--primary); border-radius: 0 8px 8px 0; padding: 16px 20px; margin: 16px 0; font-size: 14px; }
+  ul, ol { margin: 8px 0 16px 20px; }
+  li { margin-bottom: 6px; color: var(--text-gray); font-size: 14px; }
+  .page-footer { border-top: 1px solid var(--border); padding: 14px 30mm; font-size: 11px; color: var(--text-light); display: flex; justify-content: space-between; }
+  .phase-box { border: 1px solid var(--border); border-radius: 10px; padding: 20px; margin: 16px 0; background: linear-gradient(135deg, var(--bg-gray) 0%, #fff 100%); }
+  .phase-header { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+  .phase-badge { padding: 6px 16px; border-radius: 8px; font-weight: 800; font-size: 14px; color: #fff; }
+  .phase-name { font-size: 18px; font-weight: 700; }
+  .phase-period { font-size: 13px; color: var(--text-light); margin-left: auto; }
+  .phase-items { list-style: none; margin: 0; padding: 0; }
+  .phase-items li { padding: 4px 0; font-size: 14px; }
+  .phase-items li:before { content: "✓"; color: var(--primary); font-weight: 800; margin-right: 8px; }
+  @media print { body { background: #fff; } .page { box-shadow: none; margin: 0; } .navbar { display: none; } @page { size: A4; margin: 0; } }
+</style>
+</head>
+<body>
+
+<div class="page">
+  <div class="navbar">
+    <div class="navbar-brand"><a href="index.html">Daily Study 개발계획서</a></div>
+    <div class="nav-links">
+      <a href="overview.html">← 1. 개요</a>
+      <a href="development.html" class="active">2. 개발내용</a>
+      <a href="architecture.html">3. 시스템구성도 →</a>
+    </div>
+  </div>
+
+  <div class="content">
+    <div class="section-header">
+      <div class="section-number">SECTION 02</div>
+      <div class="section-title">2. 프로젝트 개발 내용</div>
+    </div>
+
+    <!-- 2.1 주요 개발 항목 -->
+    <div class="subsection">
+      <div class="subsection-title">2.1 주요 개발 항목 목록</div>
+      <p>Daily Study 프로젝트의 주요 개발 항목은 총 6개 대분류로 구성되며, 각 항목은 단계적 Phase에 따라 개발된다.</p>
+
+      <table>
+        <thead>
+          <tr>
+            <th style="width:40px;">No</th>
+            <th style="width:170px;">개발 항목</th>
+            <th>주요 내용</th>
+            <th style="width:80px;">Phase</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="td-num">1</td>
+            <td class="td-label">학습 과정 요약</td>
+            <td>교과목별 단원 핵심 개념/공식/키워드 카드, 학년별 교육과정 매핑, PDF 내보내기</td>
+            <td><span class="badge badge-green">P1</span></td>
+          </tr>
+          <tr>
+            <td class="td-num">2</td>
+            <td class="td-label">AI 문제 출제</td>
+            <td>단원/주제/난이도 선택 후 GLM-5.2 기반 객관식·주관식·서술형 자동 생성, 즉시 채점 및 해설, 오답노트 자동 구성</td>
+            <td><span class="badge badge-green">P1</span> <span class="badge badge-blue">P2</span></td>
+          </tr>
+          <tr>
+            <td class="td-num">3</td>
+            <td class="td-label">실생활 영어 문장</td>
+            <td>상황별(학교/쇼핑/여행/식당 등) 실용 영어 문장, 하루 1문장 Push, TTS 발음 음원, 롤플레이 모드, 크롤링 수집 + AI 정제</td>
+            <td><span class="badge badge-blue">P2</span></td>
+          </tr>
+          <tr>
+            <td class="td-num">4</td>
+            <td class="td-label">학습 대시보드</td>
+            <td>일일 목표 설정 및 달성 추적, 과목별 학습 시간/정답률/연속 학습일 통계, 주간·월간 리포트</td>
+            <td><span class="badge badge-green">P1</span> <span class="badge badge-purple">P3</span></td>
+          </tr>
+          <tr>
+            <td class="td-num">5</td>
+            <td class="td-label">게이미피케이션</td>
+            <td>배지, 레벨, 스트릭 시스템, 학습 동기 부여 요소</td>
+            <td><span class="badge badge-purple">P3</span></td>
+          </tr>
+          <tr>
+            <td class="td-num">6</td>
+            <td class="td-label">관리자 페이지</td>
+            <td>AI 생성 콘텐츠 품질 검수 큐, 크롤링 파이프라인 관리, 사용자 관리, 콘텐츠 관리</td>
+            <td><span class="badge badge-purple">P3</span> <span class="badge badge-orange">P4</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- 2.2 기능 상세 -->
+    <div class="subsection">
+      <div class="subsection-title">2.2 기능별 상세 개발 내용</div>
+
+      <div class="card-grid">
+        <div class="card">
+          <div class="card-icon">📖</div>
+          <div class="card-title">① 학습 과정 요약 <span class="badge badge-green">Phase 1</span></div>
+          <div class="card-desc">
+            <ul>
+              <li>교과목(수학/영어/과학)별 단원 구조 DB 구축</li>
+              <li>단원별 핵심 개념, 공식, 키워드 카드 뷰</li>
+              <li>중·고등학교 학년별 교육과정 매핑</li>
+              <li>요약 카드 PDF 내보내기 기능</li>
+              <li>마크다운 기반 콘텐츠 렌더링</li>
+            </ul>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-icon">🤖</div>
+          <div class="card-title">② AI 문제 출제 <span class="badge badge-green">P1</span> <span class="badge badge-blue">P2</span></div>
+          <div class="card-desc">
+            <ul>
+              <li>단원/주제/난이도/문제 유형 선택 UI</li>
+              <li>GLM-5.2 기반 객관식 문제 자동 생성 (P1)</li>
+              <li>주관식·서술형 문제 생성 및 AI 채점 (P2)</li>
+              <li>즉시 채점, 정답/오답 해설 제공</li>
+              <li>오답노트 자동 구성 및 재도출 기능</li>
+            </ul>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-icon">🌐</div>
+          <div class="card-title">③ 실생활 영어 문장 <span class="badge badge-blue">Phase 2</span></div>
+          <div class="card-desc">
+            <ul>
+              <li>상황별(학교/쇼핑/여행/식당 등) 카테고리 분류</li>
+              <li>Jsoup + Selenium 크롤링 수집 파이프라인</li>
+              <li>AI 정제 (GPT-4o-mini) — 문장 검증 및 난이도 분류</li>
+              <li>하루 1문장 Push 알림</li>
+              <li>TTS 발음 음원 재생</li>
+              <li>롤플레이 모드 (대화 시뮬레이션)</li>
+            </ul>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-icon">📊</div>
+          <div class="card-title">④ 학습 대시보드 <span class="badge badge-green">P1</span> <span class="badge badge-purple">P3</span></div>
+          <div class="card-desc">
+            <ul>
+              <li>일일 학습 목표 설정 및 달성 추적 (P1)</li>
+              <li>과목별 학습 시간, 정답률 통계 (P1)</li>
+              <li>연속 학습일(스트릭) 표시 (P1)</li>
+              <li>주간·월간 학습 리포트 자동 생성 (P3)</li>
+              <li>과목별/단원별 약점 분석 (P3)</li>
+            </ul>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-icon">🏆</div>
+          <div class="card-title">⑤ 게이미피케이션 <span class="badge badge-purple">Phase 3</span></div>
+          <div class="card-desc">
+            <ul>
+              <li>배지 시스템 (학습 milestones별 뱃지 획득)</li>
+              <li>레벨 시스템 (학습량 기반 레벨업)</li>
+              <li>스트릭 보너스 (연속 학습 보상)</li>
+              <li>랭킹/리더보드 (선택적)</li>
+            </ul>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-icon">✍️</div>
+          <div class="card-title">⑥ 관리자 문제 직접 등록 <span class="badge badge-green">P1</span></div>
+          <div class="card-desc">
+            <ul>
+              <li>관리자가 객관식/주관식/서술형 문제를 직접 입력 등록</li>
+              <li>과목·단원·난이도 선택 후 문제/선택지/정답/해설 입력</li>
+              <li>Excel/CSV 일괄 업로드 (대량 문제 등록)</li>
+              <li>등록 후 즉시 배포 또는 검수 큐 전달 선택</li>
+              <li>AI 생성 문제와 동일한 구조로 저장 (source_type=MANUAL)</li>
+              <li>문제 수정/삭제/상태 변경 (PUBLISHED/DRAFT/ARCHIVED)</li>
+            </ul>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-icon">🔧</div>
+          <div class="card-title">⑦ 관리자 페이지 <span class="badge badge-purple">P3</span> <span class="badge badge-orange">P4</span></div>
+          <div class="card-desc">
+            <ul>
+              <li>관리자 대시보드 (운영 지표)</li>
+              <li>AI 생성 콘텐츠 품질 검수 큐 (P3)</li>
+              <li>크롤링 파이프라인 관리 (P4)</li>
+              <li>사용자 관리 (계정 정지/권한)</li>
+              <li>콘텐츠 관리 (요약/문제/영어 문장 CRUD)</li>
+              <li>문제 직접 등록 및 관리 (객관식/주관식/서술형)</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2.3 개발 단계 -->
+    <div class="subsection">
+      <div class="subsection-title">2.3 개발 단계별 구성</div>
+
+      <div class="phase-box">
+        <div class="phase-header">
+          <span class="phase-badge" style="background:#10B981;">Phase 1</span>
+          <span class="phase-name">MVP</span>
+          <span class="phase-period">1~2개월</span>
+        </div>
+        <ul class="phase-items">
+          <li>이메일 회원가입 / 로그인 (Spring Security + JWT)</li>
+          <li>3과목(수학/영어/과학) 단원 구조 및 요약 콘텐츠</li>
+          <li>AI 객관식 문제 출제 (GLM-5.2 연동)</li>
+          <li>관리자 문제 직접 등록 기능 (객관식/주관식, Excel 일괄 업로드)</li>
+          <li>기본 학습 대시보드 (일일 목표, 학습 시간, 정답률)</li>
+        </ul>
+      </div>
+
+      <div class="phase-box">
+        <div class="phase-header">
+          <span class="phase-badge" style="background:#3B82F6;">Phase 2</span>
+          <span class="phase-name">기능 확장</span>
+          <span class="phase-period">2~3개월</span>
+        </div>
+        <ul class="phase-items">
+          <li>실생활 영어 문장 (크롤링 수집 + AI 정제)</li>
+          <li>TTS 음원 연동 (발음 재생)</li>
+          <li>오답노트 자동 구성</li>
+          <li>주관식 / 서술형 AI 채점</li>
+          <li>소셜 로그인 (OAuth2 — 구글/카카오/네이버)</li>
+          <li>학습 통계 페이지</li>
+        </ul>
+      </div>
+
+      <div class="phase-box">
+        <div class="phase-header">
+          <span class="phase-badge" style="background:#8B5CF6;">Phase 3</span>
+          <span class="phase-name">개인화 및 고도화</span>
+          <span class="phase-period">3~4개월</span>
+        </div>
+        <ul class="phase-items">
+          <li>AI 맞춤형 문제 추천 (학습 패턴 분석)</li>
+          <li>게이미피케이션 (배지 / 레벨 / 스트릭)</li>
+          <li>주간·월간 학습 리포트</li>
+          <li>관리자 페이지 (품질 검수 큐, 콘텐츠 관리)</li>
+          <li>PWA 오프라인 학습 카드</li>
+        </ul>
+      </div>
+
+      <div class="phase-box">
+        <div class="phase-header">
+          <span class="phase-badge" style="background:#F59E0B;">Phase 4</span>
+          <span class="phase-name">확장 및 상용화</span>
+          <span class="phase-period">4개월~</span>
+        </div>
+        <ul class="phase-items">
+          <li>전 과목 개설 (국어, 사회, 역사 등)</li>
+          <li>크롤링 자동화 파이프라인 (Spring Batch)</li>
+          <li>모바일 앱 검토 (React Native / Flutter)</li>
+          <li>프리미엄 구독 모델 도입 (결제 연동)</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- 2.4 화면 구성 -->
+    <div class="subsection">
+      <div class="subsection-title">2.4 화면 구성</div>
+
+      <div class="sub-subsection-title">사용자 화면</div>
+      <table>
+        <thead>
+          <tr><th style="width:40px;">No</th><th style="width:160px;">화면</th><th>설명</th></tr>
+        </thead>
+        <tbody>
+          <tr><td class="td-num">1</td><td class="td-label">홈 / 대시보드</td><td>오늘의 학습 목표, 진행 상황, 추천 학습 콘텐츠 요약</td></tr>
+          <tr><td class="td-num">2</td><td class="td-label">과목 목록</td><td>학년별 과목 리스트, 과목별 단원 트리 구조</td></tr>
+          <tr><td class="td-num">3</td><td class="td-label">단원 요약</td><td>핵심 개념/공식/키워드 카드, PDF 내보내기</td></tr>
+          <tr><td class="td-num">4</td><td class="td-label">문제 풀이</td><td>AI 출제 문제 풀이, 즉시 채점, 해설</td></tr>
+          <tr><td class="td-num">5</td><td class="td-label">오답노트</td><td>틀린 문제 목록, 재도출, 오답 통계</td></tr>
+          <tr><td class="td-num">6</td><td class="td-label">실생활 영어</td><td>상황별 문장, TTS 재생, 롤플레이 모드</td></tr>
+          <tr><td class="td-num">7</td><td class="td-label">학습 통계</td><td>과목별/기간별 학습 시간, 정답률, 스트릭 차트</td></tr>
+          <tr><td class="td-num">8</td><td class="td-label">마이페이지</td><td>프로필, 학습 설정, 배지, 구독 관리</td></tr>
+        </tbody>
+      </table>
+
+      <div class="sub-subsection-title">관리자 화면</div>
+      <table>
+        <thead>
+          <tr><th style="width:40px;">No</th><th style="width:160px;">화면</th><th>설명</th></tr>
+        </thead>
+        <tbody>
+          <tr><td class="td-num">1</td><td class="td-label">관리자 대시보드</td><td>운영 지표 요약 (가입자, DAU, 콘텐츠 생성량)</td></tr>
+          <tr><td class="td-num">2</td><td class="td-label">콘텐츠 관리</td><td>요약/문제/영어 문장 CRUD, 콘텐츠 승인</td></tr>
+          <tr><td class="td-num">3</td><td class="td-label">문제 직접 등록</td><td>객관식/주관식/서술형 문제 입력 등록, Excel/CSV 일괄 업로드, 미리보기, 상태 관리</td></tr>
+          <tr><td class="td-num">4</td><td class="td-label">AI 검수 큐</td><td>AI 생성 콘텐츠 품질 검수, 승인/반려 워크플로우</td></tr>
+          <tr><td class="td-num">5</td><td class="td-label">크롤링 관리</td><td>크롤링 소스 관리, 수집 주기 설정, 결과 모니터링</td></tr>
+          <tr><td class="td-num">6</td><td class="td-label">사용자 관리</td><td>사용자 목록, 계정 정지/해제, 권한 관리</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- 2.5 메뉴 구조 -->
+    <div class="subsection">
+      <div class="subsection-title">2.5 메뉴 구조</div>
+      <table>
+        <thead>
+          <tr><th style="width:120px;">대분류</th><th>메뉴</th><th style="width:200px;">화면 이동</th></tr>
+        </thead>
+        <tbody>
+          <tr><td class="td-label">인증</td><td>로그인, 회원가입</td><td>→ 로그인 페이지 / 회원가입 페이지</td></tr>
+          <tr><td class="td-label">메인</td><td>홈/대시보드</td><td>→ 대시보드 메인</td></tr>
+          <tr><td class="td-label">메인</td><td>과목 목록</td><td>→ 단원 요약</td></tr>
+          <tr><td class="td-label">메인</td><td>문제 풀이</td><td>→ 문제 풀이 화면</td></tr>
+          <tr><td class="td-label">메인</td><td>오답노트</td><td>→ 오답노트 목록</td></tr>
+          <tr><td class="td-label">메인</td><td>실생활 영어</td><td>→ 상황별 / 롤플레이</td></tr>
+          <tr><td class="td-label">분석</td><td>학습 통계</td><td>→ 통계 차트 페이지</td></tr>
+          <tr><td class="td-label">계정</td><td>마이페이지</td><td>→ 프로필 / 설정</td></tr>
+          <tr><td class="td-label">관리자</td><td>관리자 대시보드</td><td>→ 관리자 메인</td></tr>
+          <tr><td class="td-label">관리자</td><td>콘텐츠 관리</td><td>→ 콘텐츠 CRUD</td></tr>
+          <tr><td class="td-label">관리자</td><td>문제 직접 등록</td><td>→ 문제 입력 / Excel 업로드</td></tr>
+          <tr><td class="td-label">관리자</td><td>AI 검수 큐</td><td>→ 검수 워크플로우</td></tr>
+          <tr><td class="td-label">관리자</td><td>크롤링 관리</td><td>→ 크롤링 파이프라인 설정</td></tr>
+          <tr><td class="td-label">관리자</td><td>사용자 관리</td><td>→ 사용자 목록 / 권한</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- 2.6 데이터 모델 -->
+    <div class="subsection">
+      <div class="subsection-title">2.6 데이터 모델</div>
+      <table>
+        <thead>
+          <tr><th style="width:40px;">No</th><th style="width:180px;">엔티티</th><th>주요 속성</th></tr>
+        </thead>
+        <tbody>
+          <tr><td class="td-num">1</td><td class="td-label">USER</td><td>user_id, email, password_hash, name, grade, school_type, role, created_at</td></tr>
+          <tr><td class="td-num">2</td><td class="td-label">SUBJECT</td><td>subject_id, name, school_type, icon, sort_order</td></tr>
+          <tr><td class="td-num">3</td><td class="td-label">UNIT</td><td>unit_id, subject_id, grade, title, description, sort_order</td></tr>
+          <tr><td class="td-num">4</td><td class="td-label">SUMMARY</td><td>summary_id, unit_id, content_md, keywords, pdf_url, status</td></tr>
+          <tr><td class="td-num">5</td><td class="td-label">QUIZ</td><td>quiz_id, unit_id, type(multiple/subjective/essay), difficulty, question, answer, explanation, source_type(AI/MANUAL), status(DRAFT/PUBLISHED/ARCHIVED), created_by</td></tr>
+          <tr><td class="td-num">6</td><td class="td-label">QUIZ_OPTION</td><td>option_id, quiz_id, label, content, is_correct</td></tr>
+          <tr><td class="td-num">7</td><td class="td-label">QUIZ_ATTEMPT</td><td>attempt_id, user_id, quiz_id, selected_answer, is_correct, time_spent, created_at</td></tr>
+          <tr><td class="td-num">8</td><td class="td-label">ENGLISH_SENTENCE</td><td>sentence_id, category, situation, english, korean, difficulty, tts_url, source, status</td></tr>
+          <tr><td class="td-num">9</td><td class="td-label">STUDY_LOG</td><td>log_id, user_id, activity_type, subject_id, unit_id, duration_sec, created_at</td></tr>
+          <tr><td class="td-num">10</td><td class="td-label">BADGE</td><td>badge_id, name, description, icon, criteria</td></tr>
+          <tr><td class="td-num">11</td><td class="td-label">USER_BADGE</td><td>user_id, badge_id, earned_at</td></tr>
+          <tr><td class="td-num">12</td><td class="td-label">USER_SETTINGS</td><td>user_id, daily_goal, push_enabled, tts_enabled, theme</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- 2.7 기술 스택 -->
+    <div class="subsection">
+      <div class="subsection-title">2.7 기술 스택</div>
+      <table>
+        <thead>
+          <tr><th style="width:140px;">분류</th><th style="width:200px;">기술</th><th>용도</th></tr>
+        </thead>
+        <tbody>
+          <tr><td class="td-label" rowspan="4">백엔드</td><td>Spring Boot 4.0</td><td>REST API 서버, 비즈니스 로직</td></tr>
+          <tr><td>Java 21</td><td>개발 언어 (Virtual Thread 활용)</td></tr>
+          <tr><td>MyBatis</td><td>ORM / SQL 매핑</td></tr>
+          <tr><td>MariaDB 11 / Redis</td><td>영구 저장 / 캐싱 & 세션</td></tr>
+          <tr><td class="td-label" rowspan="4">프론트엔드</td><td>Vue 3</td><td>SPA 프레임워크</td></tr>
+          <tr><td>Vite</td><td>빌드 도구 / 개발 서버</td></tr>
+          <tr><td>Pinia</td><td>상태 관리</td></tr>
+          <tr><td>TailwindCSS + daisyUI</td><td>UI 스타일링</td></tr>
+          <tr><td class="td-label" rowspan="3">인프라</td><td>Ubuntu 24.04</td><td>서버 OS</td></tr>
+          <tr><td>Nginx</td><td>리버스 프록시 / 정적 서빙</td></tr>
+          <tr><td>Docker Compose</td><td>컨테이너 오케스트레이션</td></tr>
+          <tr><td class="td-label" rowspan="5">외부 API</td><td>GLM-5.2 cloud</td><td>한국어 AI 콘텐츠 생성 (문제 출제, 해설)</td></tr>
+          <tr><td>OpenAI GPT-4o-mini</td><td>영어 콘텐츠 생성 및 정제</td></tr>
+          <tr><td>TTS API</td><td>영어 문장 발음 음원</td></tr>
+          <tr><td>OAuth2 (Google/Kakao/Naver)</td><td>소셜 로그인</td></tr>
+          <tr><td>Jsoup + Selenium</td><td>웹 크롤링 (영어 문장 수집)</td></tr>
+          <tr><td class="td-label">배치</td><td>Spring Batch</td><td>크롤링 자동화, 통계 집계</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+
+  <div class="page-footer">
+    <span>Daily Study 개발계획서 v1.0</span>
+    <span>2. 프로젝트 개발 내용</span>
+  </div>
+</div>
+
+</body>
+</html>

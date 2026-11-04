@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Daily Study 개발계획서 — 3. 시스템 구성도 / 4. Callflow</title>
+<style>
+  :root { --primary: #10B981; --primary-dark: #059669; --primary-light: #D1FAE5; --text-dark: #1F2937; --text-gray: #4B5563; --text-light: #6B7280; --bg-white: #FFFFFF; --bg-gray: #F9FAFB; --border: #E5E7EB; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: "Pretendard", "Noto Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif; color: var(--text-dark); background: var(--bg-gray); line-height: 1.7; }
+  .page { max-width: 210mm; min-height: 297mm; margin: 0 auto; background: var(--bg-white); padding: 0; box-shadow: 0 2px 20px rgba(0,0,0,0.08); position: relative; }
+  .navbar { background: var(--primary); color: #fff; padding: 14px 30mm; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 8px rgba(0,0,0,0.12); }
+  .navbar-brand { font-size: 16px; font-weight: 700; }
+  .navbar-brand a { color: #fff; text-decoration: none; }
+  .nav-links { display: flex; gap: 8px; }
+  .nav-links a { color: rgba(255,255,255,0.9); text-decoration: none; font-size: 13px; padding: 6px 14px; border-radius: 6px; }
+  .nav-links a:hover { background: rgba(255,255,255,0.15); }
+  .nav-links a.active { background: rgba(255,255,255,0.2); font-weight: 600; }
+  .content { padding: 30mm 30mm 20mm; }
+  .section-header { margin-bottom: 32px; border-bottom: 3px solid var(--primary); padding-bottom: 12px; }
+  .section-number { font-size: 14px; color: var(--primary); font-weight: 700; letter-spacing: 2px; text-transform: uppercase; }
+  .section-title { font-size: 32px; font-weight: 800; margin-top: 4px; letter-spacing: -1px; }
+  .subsection { margin-bottom: 40px; }
+  .subsection-title { font-size: 22px; font-weight: 700; margin-bottom: 16px; padding-left: 16px; border-left: 5px solid var(--primary); }
+  .sub-subsection-title { font-size: 17px; font-weight: 700; color: var(--primary-dark); margin: 24px 0 12px; }
+  p { margin-bottom: 12px; color: var(--text-gray); }
+  table { width: 100%; border-collapse: collapse; margin: 16px 0 24px; font-size: 14px; }
+  thead th { background: var(--primary); color: #fff; padding: 12px 14px; text-align: left; font-weight: 700; font-size: 13px; }
+  thead th:first-child { border-radius: 8px 0 0 0; }
+  thead th:last-child { border-radius: 0 8px 0 0; }
+  tbody td { padding: 11px 14px; border-bottom: 1px solid var(--border); color: var(--text-gray); vertical-align: top; }
+  tbody tr:nth-child(even) { background: var(--bg-gray); }
+  .td-num { text-align: center; font-weight: 600; color: var(--primary); width: 40px; }
+  .td-label { font-weight: 600; color: var(--text-dark); }
+  .page-footer { border-top: 1px solid var(--border); padding: 14px 30mm; font-size: 11px; color: var(--text-light); display: flex; justify-content: space-between; }
+  .diagram-box { border: 1px solid var(--border); border-radius: 12px; padding: 32px; margin: 20px 0; background: var(--bg-gray); overflow-x: auto; }
+  .badge { display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 700; }
+  .badge-green { background: var(--primary-light); color: var(--primary-dark); }
+
+  /* Architecture diagram */
+  .arch-layer { margin-bottom: 0; }
+  .arch-layer-label { font-size: 12px; font-weight: 700; color: var(--primary-dark); text-align: center; margin-bottom: 8px; letter-spacing: 1px; }
+  .arch-row { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+  .arch-box { border-radius: 8px; padding: 14px 18px; text-align: center; font-size: 13px; font-weight: 600; min-width: 120px; }
+  .arch-box-sm { font-size: 11px; padding: 10px 14px; min-width: 90px; }
+  .arch-fe { background: #DBEAFE; color: #1E40AF; border: 2px solid #93C5FD; }
+  .arch-be { background: var(--primary-light); color: var(--primary-dark); border: 2px solid var(--primary); }
+  .arch-db { background: #FEF3C7; color: #92400E; border: 2px solid #FCD34D; }
+  .arch-ext { background: #EDE9FE; color: #5B21B6; border: 2px solid #C4B5FD; }
+  .arch-infra { background: #F3F4F6; color: #374151; border: 2px solid #D1D5DB; }
+  .arch-arrow { text-align: center; font-size: 18px; color: var(--text-light); margin: 6px 0; }
+
+  /* Flow diagram */
+  .flow-container { display: flex; flex-direction: column; align-items: center; gap: 0; }
+  .flow-step { background: #fff; border: 2px solid var(--primary); border-radius: 10px; padding: 12px 24px; font-size: 13px; font-weight: 600; text-align: center; min-width: 260px; max-width: 400px; }
+  .flow-step-actor { font-size: 11px; color: var(--primary-dark); font-weight: 400; margin-top: 2px; }
+  .flow-arrow { font-size: 20px; color: var(--primary); margin: 2px 0; }
+  .flow-arrow-label { font-size: 11px; color: var(--text-light); text-align: center; }
+
+  /* Callflow table */
+  .callflow-table th { background: var(--primary); color: #fff; }
+  .callflow-step { text-align: center; width: 50px; font-weight: 800; color: var(--primary); }
+
+  /* Swimlane */
+  .swimlane { display: grid; grid-template-columns: 120px 1fr; border: 1px solid var(--border); border-radius: 8px; overflow: hidden; margin: 16px 0; }
+  .swimlane-actor { background: var(--primary); color: #fff; padding: 16px 12px; font-size: 12px; font-weight: 700; text-align: center; display: flex; align-items: center; justify-content: center; }
+  .swimlane-content { padding: 16px; border-left: 1px solid var(--border); min-height: 60px; }
+  .swimlane-msg { background: var(--bg-gray); border: 1px solid var(--border); border-radius: 6px; padding: 8px 14px; font-size: 12px; margin-bottom: 8px; }
+  .swimlane-msg strong { color: var(--primary-dark); }
+
+  @media print { body { background: #fff; } .page { box-shadow: none; margin: 0; } .navbar { display: none; } @page { size: A4; margin: 0; } }
+</style>
+</head>
+<body>
+
+<div class="page">
+  <div class="navbar">
+    <div class="navbar-brand"><a href="index.html">Daily Study 개발계획서</a></div>
+    <div class="nav-links">
+      <a href="development.html">← 2. 개발내용</a>
+      <a href="architecture.html" class="active">3. 시스템구성도</a>
+      <a href="organization.html">5. 수행조직 →</a>
+    </div>
+  </div>
+
+  <div class="content">
+    <div class="section-header">
+      <div class="section-number">SECTION 03</div>
+      <div class="section-title">3. 시스템 구성도</div>
+    </div>
+
+    <!-- 3.1 목표 시스템 구성도 -->
+    <div class="subsection">
+      <div class="subsection-title">3.1 목표 시스템 구성도</div>
+      <div class="diagram-box">
+        <div class="arch-layer">
+          <div class="arch-layer-label">CLIENT (사용자)</div>
+          <div class="arch-row">
+            <div class="arch-box arch-fe">Web Browser<br>(PC/Mobile)</div>
+            <div class="arch-box arch-fe">PWA<br>(오프라인 카드)</div>
+          </div>
+        </div>
+        <div class="arch-arrow">↓ HTTPS</div>
+        <div class="arch-layer">
+          <div class="arch-layer-label">FRONTEND</div>
+          <div class="arch-row">
+            <div class="arch-box arch-fe">Vue 3 SPA</div>
+            <div class="arch-box arch-fe arch-box-sm">Vite Build</div>
+            <div class="arch-box arch-fe arch-box-sm">Pinia Store</div>
+            <div class="arch-box arch-fe arch-box-sm">TailwindCSS + daisyUI</div>
+          </div>
+        </div>
+        <div class="arch-arrow">↓ Nginx Reverse Proxy</div>
+        <div class="arch-layer">
+          <div class="arch-layer-label">BACKEND (Spring Boot 4.0 / Java 21)</div>
+          <div class="arch-row">
+            <div class="arch-box arch-be">Auth API<br>(JWT + OAuth2)</div>
+            <div class="arch-box arch-be">Summary API<br>(과목 요약)</div>
+            <div class="arch-box arch-be">Quiz API<br>(AI 문제 출제)</div>
+            <div class="arch-box arch-be">English API<br>(실생활 영어)</div>
+            <div class="arch-box arch-be">Dashboard API<br>(통계/리포트)</div>
+            <div class="arch-box arch-be">Admin API<br>(관리자)</div>
+          </div>
+        </div>
+        <div class="arch-arrow">↓ MyBatis</div>
+        <div class="arch-layer">
+          <div class="arch-layer-label">DATA & CACHE</div>
+          <div class="arch-row">
+            <div class="arch-box arch-db">MariaDB 11<br>(영구 저장)</div>
+            <div class="arch-box arch-db">Redis<br>(캐시/세션)</div>
+          </div>
+        </div>
+        <div class="arch-arrow">↓</div>
+        <div class="arch-layer">
+          <div class="arch-layer-label">EXTERNAL API</div>
+          <div class="arch-row">
+            <div class="arch-box arch-ext">GLM-5.2 cloud<br>(한국어 AI)</div>
+            <div class="arch-box arch-ext">GPT-4o-mini<br>(영어 AI)</div>
+            <div class="arch-box arch-ext">TTS API<br>(음원 생성)</div>
+            <div class="arch-box arch-ext">OAuth2<br>(Google/Kakao/Naver)</div>
+          </div>
+        </div>
+        <div class="arch-arrow">↓</div>
+        <div class="arch-layer">
+          <div class="arch-layer-label">BATCH & CRAWLING</div>
+          <div class="arch-row">
+            <div class="arch-box arch-ext">Spring Batch<br>(크롤링 자동화)</div>
+            <div class="arch-box arch-ext">Jsoup + Selenium<br>(영어 문장 수집)</div>
+          </div>
+        </div>
+        <div class="arch-arrow">↓</div>
+        <div class="arch-layer">
+          <div class="arch-layer-label">INFRASTRUCTURE</div>
+          <div class="arch-row">
+            <div class="arch-box arch-infra">Ubuntu 24.04</div>
+            <div class="arch-box arch-infra">Nginx</div>
+            <div class="arch-box arch-infra">Docker Compose</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3.2 서비스 흐름도 -->
+    <div class="subsection">
+      <div class="subsection-title">3.2 서비스 흐름도</div>
+      <div class="diagram-box">
+        <div class="flow-container">
+          <div class="flow-step">사용자 접속 (로그인 / 회원가입)<div class="flow-step-actor">Client → Auth API</div></div>
+          <div class="flow-arrow">↓</div>
+          <div class="flow-step">홈 / 대시보드 (오늘의 추천 학습)<div class="flow-step-actor">Dashboard API</div></div>
+          <div class="flow-arrow">↓</div>
+          <div class="flow-step">학습 경로 선택<div class="flow-step-actor">과목 목록 / 실생활 영어</div></div>
+          <div class="flow-arrow">↓ &nbsp;←&nbsp; &nbsp; →</div>
+          <div style="display:flex;gap:16px;flex-wrap:wrap;justify-content:center;">
+            <div class="flow-step" style="min-width:200px;">단원 요약 카드<div class="flow-step-actor">Summary API</div></div>
+            <div class="flow-step" style="min-width:200px;">AI 문제 출제<div class="flow-step-actor">Quiz API → GLM-5.2</div></div>
+            <div class="flow-step" style="min-width:200px;">실생활 영어 학습<div class="flow-step-actor">English API → TTS</div></div>
+          </div>
+          <div class="flow-arrow">↓</div>
+          <div class="flow-step">채점 / 해설 / 오답노트 자동 구성<div class="flow-step-actor">Quiz API → MariaDB</div></div>
+          <div class="flow-arrow">↓</div>
+          <div class="flow-step">학습 통계 업데이트 (시간/정답률/스트릭)<div class="flow-step-actor">Dashboard API → Redis</div></div>
+          <div class="flow-arrow">↓</div>
+          <div class="flow-step">배지 획득 / 레벨업 / 주간 리포트<div class="flow-step-actor">Gamification Engine</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3.3 아키텍처 -->
+    <div class="subsection">
+      <div class="subsection-title">3.3 아키텍처</div>
+      <div class="sub-subsection-title">전체 아키텍처 개요</div>
+      <p>
+        Daily Study는 <strong>클라이언트-서버 분리 아키텍처</strong>를 채택하며, 프론트엔드(Vue 3 SPA)와 백엔드(Spring Boot REST API)가
+        Nginx 리버스 프록시를 통해 통신한다. 모든 컴포넌트는 Docker Compose로 컨테이너화되어 단일 서버에 배포되며,
+        외부 AI API(GLM-5.2, GPT-4o-mini)를 호출하여 콘텐츠를 동적으로 생성한다.
+      </p>
+
+      <table>
+        <thead>
+          <tr><th style="width:140px;">계층</th><th>구성 요소</th><th style="width:200px;">주요 역할</th></tr>
+        </thead>
+        <tbody>
+          <tr><td class="td-label">Presentation</td><td>Vue 3 SPA, PWA</td><td>사용자 인터페이스, 오프라인 지원</td></tr>
+          <tr><td class="td-label">Proxy</td><td>Nginx</td><td>리버스 프록시, 정적 파일 서빙, SSL</td></tr>
+          <tr><td class="td-label">Application</td><td>Spring Boot 4.0 REST API</td><td>비즈니스 로직, 인증, AI 연동</td></tr>
+          <tr><td class="td-label">Data Access</td><td>MyBatis</td><td>SQL 매핑, 트랜잭션 관리</td></tr>
+          <tr><td class="td-label">Data Store</td><td>MariaDB 11, Redis</td><td>영구 저장, 캐싱/세션</td></tr>
+          <tr><td class="td-label">External</td><td>GLM-5.2, GPT-4o-mini, TTS, OAuth2</td><td>AI 콘텐츠 생성, 음원, 소셜 인증</td></tr>
+          <tr><td class="td-label">Batch</td><td>Spring Batch, Jsoup, Selenium</td><td>크롤링 자동화, 통계 집계</td></tr>
+          <tr><td class="td-label">Infrastructure</td><td>Ubuntu 24.04, Docker Compose</td><td>컨테이너 오케스트레이션</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- 3.4 S/W 아키텍처 -->
+    <div class="subsection">
+      <div class="subsection-title">3.4 S/W 아키텍처</div>
+      <div class="sub-subsection-title">백엔드 레이어 구조 (Spring Boot)</div>
+      <div class="diagram-box">
+        <div class="arch-layer">
+          <div class="arch-row">
+            <div class="arch-box arch-be arch-box-sm">Controller<br>(REST API)</div>
+          </div>
+          <div class="arch-arrow">↓</div>
+          <div class="arch-row">
+            <div class="arch-box arch-be arch-box-sm">Service<br>(비즈니스 로직)</div>
+          </div>
+          <div class="arch-arrow">↓</div>
+          <div class="arch-row">
+            <div class="arch-box arch-be arch-box-sm">Mapper<br>(MyBatis)</div>
+          </div>
+          <div class="arch-arrow">↓</div>
+          <div class="arch-row">
+            <div class="arch-box arch-db arch-box-sm">MariaDB</div>
+            <div class="arch-box arch-db arch-box-sm">Redis</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="sub-subsection-title">백엔드 모듈 구성</div>
+      <table>
+        <thead>
+          <tr><th style="width:40px;">No</th><th style="width:180px;">모듈</th><th>주요 클래스 / 역할</th></tr>
+        </thead>
+        <tbody>
+          <tr><td class="td-num">1</td><td class="td-label">auth</td><td>AuthController, AuthService, JwtUtil, OAuth2Handler — 인증/인가</td></tr>
+          <tr><td class="td-num">2</td><td class="td-label">subject</td><td>SubjectController, UnitController — 과목/단원 관리</td></tr>
+          <tr><td class="td-num">3</td><td class="td-label">summary</td><td>SummaryController, SummaryService, PdfExporter — 요약 콘텐츠</td></tr>
+          <tr><td class="td-num">4</td><td class="td-label">quiz</td><td>QuizController, AiQuizGenerator, ManualQuizService, GradingService, WrongNoteService — AI 문제 출제, 관리자 직접 등록, 채점</td></tr>
+          <tr><td class="td-num">5</td><td class="td-label">english</td><td>EnglishController, TtsService, RoleplayService — 실생활 영어</td></tr>
+          <tr><td class="td-num">6</td><td class="td-label">dashboard</td><td>DashboardController, StatisticsService, ReportService — 통계/리포트</td></tr>
+          <tr><td class="td-num">7</td><td class="td-label">gamification</td><td>BadgeService, LevelService, StreakService — 게이미피케이션</td></tr>
+          <tr><td class="td-num">8</td><td class="td-label">admin</td><td>AdminController, ReviewQueueService, CrawlingManageService — 관리자</td></tr>
+          <tr><td class="td-num">9</td><td class="td-label">batch</td><td>CrawlingJob, StatisticsJob — Spring Batch 배치 작업</td></tr>
+        </tbody>
+      </table>
+
+      <div class="sub-subsection-title">프론트엔드 구조 (Vue 3)</div>
+      <div class="diagram-box">
+        <div class="arch-layer">
+          <div class="arch-row">
+            <div class="arch-box arch-fe arch-box-sm">Views<br>(Page Components)</div>
+          </div>
+          <div class="arch-arrow">↓</div>
+          <div class="arch-row">
+            <div class="arch-box arch-fe arch-box-sm">Router<br>(Vue Router)</div>
+          </div>
+          <div class="arch-arrow">↓</div>
+          <div class="arch-row">
+            <div class="arch-box arch-fe arch-box-sm">Store<br>(Pinia)</div>
+          </div>
+          <div class="arch-arrow">↓</div>
+          <div class="arch-row">
+            <div class="arch-box arch-fe arch-box-sm">API Client<br>(Axios)</div>
+          </div>
+          <div class="arch-arrow">↓</div>
+          <div class="arch-row">
+            <div class="arch-box arch-be arch-box-sm">REST API<br>(Spring Boot)</div>
+          </div>
+        </div>
+      </div>
+
+      <table>
+        <thead>
+          <tr><th style="width:180px;">디렉토리</th><th>내용</th></tr>
+        </thead>
+        <tbody>
+          <tr><td class="td-label">/views</td><td>페이지 컴포넌트 (Dashboard, SubjectList, Quiz, EnglishSentence, Admin...)</td></tr>
+          <tr><td class="td-label">/components</td><td>재사용 UI 컴포넌트 (SummaryCard, QuizItem, BadgeBadge, Chart...)</td></tr>
+          <tr><td class="td-label">/stores</td><td>Pinia 상태 관리 (auth, user, quiz, dashboard, english)</td></tr>
+          <tr><td class="td-label">/router</td><td>Vue Router 설정 (공개/인증/관리자 라우트 가드)</td></tr>
+          <tr><td class="td-label">/api</td><td>Axios API 클라이언트 (엔드포인트별 모듈)</td></tr>
+          <tr><td class="td-label">/composables</td><td>재사용 로직 (useQuiz, useTts, useStreak)</td></tr>
+          <tr><td class="td-label">/assets</td><td>정적 리소스 (아이콘, 폰트)</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+
+  <div class="page-footer">
+    <span>Daily Study 개발계획서 v1.0</span>
+    <span>3. 시스템 구성도</span>
+  </div>
+</div>
+
+<!-- Page 2: Callflow -->
+<div class="page">
+  <div class="navbar">
+    <div class="navbar-brand"><a href="index.html">Daily Study 개발계획서</a></div>
+    <div class="nav-links">
+      <a href="development.html">← 2. 개발내용</a>
+      <a href="architecture.html" class="active">3. 시스템구성도</a>
+      <a href="organization.html">5. 수행조직 →</a>
+    </div>
+  </div>
+
+  <div class="content">
+    <div class="section-header" id="callflow">
+      <div class="section-number">SECTION 04</div>
+      <div class="section-title">4. Callflow</div>
+    </div>
+
+    <!-- 4.1 AI 문제 출제 Callflow -->
+    <div class="subsection">
+      <div class="subsection-title">4.1 AI 문제 출제 프로세스</div>
+      <table class="callflow-table">
+        <thead>
+          <tr>
+            <th class="callflow-step">Step</th>
+            <th style="width:120px;">Caller</th>
+            <th style="width:140px;">Callee</th>
+            <th>메시지 / 처리 내용</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td class="callflow-step">1</td><td class="td-label">Client</td><td class="td-label">Nginx</td><td>POST /api/quiz/generate (unit_id, difficulty, type, count)</td></tr>
+          <tr><td class="callflow-step">2</td><td class="td-label">Nginx</td><td class="td-label">QuizController</td><td>요청 전달 (Reverse Proxy)</td></tr>
+          <tr><td class="callflow-step">3</td><td class="td-label">QuizController</td><td class="td-label">AiQuizGenerator</td><td>단원 정보 조회 (UnitMapper → MariaDB)</td></tr>
+          <tr><td class="callflow-step">4</td><td class="td-label">AiQuizGenerator</td><td class="td-label">GLM-5.2 API</td><td>프롬프트 생성 및 AI 호출 (단원/난이도/유형/문제 수)</td></tr>
+          <tr><td class="callflow-step">5</td><td class="td-label">GLM-5.2</td><td class="td-label">AiQuizGenerator</td><td>JSON 응답 (문제/선택지/정답/해설)</td></tr>
+          <tr><td class="callflow-step">6</td><td class="td-label">AiQuizGenerator</td><td class="td-label">ReviewQueueService</td><td>생성 콘텐츠 품질 검수 큐 등록 (status=pending)</td></tr>
+          <tr><td class="callflow-step">7</td><td class="td-label">QuizController</td><td class="td-label">Client</td><td>생성된 문제 리스트 응답 (200 OK)</td></tr>
+          <tr><td class="callflow-step">8</td><td class="td-label">Client</td><td class="td-label">QuizController</td><td>POST /api/quiz/attempt (사용자 답안 제출)</td></tr>
+          <tr><td class="callflow-step">9</td><td class="td-label">GradingService</td><td class="td-label">MariaDB</td><td>QUIZ_ATTEMPT 저장, 정답 여부 판정</td></tr>
+          <tr><td class="callflow-step">10</td><td class="td-label">WrongNoteService</td><td class="td-label">MariaDB</td><td>오답시 오답노트 자동 등록</td></tr>
+          <tr><td class="callflow-step">11</td><td class="td-label">StreakService</td><td class="td-label">Redis</td><td>연속 학습일 업데이트</td></tr>
+          <tr><td class="callflow-step">12</td><td class="td-label">Client</td><td class="td-label">—</td><td>채점 결과 + 해설 표시</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- 4.2 실생활 영어 크롤링 → AI 정제 Callflow -->
+    <div class="subsection">
+      <div class="subsection-title">4.2 실생활 영어 문장 수집 및 정제 프로세스</div>
+      <table class="callflow-table">
+        <thead>
+          <tr>
+            <th class="callflow-step">Step</th>
+            <th style="width:120px;">Caller</th>
+            <th style="width:140px;">Callee</th>
+            <th>메시지 / 처리 내용</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td class="callflow-step">1</td><td class="td-label">Spring Batch</td><td class="td-label">CrawlingJob</td><td>크롤링 배치 작업 시작 (크론 스케줄러)</td></tr>
+          <tr><td class="callflow-step">2</td><td class="td-label">CrawlingJob</td><td class="td-label">Jsoup / Selenium</td><td>타겟 사이트 접속 및 문장 수집</td></tr>
+          <tr><td class="callflow-step">3</td><td class="td-label">CrawlingJob</td><td class="td-label">MariaDB</td><td>수집 원문 임시 저장 (ENGLISH_SENTENCE, status=raw)</td></tr>
+          <tr><td class="callflow-step">4</td><td class="td-label">CrawlingJob</td><td class="td-label">GPT-4o-mini</td><td>문장 정제 요청 (문법 검증, 자연스러움, 난이도 분류)</td></tr>
+          <tr><td class="callflow-step">5</td><td class="td-label">GPT-4o-mini</td><td class="td-label">CrawlingJob</td><td>정제된 문장 + 한국어 번역 + 난이도 반환</td></tr>
+          <tr><td class="callflow-step">6</td><td class="td-label">CrawlingJob</td><td class="td-label">TtsService</td><td>TTS API 호출 (영어 발음 음원 생성)</td></tr>
+          <tr><td class="callflow-step">7</td><td class="td-label">TtsService</td><td class="td-label">CrawlingJob</td><td>음원 파일 URL 반환</td></tr>
+          <tr><td class="callflow-step">8</td><td class="td-label">CrawlingJob</td><td class="td-label">MariaDB</td><td>정제 문장 저장 (status=review_pending, tts_url)</td></tr>
+          <tr><td class="callflow-step">9</td><td class="td-label">Admin</td><td class="td-label">ReviewQueueService</td><td>관리자 검수 큐에서 승인/반려</td></tr>
+          <tr><td class="callflow-step">10</td><td class="td-label">ReviewQueue</td><td class="td-label">MariaDB</td><td>승인 시 status=published — 사용자 노출</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- 4.4 관리자 문제 직접 등록 Callflow -->
+    <div class="subsection">
+      <div class="subsection-title">4.4 관리자 문제 직접 등록 프로세스</div>
+      <table class="callflow-table">
+        <thead>
+          <tr>
+            <th class="callflow-step">Step</th>
+            <th style="width:120px;">Caller</th>
+            <th style="width:140px;">Callee</th>
+            <th>메시지 / 처리 내용</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td class="callflow-step">1</td><td class="td-label">Admin</td><td class="td-label">Client</td><td>관리자 페이지 → 문제 직접 등록 화면 진입</td></tr>
+          <tr><td class="callflow-step">2</td><td class="td-label">Client</td><td class="td-label">SubjectController</td><td>GET /api/subjects — 과목·단원 목록 조회</td></tr>
+          <tr><td class="callflow-step">3</td><td class="td-label">Admin</td><td class="td-label">Client</td><td>문제 유형(객관식/주관식/서술형), 난이도, 문제/선택지/정답/해설 입력</td></tr>
+          <tr><td class="callflow-step">4</td><td class="td-label">Client</td><td class="td-label">QuizController</td><td>POST /api/admin/quizzes — 문제 등록 요청 (source_type=MANUAL)</td></tr>
+          <tr><td class="callflow-step">5</td><td class="td-label">QuizController</td><td class="td-label">QuizService</td><td>문제 유효성 검증 (필수 필드, 선택지/정답 일치성)</td></tr>
+          <tr><td class="callflow-step">6</td><td class="td-label">QuizService</td><td class="td-label">MariaDB</td><td>QUIZ + QUIZ_OPTION 테이블 저장 (status=DRAFT 또는 PUBLISHED)</td></tr>
+          <tr><td class="callflow-step">7</td><td class="td-label">QuizController</td><td class="td-label">Client</td><td>등록 성공 응답 (201 Created, quiz_id)</td></tr>
+          <tr><td class="callflow-step">8a</td><td class="td-label">Admin</td><td class="td-label">Client</td><td>[즉시 배포] status=PUBLISHED — 학생 화면에 즉시 노출</td></tr>
+          <tr><td class="callflow-step">8b</td><td class="td-label">Admin</td><td class="td-label">ReviewQueue</td><td>[검수 큐 전달] status=DRAFT — AI 검수 큐에서 추가 검수 진행</td></tr>
+        </tbody>
+      </table>
+      <div style="margin-top:12px; padding:10px; background:#f0fdf4; border-left:3px solid #10B981; font-size:13px; color:#065f46;">
+        <strong>Excel/CSV 일괄 업로드:</strong> POST /api/admin/quizzes/batch — 파일 업로드 후 백그라운드에서 파싱 및 일괄 저장. 처리 결과(성공/실패 건수)를 응답.
+      </div>
+    </div>
+
+    <!-- 4.3 소셜 로그인 Callflow -->
+    <div class="subsection">
+      <div class="subsection-title">4.3 소셜 로그인 (OAuth2) 프로세스</div>
+      <table class="callflow-table">
+        <thead>
+          <tr>
+            <th class="callflow-step">Step</th>
+            <th style="width:120px;">Caller</th>
+            <th style="width:140px;">Callee</th>
+            <th>메시지 / 처리 내용</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td class="callflow-step">1</td><td class="td-label">Client</td><td class="td-label">AuthController</td><td>GET /api/auth/oauth2/{provider} (google/kakao/naver)</td></tr>
+          <tr><td class="callflow-step">2</td><td class="td-label">AuthController</td><td class="td-label">OAuth2 Provider</td><td>302 Redirect — 인가 코드 요청</td></tr>
+          <tr><td class="callflow-step">3</td><td class="td-label">Client</td><td class="td-label">OAuth2 Provider</td><td>사용자 로그인 및 권한 동의</td></tr>
+          <tr><td class="callflow-step">4</td><td class="td-label">OAuth2 Provider</td><td class="td-label">AuthController</td><td>Redirect with authorization code</td></tr>
+          <tr><td class="callflow-step">5</td><td class="td-label">AuthService</td><td class="td-label">OAuth2 Provider</td><td>Authorization Code → Access Token 교환</td></tr>
+          <tr><td class="callflow-step">6</td><td class="td-label">AuthService</td><td class="td-label">OAuth2 Provider</td><td>Access Token → 사용자 프로필 조회 (email, name)</td></tr>
+          <tr><td class="callflow-step">7</td><td class="td-label">AuthService</td><td class="td-label">MariaDB</td><td>USER 테이블 조회/생성 (기존 회원 여부 확인)</td></tr>
+          <tr><td class="callflow-step">8</td><td class="td-label">AuthService</td><td class="td-label">JwtUtil</td><td>JWT 토큰 발급 (access + refresh)</td></tr>
+          <tr><td class="callflow-step">9</td><td class="td-label">AuthController</td><td class="td-label">Client</td><td>JWT 토큰 + 사용자 정보 응답</td></tr>
+          <tr><td class="callflow-step">10</td><td class="td-label">Client</td><td class="td-label">—</td><td>토큰 저장 (LocalStorage), 대시보드 이동</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+
+  <div class="page-footer">
+    <span>Daily Study 개발계획서 v1.0</span>
+    <span>4. Callflow</span>
+  </div>
+</div>
+
+</body>
+</html>

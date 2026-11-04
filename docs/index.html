@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Daily Study 프로젝트 개발계획서</title>
+<style>
+  :root {
+    --primary: #10B981;
+    --primary-dark: #059669;
+    --primary-light: #D1FAE5;
+    --text-dark: #1F2937;
+    --text-gray: #4B5563;
+    --text-light: #6B7280;
+    --bg-white: #FFFFFF;
+    --bg-gray: #F9FAFB;
+    --border: #E5E7EB;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: "Pretendard", "Noto Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+    color: var(--text-dark);
+    background: var(--bg-gray);
+    line-height: 1.7;
+  }
+  .page {
+    max-width: 210mm;
+    min-height: 297mm;
+    margin: 0 auto;
+    background: var(--bg-white);
+    padding: 0;
+    box-shadow: 0 2px 20px rgba(0,0,0,0.08);
+    position: relative;
+  }
+  /* Cover */
+  .cover {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 297mm;
+    padding: 40mm 30mm;
+    text-align: center;
+    background: linear-gradient(135deg, #10B981 0%, #059669 40%, #047857 100%);
+    color: #fff;
+  }
+  .cover-logo {
+    width: 100px; height: 100px;
+    border: 4px solid rgba(255,255,255,0.3);
+    border-radius: 24px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 48px; font-weight: 800;
+    margin-bottom: 40px;
+    background: rgba(255,255,255,0.1);
+  }
+  .cover-subtitle {
+    font-size: 18px;
+    letter-spacing: 4px;
+    opacity: 0.85;
+    margin-bottom: 16px;
+    text-transform: uppercase;
+  }
+  .cover-title {
+    font-size: 52px;
+    font-weight: 800;
+    margin-bottom: 12px;
+    letter-spacing: -1px;
+  }
+  .cover-title-en {
+    font-size: 24px;
+    font-weight: 400;
+    opacity: 0.8;
+    margin-bottom: 60px;
+    letter-spacing: 2px;
+  }
+  .cover-divider {
+    width: 120px; height: 4px;
+    background: rgba(255,255,255,0.5);
+    border-radius: 2px;
+    margin: 0 auto 60px;
+  }
+  .cover-meta {
+    font-size: 16px;
+    line-height: 2.2;
+    opacity: 0.9;
+  }
+  .cover-meta strong { font-weight: 600; }
+  .cover-footer {
+    position: absolute;
+    bottom: 30mm;
+    font-size: 14px;
+    opacity: 0.7;
+    letter-spacing: 1px;
+  }
+  /* Navigation */
+  .navbar {
+    background: var(--primary);
+    color: #fff;
+    padding: 14px 40mm 14px 30mm;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+  }
+  .navbar-brand {
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+  }
+  .navbar-brand a { color: #fff; text-decoration: none; }
+  .nav-links { display: flex; gap: 8px; align-items: center; }
+  .nav-links a {
+    color: rgba(255,255,255,0.9);
+    text-decoration: none;
+    font-size: 13px;
+    padding: 6px 14px;
+    border-radius: 6px;
+    transition: background 0.2s;
+  }
+  .nav-links a:hover { background: rgba(255,255,255,0.15); }
+  .nav-links a.active { background: rgba(255,255,255,0.2); font-weight: 600; }
+  .nav-links a.disabled { opacity: 0.4; pointer-events: none; }
+  /* Content */
+  .content {
+    padding: 30mm 30mm 20mm;
+  }
+  .section-header {
+    margin-bottom: 32px;
+    border-bottom: 3px solid var(--primary);
+    padding-bottom: 12px;
+  }
+  .section-number {
+    font-size: 14px;
+    color: var(--primary);
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+  .section-title {
+    font-size: 32px;
+    font-weight: 800;
+    color: var(--text-dark);
+    margin-top: 4px;
+    letter-spacing: -1px;
+  }
+  .subsection {
+    margin-bottom: 40px;
+  }
+  .subsection-title {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--text-dark);
+    margin-bottom: 16px;
+    padding-left: 16px;
+    border-left: 5px solid var(--primary);
+  }
+  .sub-subsection-title {
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--primary-dark);
+    margin: 24px 0 12px;
+  }
+  p { margin-bottom: 12px; color: var(--text-gray); }
+  .lead {
+    font-size: 16px;
+    color: var(--text-gray);
+    margin-bottom: 24px;
+  }
+  /* Table */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 16px 0 24px;
+    font-size: 14px;
+  }
+  thead th {
+    background: var(--primary);
+    color: #fff;
+    padding: 12px 14px;
+    text-align: left;
+    font-weight: 700;
+    font-size: 13px;
+    letter-spacing: 0.3px;
+  }
+  thead th:first-child { border-radius: 8px 0 0 0; }
+  thead th:last-child { border-radius: 0 8px 0 0; }
+  tbody td {
+    padding: 11px 14px;
+    border-bottom: 1px solid var(--border);
+    color: var(--text-gray);
+    vertical-align: top;
+  }
+  tbody tr:nth-child(even) { background: var(--bg-gray); }
+  tbody tr:hover { background: var(--primary-light); }
+  .td-num { text-align: center; font-weight: 600; color: var(--primary); width: 50px; }
+  .td-label { font-weight: 600; color: var(--text-dark); white-space: nowrap; }
+  /* Cards */
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    margin: 16px 0;
+  }
+  .card {
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px;
+    background: var(--bg-white);
+    transition: box-shadow 0.2s;
+  }
+  .card:hover { box-shadow: 0 4px 16px rgba(16,185,129,0.12); }
+  .card-icon {
+    width: 44px; height: 44px;
+    border-radius: 10px;
+    background: var(--primary-light);
+    color: var(--primary-dark);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px; font-weight: 800;
+    margin-bottom: 12px;
+  }
+  .card-title { font-size: 16px; font-weight: 700; margin-bottom: 6px; color: var(--text-dark); }
+  .card-desc { font-size: 13px; color: var(--text-light); line-height: 1.6; }
+  /* Info box */
+  .info-box {
+    background: var(--primary-light);
+    border-left: 5px solid var(--primary);
+    border-radius: 0 8px 8px 0;
+    padding: 16px 20px;
+    margin: 16px 0;
+    font-size: 14px;
+    color: var(--text-dark);
+  }
+  .info-box strong { color: var(--primary-dark); }
+  .warning-box {
+    background: #FEF3C7;
+    border-left: 5px solid #F59E0B;
+    border-radius: 0 8px 8px 0;
+    padding: 16px 20px;
+    margin: 16px 0;
+    font-size: 14px;
+    color: #78350F;
+  }
+  /* List */
+  ul, ol { margin: 8px 0 16px 20px; }
+  li { margin-bottom: 6px; color: var(--text-gray); font-size: 14px; }
+  /* Badge */
+  .badge {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.3px;
+  }
+  .badge-green { background: var(--primary-light); color: var(--primary-dark); }
+  .badge-blue { background: #DBEAFE; color: #1E40AF; }
+  .badge-purple { background: #EDE9FE; color: #5B21B6; }
+  .badge-orange { background: #FFEDD5; color: #C2410C; }
+  /* Footer */
+  .page-footer {
+    border-top: 1px solid var(--border);
+    padding: 14px 30mm;
+    font-size: 11px;
+    color: var(--text-light);
+    display: flex;
+    justify-content: space-between;
+  }
+  /* TOC */
+  .toc {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .toc li {
+    display: flex;
+    align-items: baseline;
+    padding: 14px 0;
+    border-bottom: 1px dashed var(--border);
+    font-size: 16px;
+  }
+  .toc-num {
+    font-weight: 800;
+    color: var(--primary);
+    width: 50px;
+    flex-shrink: 0;
+  }
+  .toc-title { flex-grow: 1; color: var(--text-dark); font-weight: 600; }
+  .toc-title a { text-decoration: none; color: var(--text-dark); }
+  .toc-title a:hover { color: var(--primary); }
+  .toc-page { color: var(--text-light); font-size: 14px; }
+  .toc-sub {
+    list-style: none;
+    margin: 4px 0 0 50px;
+    padding: 0;
+  }
+  .toc-sub li {
+    font-size: 13px;
+    color: var(--text-light);
+    border: none;
+    padding: 4px 0;
+  }
+  .toc-sub li:before {
+    content: "·";
+    color: var(--primary);
+    font-weight: 800;
+    margin-right: 8px;
+  }
+  /* Print */
+  @media print {
+    body { background: #fff; }
+    .page { box-shadow: none; margin: 0; max-width: none; }
+    .navbar { display: none; }
+    @page { size: A4; margin: 0; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Cover Page -->
+<div class="page cover">
+  <div class="cover-logo">DS</div>
+  <div class="cover-subtitle">Development Plan</div>
+  <div class="cover-title">Daily Study</div>
+  <div class="cover-title-en">중·고등학생 학습 보조 플랫폼</div>
+  <div class="cover-divider"></div>
+  <div class="cover-meta">
+    <div><strong>프로젝트명</strong> &nbsp; Daily Study (데일리 스터디)</div>
+    <div><strong>문서 종류</strong> &nbsp; 개발계획서 (Development Plan)</div>
+    <div><strong>작성일자</strong> &nbsp; 2026년 11월 04일</div>
+    <div><strong>버전</strong> &nbsp; v1.0</div>
+  </div>
+  <div class="cover-footer">LG U+ AICC 개발계획서 포맷 · 기밀문서</div>
+</div>
+
+<!-- Table of Contents -->
+<div class="page">
+  <div class="navbar">
+    <div class="navbar-brand"><a href="index.html">Daily Study 개발계획서</a></div>
+    <div class="nav-links">
+      <a href="index.html" class="active">목차</a>
+      <a href="overview.html">다음 →</a>
+    </div>
+  </div>
+  <div class="content">
+    <div class="section-header">
+      <div class="section-number">CONTENTS</div>
+      <div class="section-title">목 차</div>
+    </div>
+    <ul class="toc">
+      <li>
+        <span class="toc-num">1</span>
+        <span class="toc-title"><a href="overview.html">프로젝트 개요</a></span>
+        <span class="toc-page">overview.html</span>
+      </li>
+      <li>
+        <span class="toc-num">2</span>
+        <span class="toc-title"><a href="development.html">프로젝트 개발 내용</a></span>
+        <span class="toc-page">development.html</span>
+      </li>
+      <li>
+        <span class="toc-num">3</span>
+        <span class="toc-title"><a href="architecture.html">시스템 구성도</a></span>
+        <span class="toc-page">architecture.html</span>
+      </li>
+      <li>
+        <span class="toc-num">4</span>
+        <span class="toc-title"><a href="architecture.html#callflow">Callflow</a></span>
+        <span class="toc-page">architecture.html</span>
+      </li>
+      <li>
+        <span class="toc-num">5</span>
+        <span class="toc-title"><a href="organization.html">프로젝트 수행조직</a></span>
+        <span class="toc-page">organization.html</span>
+      </li>
+      <li>
+        <span class="toc-num">6</span>
+        <span class="toc-title"><a href="organization.html#schedule">주요 추진 일정</a></span>
+        <span class="toc-page">organization.html</span>
+      </li>
+      <li>
+        <span class="toc-num">별첨1</span>
+        <span class="toc-title"><a href="appendix.html">의사소통 계획</a></span>
+        <span class="toc-page">appendix.html</span>
+      </li>
+      <li>
+        <span class="toc-num">별첨2</span>
+        <span class="toc-title"><a href="appendix.html#pm-plan">프로젝트 관리 계획</a></span>
+        <span class="toc-page">appendix.html</span>
+      </li>
+      <li>
+        <span class="toc-num">별첨3</span>
+        <span class="toc-title"><a href="appendix.html#deliverables">프로젝트 산출물</a></span>
+        <span class="toc-page">appendix.html</span>
+      </li>
+    </ul>
+    <div class="info-box" style="margin-top: 40px;">
+      <strong>문서 정보:</strong> 본 개발계획서는 Daily Study 프로젝트의 개발 범위, 일정, 수행조직 및 관리 계획을 정의한 문서입니다. LG U+ AICC 개발계획서 포맷을 준용하여 작성되었습니다.
+    </div>
+  </div>
+  <div class="page-footer">
+    <span>Daily Study 개발계획서 v1.0</span>
+    <span>목차</span>
+  </div>
+</div>
+
+</body>
+</html>
