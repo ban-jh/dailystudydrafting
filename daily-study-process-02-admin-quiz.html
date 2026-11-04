@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Daily Study — 관리자: 문제 생성→승인</title>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body { font-family:'JetBrains Mono',monospace; background:#020617; min-height:100vh; padding:2rem; color:white; }
+    .container { max-width:1100px; margin:0 auto; }
+    .header { margin-bottom:2rem; }
+    .header-row { display:flex; align-items:center; gap:1rem; margin-bottom:0.5rem; }
+    .pulse-dot { width:12px; height:12px; background:#fb923c; border-radius:50%; animation:pulse 2s infinite; }
+    @keyframes pulse { 0%,100%{opacity:1;} 50%{opacity:0.5;} }
+    h1 { font-size:1.4rem; font-weight:700; }
+    .subtitle { color:#94a3b8; font-size:0.875rem; margin-left:1.75rem; }
+    .diagram-container { background:rgba(15,23,42,0.5); border-radius:1rem; border:1px solid #1e293b; padding:1.5rem; overflow-x:auto; }
+    svg { width:100%; min-width:850px; display:block; }
+    .nav { display:flex; gap:1rem; margin-bottom:1.5rem; flex-wrap:wrap; }
+    .nav a { padding:8px 16px; border-radius:8px; border:1px solid #1e293b; background:rgba(15,23,42,0.5); color:#94a3b8; text-decoration:none; font-size:0.8rem; transition:all 0.2s; }
+    .nav a:hover { border-color:#fbbf24; color:#fbbf24; }
+    .nav a.active { background:rgba(120,53,15,0.3); border-color:#fbbf24; color:#fbbf24; }
+    .footer { text-align:center; margin-top:1.5rem; color:#475569; font-size:0.75rem; }
+  </style>
+</head>
+<body>
+<div class="container">
+  <div class="header">
+    <div class="header-row"><div class="pulse-dot"></div><h1>Daily Study — 관리자 프로세스</h1></div>
+    <p class="subtitle">2/4 · 문제 생성(AI/크롤링/직접) → 검수 → 승인</p>
+  </div>
+  <div class="nav">
+    <a href="daily-study-process-01-admin-subject.html">① 과목/단원 관리</a>
+    <a href="daily-study-process-02-admin-quiz.html" class="active">② 문제 생성→승인</a>
+    <a href="daily-study-process-03-student.html">③ 학생 학습/풀이</a>
+    <a href="daily-study-process-04-parent.html">④ 학부모 현황/리포트</a>
+  </div>
+  <div class="diagram-container">
+    <svg viewBox="0 0 850 720">
+      <defs>
+        <marker id="ah" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#fbbf24"/></marker>
+        <marker id="ah-g" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#34d399"/></marker>
+        <marker id="ah-r" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#fb7185"/></marker>
+        <marker id="ah-o" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#fb923c"/></marker>
+        <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M 40 0 L 0 0 0 40" fill="none" stroke="#1e293b" stroke-width="0.5"/></pattern>
+      </defs>
+      <rect width="100%" height="100%" fill="url(#grid)"/>
+
+      <!-- Admin Dashboard -->
+      <rect x="320" y="20" width="220" height="50" rx="6" fill="rgba(120,53,15,0.3)" stroke="#fbbf24" stroke-width="1.5"/>
+      <text x="430" y="42" fill="white" font-size="12" font-weight="700" text-anchor="middle">관리자 대시보드</text>
+      <text x="430" y="58" fill="#94a3b8" font-size="9" text-anchor="middle">콘텐츠 관리 → 문제 생성</text>
+      <line x1="430" y1="70" x2="430" y2="95" stroke="#fbbf24" stroke-width="1.5" marker-end="url(#ah)"/>
+      <text x="450" y="88" fill="#94a3b8" font-size="8">문제 등록</text>
+
+      <!-- 3-way selection -->
+      <text x="430" y="115" fill="white" font-size="10" font-weight="600" text-anchor="middle">문제 생성 방식 선택</text>
+
+      <!-- AI Generation -->
+      <rect x="60" y="130" width="200" height="90" rx="6" fill="rgba(6,78,59,0.4)" stroke="#34d399" stroke-width="1.5"/>
+      <text x="160" y="153" fill="white" font-size="11" font-weight="600" text-anchor="middle">🤖 AI 생성</text>
+      <text x="160" y="170" fill="#94a3b8" font-size="9" text-anchor="middle">GLM-5.2 API 호출</text>
+      <text x="160" y="184" fill="#94a3b8" font-size="8" text-anchor="middle">과목·단원·난이도·유형</text>
+      <text x="160" y="197" fill="#94a3b8" font-size="8" text-anchor="middle">문제수 지정 → 일괄 생성</text>
+      <text x="160" y="212" fill="#34d399" font-size="8" text-anchor="middle">→ 문제+선택지+정답+해설</text>
+      <line x1="160" y1="130" x2="350" y2="110" stroke="#34d399" stroke-width="1.5" marker-end="url(#ah-g)"/>
+
+      <!-- Crawling -->
+      <rect x="330" y="130" width="200" height="90" rx="6" fill="rgba(251,146,60,0.2)" stroke="#fb923c" stroke-width="1.5"/>
+      <text x="430" y="153" fill="white" font-size="11" font-weight="600" text-anchor="middle">🕷️ 크롤링 수집</text>
+      <text x="430" y="170" fill="#94a3b8" font-size="9" text-anchor="middle">JSoup + Selenium</text>
+      <text x="430" y="184" fill="#94a3b8" font-size="8" text-anchor="middle">기출문제·교육사이트</text>
+      <text x="430" y="197" fill="#94a3b8" font-size="8" text-anchor="middle">수집 → AI 정제(GPT-4o-mini)</text>
+      <text x="430" y="212" fill="#fb923c" font-size="8" text-anchor="middle">→ 문장 교정·중복제거</text>
+
+      <!-- Manual Input -->
+      <rect x="600" y="130" width="200" height="90" rx="6" fill="rgba(136,19,55,0.3)" stroke="#fb7185" stroke-width="1.5"/>
+      <text x="700" y="153" fill="white" font-size="11" font-weight="600" text-anchor="middle">✍️ 직접 입력</text>
+      <text x="700" y="170" fill="#94a3b8" font-size="9" text-anchor="middle">객관식·주관식·서술형</text>
+      <text x="700" y="184" fill="#94a3b8" font-size="8" text-anchor="middle">문제·선택지·정답·해설</text>
+      <text x="700" y="197" fill="#94a3b8" font-size="8" text-anchor="middle">Excel/CSV 일괄 업로드</text>
+      <text x="700" y="212" fill="#fb7185" font-size="8" text-anchor="middle">→ 대량 등록</text>
+
+      <!-- 3 → Approval Queue -->
+      <line x1="160" y1="220" x2="350" y2="260" stroke="#fbbf24" stroke-width="1.5" stroke-dasharray="4,4" marker-end="url(#ah)"/>
+      <text x="230" y="245" fill="#94a3b8" font-size="8">source_type=AI</text>
+      <line x1="430" y1="220" x2="430" y2="260" stroke="#fbbf24" stroke-width="1.5" stroke-dasharray="4,4" marker-end="url(#ah)"/>
+      <text x="445" y="245" fill="#94a3b8" font-size="8">source_type=CRAWL</text>
+      <line x1="700" y1="220" x2="510" y2="260" stroke="#fbbf24" stroke-width="1.5" stroke-dasharray="4,4" marker-end="url(#ah)"/>
+      <text x="580" y="245" fill="#94a3b8" font-size="8">source_type=MANUAL</text>
+
+      <!-- Approval Queue -->
+      <rect x="290" y="265" width="280" height="80" rx="6" fill="rgba(136,19,55,0.4)" stroke="#fb7185" stroke-width="1.5"/>
+      <text x="430" y="290" fill="white" font-size="12" font-weight="700" text-anchor="middle">검수 큐 (Approval Queue)</text>
+      <text x="430" y="308" fill="#94a3b8" font-size="9" text-anchor="middle">status: PENDING · 관리자 검수 대기</text>
+      <text x="430" y="322" fill="#94a3b8" font-size="8" text-anchor="middle">문제 품질 확인: 정답 일치성·중복·내용</text>
+      <text x="430" y="336" fill="#fb7185" font-size="8" text-anchor="middle">[승인] or [반려] 버튼</text>
+
+      <!-- Approval → 2 branches -->
+      <line x1="370" y1="345" x2="200" y2="380" stroke="#fb7185" stroke-width="1.5" stroke-dasharray="5,5" marker-end="url(#ah-r)"/>
+      <text x="255" y="365" fill="#fb7185" font-size="8">반려</text>
+      <line x1="490" y1="345" x2="600" y2="380" stroke="#34d399" stroke-width="2" marker-end="url(#ah-g)"/>
+      <text x="540" y="365" fill="#34d399" font-size="8">승인</text>
+
+      <!-- Rejected -->
+      <rect x="80" y="385" width="210" height="80" rx="6" fill="rgba(136,19,55,0.3)" stroke="#fb7185" stroke-width="1.5"/>
+      <text x="185" y="408" fill="white" font-size="11" font-weight="600" text-anchor="middle">❌ 반려 (REJECTED)</text>
+      <text x="185" y="425" fill="#94a3b8" font-size="9" text-anchor="middle">reject_reason 입력</text>
+      <text x="185" y="440" fill="#94a3b8" font-size="9" text-anchor="middle">수정 후 재등록 or 폐기</text>
+      <text x="185" y="456" fill="#fb7185" font-size="8" text-anchor="middle">→ 학생에게 노출 안 됨</text>
+
+      <!-- Rejected → back to generation (loop) -->
+      <path d="M 80 425 Q 30 425 30 350 Q 30 175 160 175" fill="none" stroke="#fb7185" stroke-width="1" stroke-dasharray="3,3" marker-end="url(#ah-r)"/>
+      <text x="20" y="300" fill="#fb7185" font-size="7" transform="rotate(-90 20 300)">수정 후 재등록</text>
+
+      <!-- Published -->
+      <rect x="530" y="385" width="210" height="80" rx="6" fill="rgba(6,78,59,0.4)" stroke="#34d399" stroke-width="1.5"/>
+      <text x="635" y="408" fill="white" font-size="11" font-weight="600" text-anchor="middle">✅ 승인 (PUBLISHED)</text>
+      <text x="635" y="425" fill="#94a3b8" font-size="9" text-anchor="middle">reviewed_by·reviewed_at 기록</text>
+      <text x="635" y="440" fill="#94a3b8" font-size="9" text-anchor="middle">승인된 문제 풀에 등록</text>
+      <text x="635" y="456" fill="#34d399" font-size="8" text-anchor="middle">→ 학생 화면에 노출</text>
+
+      <!-- Published → Student Quiz -->
+      <line x1="635" y1="465" x2="635" y2="510" stroke="#34d399" stroke-width="2" marker-end="url(#ah-g)"/>
+      <text x="660" y="492" fill="#34d399" font-size="9" font-weight="600">학생에게 제공</text>
+
+      <!-- Student Quiz (endpoint) -->
+      <rect x="510" y="515" width="250" height="55" rx="6" fill="rgba(8,51,68,0.4)" stroke="#22d3ee" stroke-width="1.5"/>
+      <text x="635" y="538" fill="white" font-size="11" font-weight="600" text-anchor="middle">학생: 문제 풀이 화면</text>
+      <text x="635" y="554" fill="#94a3b8" font-size="9" text-anchor="middle">GET /api/quizzes?unitId=X</text>
+      <text x="635" y="565" fill="#22d3ee" font-size="8" text-anchor="middle">승인된 문제만 랜덤 제공</text>
+
+      <!-- External APIs -->
+      <rect x="60" y="580" width="180" height="50" rx="6" fill="rgba(251,146,60,0.2)" stroke="#fb923c" stroke-width="1.5"/>
+      <text x="150" y="602" fill="white" font-size="10" font-weight="600" text-anchor="middle">AI / 크롤링 / TTS</text>
+      <text x="150" y="618" fill="#94a3b8" font-size="8" text-anchor="middle">GLM-5.2·GPT-4o-mini·JSoup</text>
+      <line x1="150" y1="580" x2="160" y2="220" stroke="#fb923c" stroke-width="1" stroke-dasharray="3,3" marker-end="url(#ah-o)"/>
+
+      <!-- Database -->
+      <rect x="300" y="580" width="200" height="50" rx="6" fill="rgba(76,29,149,0.4)" stroke="#a78bfa" stroke-width="1.5"/>
+      <text x="400" y="602" fill="white" font-size="10" font-weight="600" text-anchor="middle">MariaDB (QUIZ 테이블)</text>
+      <text x="400" y="618" fill="#94a3b8" font-size="8" text-anchor="middle">source_type·status·reviewed_by</text>
+      <line x1="400" y1="580" x2="400" y2="345" stroke="#a78bfa" stroke-width="1" stroke-dasharray="3,3"/>
+
+      <!-- Legend -->
+      <text x="560" y="600" fill="white" font-size="9" font-weight="600">Legend</text>
+      <rect x="560" y="612" width="14" height="9" rx="2" fill="rgba(6,78,59,0.4)" stroke="#34d399" stroke-width="1"/>
+      <text x="580" y="619" fill="#94a3b8" font-size="7">AI 생성</text>
+      <rect x="560" y="626" width="14" height="9" rx="2" fill="rgba(251,146,60,0.2)" stroke="#fb923c" stroke-width="1"/>
+      <text x="580" y="633" fill="#94a3b8" font-size="7">크롤링</text>
+      <rect x="560" y="640" width="14" height="9" rx="2" fill="rgba(136,19,55,0.3)" stroke="#fb7185" stroke-width="1"/>
+      <text x="580" y="647" fill="#94a3b8" font-size="7">직접입력/반려</text>
+      <rect x="640" y="612" width="14" height="9" rx="2" fill="rgba(6,78,59,0.4)" stroke="#34d399" stroke-width="1"/>
+      <text x="660" y="619" fill="#94a3b8" font-size="7">승인/학생제공</text>
+      <rect x="640" y="626" width="14" height="9" rx="2" fill="rgba(76,29,149,0.4)" stroke="#a78bfa" stroke-width="1"/>
+      <text x="660" y="633" fill="#94a3b8" font-size="7">데이터베이스</text>
+      <rect x="640" y="640" width="14" height="9" rx="2" fill="rgba(251,146,60,0.2)" stroke="#fb923c" stroke-width="1"/>
+      <text x="660" y="647" fill="#94a3b8" font-size="7">외부 API</text>
+    </svg>
+  </div>
+  <p class="footer">Daily Study • 관리자 프로세스 2/4 • 2026-11-04</p>
+</div>
+</body>
+</html>
