@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Daily Study 화면설계서 — 단원 요약</title>
+<style>
+
+@import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: 'Pretendard', -apple-system, sans-serif;
+  background: #f0f2f5;
+  color: #1a1a2e;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+.page {
+  max-width: 1200px;
+  margin: 0 auto;
+  background: #fff;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+/* Top bar */
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 32px;
+  background: linear-gradient(90deg, #22B2FF, #4555FF);
+  color: #fff;
+  font-size: 15px;
+  font-weight: 600;
+}
+.topbar .nav-btns a {
+  color: #fff;
+  text-decoration: none;
+  padding: 4px 14px;
+  border: 1px solid rgba(255,255,255,0.5);
+  border-radius: 6px;
+  margin-left: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  transition: background .2s;
+}
+.topbar .nav-btns a:hover { background: rgba(255,255,255,0.2); }
+
+/* Header info */
+.spec-header {
+  display: flex;
+  gap: 0;
+  border-bottom: 2px solid #4555FF;
+  background: #f8faff;
+}
+.spec-header .field {
+  flex: 1;
+  padding: 12px 24px;
+  border-right: 1px solid #e0e6f0;
+}
+.spec-header .field:last-child { border-right: none; }
+.spec-header .label {
+  font-size: 11px;
+  color: #8899bb;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  margin-bottom: 2px;
+}
+.spec-header .value {
+  font-size: 15px;
+  color: #1a1a2e;
+  font-weight: 600;
+}
+
+/* Main content */
+.main-content {
+  display: flex;
+  flex: 1;
+  min-height: 500px;
+}
+.layout-section {
+  flex: 0 0 48%;
+  padding: 32px;
+  border-right: 1px solid #e0e6f0;
+  background: #fafbff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.events-section {
+  flex: 1;
+  padding: 32px;
+  background: #fff;
+}
+.events-section h3 {
+  font-size: 14px;
+  color: #4555FF;
+  margin-bottom: 20px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #e0e6f0;
+}
+.event-item {
+  margin-bottom: 24px;
+}
+.event-num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px; height: 28px;
+  background: linear-gradient(135deg, #22B2FF, #4555FF);
+  color: #fff;
+  border-radius: 50%;
+  font-size: 14px;
+  font-weight: 700;
+  margin-right: 8px;
+  vertical-align: middle;
+}
+.event-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: #1a1a2e;
+  vertical-align: middle;
+}
+.event-desc {
+  margin-left: 36px;
+  margin-top: 6px;
+  font-size: 13px;
+  color: #555;
+  line-height: 1.7;
+}
+.event-desc ul { padding-left: 16px; margin: 4px 0; }
+.event-desc li { margin-bottom: 2px; }
+
+/* Wireframe device frame */
+.device-frame {
+  width: 320px;
+  background: #fff;
+  border: 2px solid #d0d8e8;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.1);
+  position: relative;
+}
+.device-statusbar {
+  background: #f0f2f5;
+  padding: 6px 16px;
+  display: flex;
+  justify-content: space-between;
+  font-size: 10px;
+  color: #888;
+}
+.device-content {
+  padding: 20px 16px;
+  min-height: 400px;
+}
+.wf-label {
+  font-size: 11px;
+  color: #4555FF;
+  font-weight: 600;
+  margin: 8px 0 4px;
+}
+.wf-num {
+  display: inline-flex;
+  align-items: center; justify-content: center;
+  width: 20px; height: 20px;
+  background: #4555FF; color: #fff;
+  border-radius: 50%; font-size: 11px; font-weight: 700;
+  margin-right: 4px;
+  position: absolute;
+  z-index: 10;
+}
+.wf-input {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #d0d8e8;
+  border-radius: 8px;
+  font-size: 12px;
+  color: #999;
+  margin-bottom: 10px;
+  background: #f9fafb;
+}
+.wf-btn {
+  width: 100%;
+  padding: 12px;
+  border: none;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 600;
+  text-align: center;
+  margin-bottom: 8px;
+}
+.wf-btn-primary {
+  background: linear-gradient(90deg, #22B2FF, #4555FF);
+  color: #fff;
+}
+.wf-btn-secondary {
+  background: #f0f2f5;
+  color: #4555FF;
+}
+.wf-card {
+  background: #f8faff;
+  border: 1px solid #e0e6f0;
+  border-radius: 12px;
+  padding: 12px;
+  margin-bottom: 10px;
+}
+.wf-link {
+  font-size: 12px;
+  color: #4555FF;
+  text-decoration: underline;
+  text-align: center;
+  display: block;
+  margin: 8px 0;
+}
+.wf-text {
+  font-size: 12px; color: #333; margin-bottom: 8px;
+}
+.wf-badge {
+  display: inline-block; padding: 2px 8px; border-radius: 6px;
+  font-size: 10px; font-weight: 600;
+}
+.wf-progress {
+  height: 6px; background: #e0e6f0; border-radius: 3px; margin: 4px 0;
+}
+.wf-progress-fill {
+  height: 100%; background: linear-gradient(90deg, #22B2FF, #4555FF);
+  border-radius: 3px;
+}
+.wf-row { display: flex; gap: 8px; margin-bottom: 8px; }
+.wf-col { flex: 1; }
+.wf-grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.wf-grid3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px; }
+.wf-nav {
+  display: flex; justify-content: space-around;
+  padding: 8px 0; border-top: 1px solid #e0e6f0;
+  margin-top: 12px; background: #fff;
+}
+.wf-nav-item {
+  font-size: 9px; color: #889; text-align: center;
+}
+.wf-nav-item.active { color: #4555FF; font-weight: 600; }
+.wf-checkbox {
+  display: inline-block; width: 14px; height: 14px;
+  border: 1px solid #d0d8e8; border-radius: 3px;
+  vertical-align: middle; margin-right: 4px;
+}
+.wf-chart-bar {
+  display: flex; align-items: flex-end; gap: 6px;
+  height: 100px; margin: 8px 0;
+}
+.wf-bar {
+  flex: 1; background: linear-gradient(180deg, #22B2FF, #4555FF);
+  border-radius: 4px 4px 0 0;
+  display: flex; align-items: flex-start; justify-content: center;
+  font-size: 8px; color: #fff; padding-top: 2px;
+}
+
+/* Footer */
+.footer {
+  text-align: center;
+  padding: 16px;
+  font-size: 12px;
+  color: #8899bb;
+  border-top: 1px solid #e0e6f0;
+  background: #f8faff;
+}
+
+@media print {
+  body { background: #fff; }
+  .page { max-width: 100%; box-shadow: none; }
+  .topbar .nav-btns { display: none; }
+  .main-content { min-height: auto; }
+}
+
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="topbar">
+    <span>Daily Study 화면설계서 v1.0</span>
+    <span class="nav-btns"><a href="screen-04-subjects.html">← 과목 목록</a><a href="index.html">목차</a><a href="screen-06-quiz.html">문제 풀이 설정 →</a></span>
+  </div>
+  <div class="spec-header">
+    <div class="field"><div class="label">화면명</div><div class="value">단원 요약</div></div>
+    <div class="field"><div class="label">화면ID</div><div class="value" style="font-family:monospace;font-size:13px;">SCR-05-UNIT-SUMMARY</div></div>
+    <div class="field"><div class="label">DESCRIPTION</div><div class="value" style="font-size:13px;">선택한 과목의 단원 목록과 핵심 개념 플래시카드 화면</div></div>
+  </div>
+  <div class="main-content">
+    <div class="layout-section">
+      <div class="device-frame">
+  <div class="device-statusbar"><span>9:41</span><span>📶 🔋</span></div>
+  <div class="device-content">
+    <div style="font-size:14px;font-weight:800;color:#3B82F6;margin-bottom:4px;">수학</div>
+    <div style="font-size:10px;color:#889;margin-bottom:12px;">중1 · 11개 단원</div>
+    <div style="position:relative;margin-bottom:12px;">
+      <span class="wf-num" style="top:4px;left:-28px;">1</span>
+      <div class="wf-label">단원 목록</div>
+      <div class="wf-card" style="border-left:3px solid #3B82F6;font-size:11px;">
+        <div style="font-weight:600;">1. 자연수와 유리수</div>
+        <div style="font-size:9px;color:#889;">완료 ✓</div>
+      </div>
+      <div class="wf-card" style="border-left:3px solid #3B82F6;font-size:11px;">
+        <div style="font-weight:600;">2. 방정식과 부등식</div>
+        <div style="font-size:9px;color:#22B2FF;">학습 중</div>
+      </div>
+      <div class="wf-card" style="border-left:3px solid #e0e6f0;font-size:11px;">
+        <div style="font-weight:600;color:#889;">3. 함수와 그래프</div>
+        <div style="font-size:9px;color:#889;">미학습</div>
+      </div>
+    </div>
+    <div style="position:relative;margin-bottom:12px;">
+      <span class="wf-num" style="top:4px;left:-28px;">2</span>
+      <div class="wf-label">핵심 개념 플래시카드</div>
+      <div class="wf-card" style="background:linear-gradient(135deg,#f0f4ff,#e4f1ff);text-align:center;padding:20px;">
+        <div style="font-size:10px;color:#4555FF;font-weight:600;">카드 3/8</div>
+        <div style="font-size:13px;font-weight:700;margin-top:8px;">일차방정식이란?</div>
+        <div style="font-size:10px;color:#889;margin-top:4px;">좌우를 = 로 연결한 식...</div>
+        <div style="margin-top:8px;font-size:9px;color:#889;">← 뒤집기 →</div>
+      </div>
+    </div>
+    <div style="position:relative;">
+      <span class="wf-num" style="top:8px;left:-28px;">3</span>
+      <div class="wf-btn wf-btn-primary" style="font-size:12px;">📄 PDF 내보내기</div>
+    </div>
+    <div class="wf-nav">
+      <div class="wf-nav-item">🏠 홈</div>
+      <div class="wf-nav-item active">📚 과목</div>
+      <div class="wf-nav-item" style="font-size:18px;">✏️</div>
+      <div class="wf-nav-item">❌ 오답</div>
+      <div class="wf-nav-item">💬 영어</div>
+    </div>
+  </div>
+</div>
+    </div>
+    <div class="events-section">
+      <h3>이벤트 설명</h3>
+      <div class="event-item">
+  <span class="event-num">1</span><span class="event-title">단원 목록</span>
+  <div class="event-desc">
+    <ul>
+      <li>GET /api/subjects/{subjectId}/units 호출 — 단원 목록 조회</li>
+      <li>각 단원의 학습 상태 표시 (완료 ✓ / 학습 중 / 미학습)</li>
+      <li>단원 클릭 시 해당 단원의 핵심 개념 플래시카드 로드</li>
+      <li>학습 완료 단원은 체크 아이콘 + 회색 처리</li>
+    </ul>
+  </div>
+</div>
+<div class="event-item">
+  <span class="event-num">2</span><span class="event-title">핵심 개념 플래시카드</span>
+  <div class="event-desc">
+    <ul>
+      <li>GET /api/units/{unitId}/summaries 호출 — 핵심 개념 카드 목록</li>
+      <li>카드 좌우 스와이프로 이전/다음 카드 이동</li>
+      <li>카드 탭(클릭) 시 앞면(질문) ↔ 뒷면(설명) 뒤집기</li>
+      <li>진행 표시: 현재 카드 번호 / 전체 카드 수</li>
+      <li>학습 완료 시 STUDY_LOG에 기록 (type=SUMMARY)</li>
+    </ul>
+  </div>
+</div>
+<div class="event-item">
+  <span class="event-num">3</span><span class="event-title">PDF 내보내기 버튼</span>
+  <div class="event-desc">
+    <ul>
+      <li>클릭 시 GET /api/units/{unitId}/export-pdf 호출</li>
+      <li>현재 단원의 핵심 개념 요약을 PDF 파일로 다운로드</li>
+      <li>다운로드 진행률 표시</li>
+      <li>완료 시 "PDF가 다운로드되었습니다" 토스트</li>
+    </ul>
+  </div>
+</div>
+    </div>
+  </div>
+  <div class="footer">Copyright © 2026 Daily Study. All rights reserved.</div>
+</div>
+</body>
+</html>

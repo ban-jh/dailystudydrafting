@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Daily Study 화면설계서 — 문제 풀이 설정</title>
+<style>
+
+@import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: 'Pretendard', -apple-system, sans-serif;
+  background: #f0f2f5;
+  color: #1a1a2e;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+.page {
+  max-width: 1200px;
+  margin: 0 auto;
+  background: #fff;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+/* Top bar */
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 32px;
+  background: linear-gradient(90deg, #22B2FF, #4555FF);
+  color: #fff;
+  font-size: 15px;
+  font-weight: 600;
+}
+.topbar .nav-btns a {
+  color: #fff;
+  text-decoration: none;
+  padding: 4px 14px;
+  border: 1px solid rgba(255,255,255,0.5);
+  border-radius: 6px;
+  margin-left: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  transition: background .2s;
+}
+.topbar .nav-btns a:hover { background: rgba(255,255,255,0.2); }
+
+/* Header info */
+.spec-header {
+  display: flex;
+  gap: 0;
+  border-bottom: 2px solid #4555FF;
+  background: #f8faff;
+}
+.spec-header .field {
+  flex: 1;
+  padding: 12px 24px;
+  border-right: 1px solid #e0e6f0;
+}
+.spec-header .field:last-child { border-right: none; }
+.spec-header .label {
+  font-size: 11px;
+  color: #8899bb;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  margin-bottom: 2px;
+}
+.spec-header .value {
+  font-size: 15px;
+  color: #1a1a2e;
+  font-weight: 600;
+}
+
+/* Main content */
+.main-content {
+  display: flex;
+  flex: 1;
+  min-height: 500px;
+}
+.layout-section {
+  flex: 0 0 48%;
+  padding: 32px;
+  border-right: 1px solid #e0e6f0;
+  background: #fafbff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.events-section {
+  flex: 1;
+  padding: 32px;
+  background: #fff;
+}
+.events-section h3 {
+  font-size: 14px;
+  color: #4555FF;
+  margin-bottom: 20px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #e0e6f0;
+}
+.event-item {
+  margin-bottom: 24px;
+}
+.event-num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px; height: 28px;
+  background: linear-gradient(135deg, #22B2FF, #4555FF);
+  color: #fff;
+  border-radius: 50%;
+  font-size: 14px;
+  font-weight: 700;
+  margin-right: 8px;
+  vertical-align: middle;
+}
+.event-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: #1a1a2e;
+  vertical-align: middle;
+}
+.event-desc {
+  margin-left: 36px;
+  margin-top: 6px;
+  font-size: 13px;
+  color: #555;
+  line-height: 1.7;
+}
+.event-desc ul { padding-left: 16px; margin: 4px 0; }
+.event-desc li { margin-bottom: 2px; }
+
+/* Wireframe device frame */
+.device-frame {
+  width: 320px;
+  background: #fff;
+  border: 2px solid #d0d8e8;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.1);
+  position: relative;
+}
+.device-statusbar {
+  background: #f0f2f5;
+  padding: 6px 16px;
+  display: flex;
+  justify-content: space-between;
+  font-size: 10px;
+  color: #888;
+}
+.device-content {
+  padding: 20px 16px;
+  min-height: 400px;
+}
+.wf-label {
+  font-size: 11px;
+  color: #4555FF;
+  font-weight: 600;
+  margin: 8px 0 4px;
+}
+.wf-num {
+  display: inline-flex;
+  align-items: center; justify-content: center;
+  width: 20px; height: 20px;
+  background: #4555FF; color: #fff;
+  border-radius: 50%; font-size: 11px; font-weight: 700;
+  margin-right: 4px;
+  position: absolute;
+  z-index: 10;
+}
+.wf-input {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #d0d8e8;
+  border-radius: 8px;
+  font-size: 12px;
+  color: #999;
+  margin-bottom: 10px;
+  background: #f9fafb;
+}
+.wf-btn {
+  width: 100%;
+  padding: 12px;
+  border: none;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 600;
+  text-align: center;
+  margin-bottom: 8px;
+}
+.wf-btn-primary {
+  background: linear-gradient(90deg, #22B2FF, #4555FF);
+  color: #fff;
+}
+.wf-btn-secondary {
+  background: #f0f2f5;
+  color: #4555FF;
+}
+.wf-card {
+  background: #f8faff;
+  border: 1px solid #e0e6f0;
+  border-radius: 12px;
+  padding: 12px;
+  margin-bottom: 10px;
+}
+.wf-link {
+  font-size: 12px;
+  color: #4555FF;
+  text-decoration: underline;
+  text-align: center;
+  display: block;
+  margin: 8px 0;
+}
+.wf-text {
+  font-size: 12px; color: #333; margin-bottom: 8px;
+}
+.wf-badge {
+  display: inline-block; padding: 2px 8px; border-radius: 6px;
+  font-size: 10px; font-weight: 600;
+}
+.wf-progress {
+  height: 6px; background: #e0e6f0; border-radius: 3px; margin: 4px 0;
+}
+.wf-progress-fill {
+  height: 100%; background: linear-gradient(90deg, #22B2FF, #4555FF);
+  border-radius: 3px;
+}
+.wf-row { display: flex; gap: 8px; margin-bottom: 8px; }
+.wf-col { flex: 1; }
+.wf-grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.wf-grid3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px; }
+.wf-nav {
+  display: flex; justify-content: space-around;
+  padding: 8px 0; border-top: 1px solid #e0e6f0;
+  margin-top: 12px; background: #fff;
+}
+.wf-nav-item {
+  font-size: 9px; color: #889; text-align: center;
+}
+.wf-nav-item.active { color: #4555FF; font-weight: 600; }
+.wf-checkbox {
+  display: inline-block; width: 14px; height: 14px;
+  border: 1px solid #d0d8e8; border-radius: 3px;
+  vertical-align: middle; margin-right: 4px;
+}
+.wf-chart-bar {
+  display: flex; align-items: flex-end; gap: 6px;
+  height: 100px; margin: 8px 0;
+}
+.wf-bar {
+  flex: 1; background: linear-gradient(180deg, #22B2FF, #4555FF);
+  border-radius: 4px 4px 0 0;
+  display: flex; align-items: flex-start; justify-content: center;
+  font-size: 8px; color: #fff; padding-top: 2px;
+}
+
+/* Footer */
+.footer {
+  text-align: center;
+  padding: 16px;
+  font-size: 12px;
+  color: #8899bb;
+  border-top: 1px solid #e0e6f0;
+  background: #f8faff;
+}
+
+@media print {
+  body { background: #fff; }
+  .page { max-width: 100%; box-shadow: none; }
+  .topbar .nav-btns { display: none; }
+  .main-content { min-height: auto; }
+}
+
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="topbar">
+    <span>Daily Study 화면설계서 v1.0</span>
+    <span class="nav-btns"><a href="screen-05-unit-summary.html">← 단원 요약</a><a href="index.html">목차</a><a href="screen-07-quiz-result.html">문제 풀이 결과 →</a></span>
+  </div>
+  <div class="spec-header">
+    <div class="field"><div class="label">화면명</div><div class="value">문제 풀이 설정</div></div>
+    <div class="field"><div class="label">화면ID</div><div class="value" style="font-family:monospace;font-size:13px;">SCR-06-QUIZ</div></div>
+    <div class="field"><div class="label">DESCRIPTION</div><div class="value" style="font-size:13px;">과목/단원/난이도/유형/문제수를 설정하여 문제를 푸는 화면 (승인된 문제 풀에서 제공)</div></div>
+  </div>
+  <div class="main-content">
+    <div class="layout-section">
+      <div class="device-frame">
+  <div class="device-statusbar"><span>9:41</span><span>📶 🔋</span></div>
+  <div class="device-content">
+    <div style="font-size:16px;font-weight:800;color:#1a1a2e;margin-bottom:16px;">문제 풀이 설정</div>
+    <div style="position:relative;margin-bottom:12px;">
+      <span class="wf-num" style="top:6px;left:-28px;">1</span>
+      <div class="wf-label">과목 선택 <span style="color:#F43F5E;">*</span></div>
+      <div class="wf-row" style="flex-wrap:wrap;">
+        <span style="font-size:10px;padding:6px 10px;background:#f0f2f5;border-radius:8px;">국어</span>
+        <span style="font-size:10px;padding:6px 10px;background:linear-gradient(90deg,#22B2FF,#4555FF);color:#fff;border-radius:8px;">수학</span>
+        <span style="font-size:10px;padding:6px 10px;background:#f0f2f5;border-radius:8px;">영어</span>
+        <span style="font-size:10px;padding:6px 10px;background:#f0f2f5;border-radius:8px;">과학</span>
+      </div>
+    </div>
+    <div style="position:relative;margin-bottom:12px;">
+      <span class="wf-num" style="top:6px;left:-28px;">2</span>
+      <div class="wf-label">단원 선택 <span style="color:#F43F5E;">*</span></div>
+      <div class="wf-input">2. 방정식과 부등식 ▾</div>
+    </div>
+    <div style="position:relative;margin-bottom:12px;">
+      <span class="wf-num" style="top:6px;left:-28px;">3</span>
+      <div class="wf-label">난이도</div>
+      <div class="wf-grid3">
+        <span style="font-size:10px;padding:6px;text-align:center;background:linear-gradient(90deg,#22B2FF,#4555FF);color:#fff;border-radius:8px;">쉬움</span>
+        <span style="font-size:10px;padding:6px;text-align:center;background:#f0f2f5;border-radius:8px;">보통</span>
+        <span style="font-size:10px;padding:6px;text-align:center;background:#f0f2f5;border-radius:8px;">어려움</span>
+      </div>
+    </div>
+    <div style="position:relative;margin-bottom:12px;">
+      <span class="wf-num" style="top:6px;left:-28px;">4</span>
+      <div class="wf-label">문제 유형</div>
+      <div class="wf-grid2">
+        <span style="font-size:10px;padding:6px;text-align:center;background:linear-gradient(90deg,#22B2FF,#4555FF);color:#fff;border-radius:8px;">객관식</span>
+        <span style="font-size:10px;padding:6px;text-align:center;background:#f0f2f5;border-radius:8px;">주관식</span>
+      </div>
+    </div>
+    <div style="position:relative;margin-bottom:12px;">
+      <span class="wf-num" style="top:6px;left:-28px;">5</span>
+      <div class="wf-label">문제 수</div>
+      <div class="wf-row" style="align-items:center;">
+        <span style="font-size:16px;font-weight:800;color:#4555FF;">10</span>
+        <span style="font-size:10px;color:#889;">문제 (5~20)</span>
+      </div>
+      <div class="wf-progress"><div class="wf-progress-fill" style="width:33%;"></div></div>
+    </div>
+    <div style="position:relative;">
+      <span class="wf-num" style="top:8px;left:-28px;">6</span>
+      <div class="wf-btn wf-btn-primary">문제 풀기 →</div>
+    </div>
+    <div style="font-size:9px;color:#889;text-align:center;margin-top:6px;">승인된 문제 풀에서 제공됩니다</div>
+  </div>
+</div>
+    </div>
+    <div class="events-section">
+      <h3>이벤트 설명</h3>
+      <div class="event-item">
+  <span class="event-num">1</span><span class="event-title">과목 선택</span>
+  <div class="event-desc">
+    <ul>
+      <li>6개 과목 중 택 1 (국어/수학/영어/과학/사회/역사)</li>
+      <li>선택 시 해당 과목의 단원 목록 로드</li>
+      <li>필수 선택 — 미선택 시 다음 단계 비활성화</li>
+    </ul>
+  </div>
+</div>
+<div class="event-item">
+  <span class="event-num">2</span><span class="event-title">단원 선택</span>
+  <div class="event-desc">
+    <ul>
+      <li>GET /api/subjects/{id}/units 호출 — 단원 드롭다운</li>
+      <li>전체 단원 옵션 포함 (단원 전체 문제 풀기)</li>
+      <li>필수 선택 — 미선택 시 "단원을 선택하세요" 에러</li>
+    </ul>
+  </div>
+</div>
+<div class="event-item">
+  <span class="event-num">3</span><span class="event-title">난이도 선택</span>
+  <div class="event-desc">
+    <ul>
+      <li>쉬움 / 보통 / 어려움 3단계</li>
+      <li>기본값: 보통</li>
+      <li>선택한 난이도에 해당하는 status=PUBLISHED 문제만 필터링</li>
+    </ul>
+  </div>
+</div>
+<div class="event-item">
+  <span class="event-num">4</span><span class="event-title">문제 유형 선택</span>
+  <div class="event-desc">
+    <ul>
+      <li>객관식(4지선다) / 주관식(단답형) 선택</li>
+      <li>기본값: 객관식</li>
+      <li>주관식 선택 시 AI 채점 (GLM-5.2) 적용</li>
+    </ul>
+  </div>
+</div>
+<div class="event-item">
+  <span class="event-num">5</span><span class="event-title">문제 수 슬라이더</span>
+  <div class="event-desc">
+    <ul>
+      <li>5~20문제 범위에서 슬라이더로 조절</li>
+      <li>기본값: 10문제</li>
+      <li>선택한 범위 내에서 랜덤 출제</li>
+      <li>문제 풀에 충분한 문제가 없을 경우 최대 가능 수 표시</li>
+    </ul>
+  </div>
+</div>
+<div class="event-item">
+  <span class="event-num">6</span><span class="event-title">문제 풀기 버튼</span>
+  <div class="event-desc">
+    <ul>
+      <li>POST /api/quiz/generate 호출 — 설정 조건으로 문제 세트 생성</li>
+      <li>승인된(status=PUBLISHED) 문제 풀에서만 출제</li>
+      <li>AI 생성 문제(source_type=AI) + 관리자 직접 등록 문제(source_type=MANUAL) 혼합</li>
+      <li>로딩 화면 표시 후 문제 풀이 진행</li>
+      <li>문제 풀이 완료 후 결과 화면(SCR-07-QUIZ-RESULT)로 이동</li>
+    </ul>
+  </div>
+</div>
+    </div>
+  </div>
+  <div class="footer">Copyright © 2026 Daily Study. All rights reserved.</div>
+</div>
+</body>
+</html>

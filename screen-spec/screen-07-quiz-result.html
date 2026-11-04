@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Daily Study 화면설계서 — 문제 풀이 결과</title>
+<style>
+
+@import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: 'Pretendard', -apple-system, sans-serif;
+  background: #f0f2f5;
+  color: #1a1a2e;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+.page {
+  max-width: 1200px;
+  margin: 0 auto;
+  background: #fff;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+/* Top bar */
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 32px;
+  background: linear-gradient(90deg, #22B2FF, #4555FF);
+  color: #fff;
+  font-size: 15px;
+  font-weight: 600;
+}
+.topbar .nav-btns a {
+  color: #fff;
+  text-decoration: none;
+  padding: 4px 14px;
+  border: 1px solid rgba(255,255,255,0.5);
+  border-radius: 6px;
+  margin-left: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  transition: background .2s;
+}
+.topbar .nav-btns a:hover { background: rgba(255,255,255,0.2); }
+
+/* Header info */
+.spec-header {
+  display: flex;
+  gap: 0;
+  border-bottom: 2px solid #4555FF;
+  background: #f8faff;
+}
+.spec-header .field {
+  flex: 1;
+  padding: 12px 24px;
+  border-right: 1px solid #e0e6f0;
+}
+.spec-header .field:last-child { border-right: none; }
+.spec-header .label {
+  font-size: 11px;
+  color: #8899bb;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  margin-bottom: 2px;
+}
+.spec-header .value {
+  font-size: 15px;
+  color: #1a1a2e;
+  font-weight: 600;
+}
+
+/* Main content */
+.main-content {
+  display: flex;
+  flex: 1;
+  min-height: 500px;
+}
+.layout-section {
+  flex: 0 0 48%;
+  padding: 32px;
+  border-right: 1px solid #e0e6f0;
+  background: #fafbff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.events-section {
+  flex: 1;
+  padding: 32px;
+  background: #fff;
+}
+.events-section h3 {
+  font-size: 14px;
+  color: #4555FF;
+  margin-bottom: 20px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #e0e6f0;
+}
+.event-item {
+  margin-bottom: 24px;
+}
+.event-num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px; height: 28px;
+  background: linear-gradient(135deg, #22B2FF, #4555FF);
+  color: #fff;
+  border-radius: 50%;
+  font-size: 14px;
+  font-weight: 700;
+  margin-right: 8px;
+  vertical-align: middle;
+}
+.event-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: #1a1a2e;
+  vertical-align: middle;
+}
+.event-desc {
+  margin-left: 36px;
+  margin-top: 6px;
+  font-size: 13px;
+  color: #555;
+  line-height: 1.7;
+}
+.event-desc ul { padding-left: 16px; margin: 4px 0; }
+.event-desc li { margin-bottom: 2px; }
+
+/* Wireframe device frame */
+.device-frame {
+  width: 320px;
+  background: #fff;
+  border: 2px solid #d0d8e8;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.1);
+  position: relative;
+}
+.device-statusbar {
+  background: #f0f2f5;
+  padding: 6px 16px;
+  display: flex;
+  justify-content: space-between;
+  font-size: 10px;
+  color: #888;
+}
+.device-content {
+  padding: 20px 16px;
+  min-height: 400px;
+}
+.wf-label {
+  font-size: 11px;
+  color: #4555FF;
+  font-weight: 600;
+  margin: 8px 0 4px;
+}
+.wf-num {
+  display: inline-flex;
+  align-items: center; justify-content: center;
+  width: 20px; height: 20px;
+  background: #4555FF; color: #fff;
+  border-radius: 50%; font-size: 11px; font-weight: 700;
+  margin-right: 4px;
+  position: absolute;
+  z-index: 10;
+}
+.wf-input {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #d0d8e8;
+  border-radius: 8px;
+  font-size: 12px;
+  color: #999;
+  margin-bottom: 10px;
+  background: #f9fafb;
+}
+.wf-btn {
+  width: 100%;
+  padding: 12px;
+  border: none;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 600;
+  text-align: center;
+  margin-bottom: 8px;
+}
+.wf-btn-primary {
+  background: linear-gradient(90deg, #22B2FF, #4555FF);
+  color: #fff;
+}
+.wf-btn-secondary {
+  background: #f0f2f5;
+  color: #4555FF;
+}
+.wf-card {
+  background: #f8faff;
+  border: 1px solid #e0e6f0;
+  border-radius: 12px;
+  padding: 12px;
+  margin-bottom: 10px;
+}
+.wf-link {
+  font-size: 12px;
+  color: #4555FF;
+  text-decoration: underline;
+  text-align: center;
+  display: block;
+  margin: 8px 0;
+}
+.wf-text {
+  font-size: 12px; color: #333; margin-bottom: 8px;
+}
+.wf-badge {
+  display: inline-block; padding: 2px 8px; border-radius: 6px;
+  font-size: 10px; font-weight: 600;
+}
+.wf-progress {
+  height: 6px; background: #e0e6f0; border-radius: 3px; margin: 4px 0;
+}
+.wf-progress-fill {
+  height: 100%; background: linear-gradient(90deg, #22B2FF, #4555FF);
+  border-radius: 3px;
+}
+.wf-row { display: flex; gap: 8px; margin-bottom: 8px; }
+.wf-col { flex: 1; }
+.wf-grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.wf-grid3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px; }
+.wf-nav {
+  display: flex; justify-content: space-around;
+  padding: 8px 0; border-top: 1px solid #e0e6f0;
+  margin-top: 12px; background: #fff;
+}
+.wf-nav-item {
+  font-size: 9px; color: #889; text-align: center;
+}
+.wf-nav-item.active { color: #4555FF; font-weight: 600; }
+.wf-checkbox {
+  display: inline-block; width: 14px; height: 14px;
+  border: 1px solid #d0d8e8; border-radius: 3px;
+  vertical-align: middle; margin-right: 4px;
+}
+.wf-chart-bar {
+  display: flex; align-items: flex-end; gap: 6px;
+  height: 100px; margin: 8px 0;
+}
+.wf-bar {
+  flex: 1; background: linear-gradient(180deg, #22B2FF, #4555FF);
+  border-radius: 4px 4px 0 0;
+  display: flex; align-items: flex-start; justify-content: center;
+  font-size: 8px; color: #fff; padding-top: 2px;
+}
+
+/* Footer */
+.footer {
+  text-align: center;
+  padding: 16px;
+  font-size: 12px;
+  color: #8899bb;
+  border-top: 1px solid #e0e6f0;
+  background: #f8faff;
+}
+
+@media print {
+  body { background: #fff; }
+  .page { max-width: 100%; box-shadow: none; }
+  .topbar .nav-btns { display: none; }
+  .main-content { min-height: auto; }
+}
+
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="topbar">
+    <span>Daily Study 화면설계서 v1.0</span>
+    <span class="nav-btns"><a href="screen-06-quiz.html">← 문제 풀이 설정</a><a href="index.html">목차</a><a href="screen-08-wrong-answers.html">오답노트 →</a></span>
+  </div>
+  <div class="spec-header">
+    <div class="field"><div class="label">화면명</div><div class="value">문제 풀이 결과</div></div>
+    <div class="field"><div class="label">화면ID</div><div class="value" style="font-family:monospace;font-size:13px;">SCR-07-QUIZ-RESULT</div></div>
+    <div class="field"><div class="label">DESCRIPTION</div><div class="value" style="font-size:13px;">문제 풀이 후 정답률/오답/해설/XP 획득 결과를 표시하는 화면</div></div>
+  </div>
+  <div class="main-content">
+    <div class="layout-section">
+      <div class="device-frame">
+  <div class="device-statusbar"><span>9:41</span><span>📶 🔋</span></div>
+  <div class="device-content">
+    <div style="font-size:16px;font-weight:800;color:#1a1a2e;margin-bottom:16px;">풀이 결과</div>
+    <div style="position:relative;margin-bottom:16px;">
+      <span class="wf-num" style="top:0;left:-28px;">1</span>
+      <div class="wf-card" style="background:linear-gradient(135deg,#22B2FF,#4555FF);color:#fff;text-align:center;padding:20px;">
+        <div style="font-size:32px;font-weight:800;">80%</div>
+        <div style="font-size:11px;opacity:.8;">정답률 (8/10문제)</div>
+      </div>
+    </div>
+    <div style="position:relative;margin-bottom:12px;">
+      <span class="wf-num" style="top:0;left:-28px;">2</span>
+      <div class="wf-label">오답 목록</div>
+      <div class="wf-card" style="border-left:3px solid #F43F5E;font-size:11px;">
+        <div style="font-weight:600;">Q3. 다음 방정식의 해는?</div>
+        <div style="font-size:9px;color:#F43F5E;">내 답: x=3 (정답: x=5)</div>
+        <div style="font-size:9px;color:#4555FF;margin-top:4px;">📖 해설 보기</div>
+      </div>
+      <div class="wf-card" style="border-left:3px solid #F43F5E;font-size:11px;">
+        <div style="font-weight:600;">Q7. 부등식 2x+1&gt;7의 해는?</div>
+        <div style="font-size:9px;color:#F43F5E;">내 답: x&gt;2 (정답: x&gt;3)</div>
+        <div style="font-size:9px;color:#4555FF;margin-top:4px;">📖 해설 보기</div>
+      </div>
+    </div>
+    <div style="position:relative;margin-bottom:12px;">
+      <span class="wf-num" style="top:4px;left:-28px;">3</span>
+      <div class="wf-card" style="background:#fff8e1;text-align:center;">
+        <div style="font-size:20px;">🎯 +80 XP 획득!</div>
+      </div>
+    </div>
+    <div style="position:relative;">
+      <span class="wf-num" style="top:8px;left:-28px;">4</span>
+      <div class="wf-btn wf-btn-primary">다음 문제 풀기 →</div>
+    </div>
+    <div class="wf-nav">
+      <div class="wf-nav-item">🏠 홈</div>
+      <div class="wf-nav-item">📚 과목</div>
+      <div class="wf-nav-item active" style="font-size:18px;">✏️</div>
+      <div class="wf-nav-item">❌ 오답</div>
+      <div class="wf-nav-item">💬 영어</div>
+    </div>
+  </div>
+</div>
+    </div>
+    <div class="events-section">
+      <h3>이벤트 설명</h3>
+      <div class="event-item">
+  <span class="event-num">1</span><span class="event-title">정답률 요약</span>
+  <div class="event-desc">
+    <ul>
+      <li>GET /api/quiz/attempts/{attemptId}/result 호출</li>
+      <li>정답 수 / 전체 문제 수 + 백분율 표시</li>
+      <li>그라데이션 카드로 시각적 강조</li>
+      <li>정답률 80% 이상 시 축하 애니메이션</li>
+    </ul>
+  </div>
+</div>
+<div class="event-item">
+  <span class="event-num">2</span><span class="event-title">오답 목록 + 해설</span>
+  <div class="event-desc">
+    <ul>
+      <li>틀린 문제만 필터링하여 표시</li>
+      <li>문제 본문, 내 답, 정답 비교 표시</li>
+      <li>"해설 보기" 클릭 시 GET /api/quiz/{quizId}/explanation 호출</li>
+      <li>해설은 AI(GLM-5.2)가 생성한 상세 풀이 과정</li>
+      <li>틀린 문제는 자동으로 오답노트(QUIZ_ATTEMPT.is_wrong=true)에 등록</li>
+    </ul>
+  </div>
+</div>
+<div class="event-item">
+  <span class="event-num">3</span><span class="event-title">XP 획득 표시</span>
+  <div class="event-desc">
+    <ul>
+      <li>맞춘 문제당 10 XP 계산 (정답 × 10)</li>
+      <li>POST /api/users/xp 호출 — 사용자 XP 누적</li>
+      <li>레벨업 시 추가 축하 메시지 표시</li>
+      <li>배지 획득 조건 충족 시 배지 알림</li>
+    </ul>
+  </div>
+</div>
+<div class="event-item">
+  <span class="event-num">4</span><span class="event-title">다음 문제 풀기 버튼</span>
+  <div class="event-desc">
+    <ul>
+      <li>클릭 시 동일 설정으로 새 문제 세트 생성</li>
+      <li>POST /api/quiz/generate 재호출</li>
+      <li>문제 풀이 설정(SCR-06-QUIZ)로 이동하여 설정 변경 가능</li>
+      <li>"결과 공유하기" 옵션 (선택)</li>
+    </ul>
+  </div>
+</div>
+    </div>
+  </div>
+  <div class="footer">Copyright © 2026 Daily Study. All rights reserved.</div>
+</div>
+</body>
+</html>

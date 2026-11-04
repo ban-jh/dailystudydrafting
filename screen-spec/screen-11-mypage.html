@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Daily Study 화면설계서 — 마이페이지</title>
+<style>
+
+@import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: 'Pretendard', -apple-system, sans-serif;
+  background: #f0f2f5;
+  color: #1a1a2e;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+.page {
+  max-width: 1200px;
+  margin: 0 auto;
+  background: #fff;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+/* Top bar */
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 32px;
+  background: linear-gradient(90deg, #22B2FF, #4555FF);
+  color: #fff;
+  font-size: 15px;
+  font-weight: 600;
+}
+.topbar .nav-btns a {
+  color: #fff;
+  text-decoration: none;
+  padding: 4px 14px;
+  border: 1px solid rgba(255,255,255,0.5);
+  border-radius: 6px;
+  margin-left: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  transition: background .2s;
+}
+.topbar .nav-btns a:hover { background: rgba(255,255,255,0.2); }
+
+/* Header info */
+.spec-header {
+  display: flex;
+  gap: 0;
+  border-bottom: 2px solid #4555FF;
+  background: #f8faff;
+}
+.spec-header .field {
+  flex: 1;
+  padding: 12px 24px;
+  border-right: 1px solid #e0e6f0;
+}
+.spec-header .field:last-child { border-right: none; }
+.spec-header .label {
+  font-size: 11px;
+  color: #8899bb;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  margin-bottom: 2px;
+}
+.spec-header .value {
+  font-size: 15px;
+  color: #1a1a2e;
+  font-weight: 600;
+}
+
+/* Main content */
+.main-content {
+  display: flex;
+  flex: 1;
+  min-height: 500px;
+}
+.layout-section {
+  flex: 0 0 48%;
+  padding: 32px;
+  border-right: 1px solid #e0e6f0;
+  background: #fafbff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.events-section {
+  flex: 1;
+  padding: 32px;
+  background: #fff;
+}
+.events-section h3 {
+  font-size: 14px;
+  color: #4555FF;
+  margin-bottom: 20px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #e0e6f0;
+}
+.event-item {
+  margin-bottom: 24px;
+}
+.event-num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px; height: 28px;
+  background: linear-gradient(135deg, #22B2FF, #4555FF);
+  color: #fff;
+  border-radius: 50%;
+  font-size: 14px;
+  font-weight: 700;
+  margin-right: 8px;
+  vertical-align: middle;
+}
+.event-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: #1a1a2e;
+  vertical-align: middle;
+}
+.event-desc {
+  margin-left: 36px;
+  margin-top: 6px;
+  font-size: 13px;
+  color: #555;
+  line-height: 1.7;
+}
+.event-desc ul { padding-left: 16px; margin: 4px 0; }
+.event-desc li { margin-bottom: 2px; }
+
+/* Wireframe device frame */
+.device-frame {
+  width: 320px;
+  background: #fff;
+  border: 2px solid #d0d8e8;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.1);
+  position: relative;
+}
+.device-statusbar {
+  background: #f0f2f5;
+  padding: 6px 16px;
+  display: flex;
+  justify-content: space-between;
+  font-size: 10px;
+  color: #888;
+}
+.device-content {
+  padding: 20px 16px;
+  min-height: 400px;
+}
+.wf-label {
+  font-size: 11px;
+  color: #4555FF;
+  font-weight: 600;
+  margin: 8px 0 4px;
+}
+.wf-num {
+  display: inline-flex;
+  align-items: center; justify-content: center;
+  width: 20px; height: 20px;
+  background: #4555FF; color: #fff;
+  border-radius: 50%; font-size: 11px; font-weight: 700;
+  margin-right: 4px;
+  position: absolute;
+  z-index: 10;
+}
+.wf-input {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #d0d8e8;
+  border-radius: 8px;
+  font-size: 12px;
+  color: #999;
+  margin-bottom: 10px;
+  background: #f9fafb;
+}
+.wf-btn {
+  width: 100%;
+  padding: 12px;
+  border: none;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 600;
+  text-align: center;
+  margin-bottom: 8px;
+}
+.wf-btn-primary {
+  background: linear-gradient(90deg, #22B2FF, #4555FF);
+  color: #fff;
+}
+.wf-btn-secondary {
+  background: #f0f2f5;
+  color: #4555FF;
+}
+.wf-card {
+  background: #f8faff;
+  border: 1px solid #e0e6f0;
+  border-radius: 12px;
+  padding: 12px;
+  margin-bottom: 10px;
+}
+.wf-link {
+  font-size: 12px;
+  color: #4555FF;
+  text-decoration: underline;
+  text-align: center;
+  display: block;
+  margin: 8px 0;
+}
+.wf-text {
+  font-size: 12px; color: #333; margin-bottom: 8px;
+}
+.wf-badge {
+  display: inline-block; padding: 2px 8px; border-radius: 6px;
+  font-size: 10px; font-weight: 600;
+}
+.wf-progress {
+  height: 6px; background: #e0e6f0; border-radius: 3px; margin: 4px 0;
+}
+.wf-progress-fill {
+  height: 100%; background: linear-gradient(90deg, #22B2FF, #4555FF);
+  border-radius: 3px;
+}
+.wf-row { display: flex; gap: 8px; margin-bottom: 8px; }
+.wf-col { flex: 1; }
+.wf-grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.wf-grid3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px; }
+.wf-nav {
+  display: flex; justify-content: space-around;
+  padding: 8px 0; border-top: 1px solid #e0e6f0;
+  margin-top: 12px; background: #fff;
+}
+.wf-nav-item {
+  font-size: 9px; color: #889; text-align: center;
+}
+.wf-nav-item.active { color: #4555FF; font-weight: 600; }
+.wf-checkbox {
+  display: inline-block; width: 14px; height: 14px;
+  border: 1px solid #d0d8e8; border-radius: 3px;
+  vertical-align: middle; margin-right: 4px;
+}
+.wf-chart-bar {
+  display: flex; align-items: flex-end; gap: 6px;
+  height: 100px; margin: 8px 0;
+}
+.wf-bar {
+  flex: 1; background: linear-gradient(180deg, #22B2FF, #4555FF);
+  border-radius: 4px 4px 0 0;
+  display: flex; align-items: flex-start; justify-content: center;
+  font-size: 8px; color: #fff; padding-top: 2px;
+}
+
+/* Footer */
+.footer {
+  text-align: center;
+  padding: 16px;
+  font-size: 12px;
+  color: #8899bb;
+  border-top: 1px solid #e0e6f0;
+  background: #f8faff;
+}
+
+@media print {
+  body { background: #fff; }
+  .page { max-width: 100%; box-shadow: none; }
+  .topbar .nav-btns { display: none; }
+  .main-content { min-height: auto; }
+}
+
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="topbar">
+    <span>Daily Study 화면설계서 v1.0</span>
+    <span class="nav-btns"><a href="screen-10-statistics.html">← 학습 통계</a><a href="index.html">목차</a></span>
+  </div>
+  <div class="spec-header">
+    <div class="field"><div class="label">화면명</div><div class="value">마이페이지</div></div>
+    <div class="field"><div class="label">화면ID</div><div class="value" style="font-family:monospace;font-size:13px;">SCR-11-MYPAGE</div></div>
+    <div class="field"><div class="label">DESCRIPTION</div><div class="value" style="font-size:13px;">프로필/학년/알림/배지/TTS 설정을 관리하는 화면</div></div>
+  </div>
+  <div class="main-content">
+    <div class="layout-section">
+      <div class="device-frame">
+  <div class="device-statusbar"><span>9:41</span><span>📶 🔋</span></div>
+  <div class="device-content">
+    <div style="font-size:16px;font-weight:800;color:#1a1a2e;margin-bottom:16px;">마이페이지 ⚙️</div>
+    <div style="position:relative;margin-bottom:16px;">
+      <span class="wf-num" style="top:0;left:-28px;">1</span>
+      <div class="wf-card" style="text-align:center;padding:16px;">
+        <div style="font-size:32px;">👤</div>
+        <div style="font-size:14px;font-weight:700;margin-top:4px;">홍길동</div>
+        <div style="font-size:10px;color:#889;">hong@example.com</div>
+        <div style="font-size:10px;color:#4555FF;margin-top:4px;">중1 · Lv.5 · 480 XP</div>
+      </div>
+    </div>
+    <div style="position:relative;margin-bottom:12px;">
+      <span class="wf-num" style="top:4px;left:-28px;">2</span>
+      <div class="wf-label">학년 설정</div>
+      <div class="wf-input">중학교 1학년 ▾</div>
+    </div>
+    <div style="position:relative;margin-bottom:12px;">
+      <span class="wf-num" style="top:4px;left:-28px;">3</span>
+      <div class="wf-label">알림 설정</div>
+      <div class="wf-card" style="font-size:11px;">
+        <div style="display:flex;justify-content:space-between;align-items:center;">
+          <span>학습 리마인더</span>
+          <span style="background:#4555FF;color:#fff;padding:2px 8px;border-radius:10px;font-size:9px;">ON</span>
+        </div>
+      </div>
+      <div class="wf-card" style="font-size:11px;">
+        <div style="display:flex;justify-content:space-between;align-items:center;">
+          <span>주간 리포트</span>
+          <span style="background:#e0e6f0;color:#889;padding:2px 8px;border-radius:10px;font-size:9px;">OFF</span>
+        </div>
+      </div>
+    </div>
+    <div style="position:relative;margin-bottom:12px;">
+      <span class="wf-num" style="top:4px;left:-28px;">4</span>
+      <div class="wf-label">배지 현황</div>
+      <div class="wf-grid3">
+        <div style="text-align:center;font-size:20px;">🏆</div>
+        <div style="text-align:center;font-size:20px;">🔥</div>
+        <div style="text-align:center;font-size:20px;">📚</div>
+        <div style="text-align:center;font-size:9px;color:#889;">첫 학습</div>
+        <div style="text-align:center;font-size:9px;color:#889;">7일 연속</div>
+        <div style="text-align:center;font-size:9px;color:#889;">10문제</div>
+        <div style="text-align:center;font-size:20px;opacity:.3;">🔒</div>
+        <div style="text-align:center;font-size:20px;opacity:.3;">🔒</div>
+        <div style="text-align:center;font-size:20px;opacity:.3;">🔒</div>
+      </div>
+    </div>
+    <div style="position:relative;margin-bottom:12px;">
+      <span class="wf-num" style="top:4px;left:-28px;">5</span>
+      <div class="wf-label">TTS 자동재생</div>
+      <div class="wf-card" style="font-size:11px;">
+        <div style="display:flex;justify-content:space-between;align-items:center;">
+          <span>영어 문장 자동 재생</span>
+          <span style="background:#4555FF;color:#fff;padding:2px 8px;border-radius:10px;font-size:9px;">ON</span>
+        </div>
+      </div>
+    </div>
+    <div style="position:relative;">
+      <span class="wf-num" style="top:8px;left:-28px;">6</span>
+      <div class="wf-btn wf-btn-secondary" style="color:#F43F5E;">로그아웃</div>
+    </div>
+  </div>
+</div>
+    </div>
+    <div class="events-section">
+      <h3>이벤트 설명</h3>
+      <div class="event-item">
+  <span class="event-num">1</span><span class="event-title">프로필 정보</span>
+  <div class="event-desc">
+    <ul>
+      <li>GET /api/users/me 호출 — 프로필 정보 표시</li>
+      <li>이름, 이메일, 학년, 레벨, 누적 XP 표시</li>
+      <li>프로필 아바타는 기본 이모지 (Phase 3에서 이미지 업로드)</li>
+      <li>이름 클릭 시 수정 가능</li>
+    </ul>
+  </div>
+</div>
+<div class="event-item">
+  <span class="event-num">2</span><span class="event-title">학년 설정</span>
+  <div class="event-desc">
+    <ul>
+      <li>드롭다운: 중1~중3, 고1~고3</li>
+      <li>변경 시 PUT /api/users/grade 호출</li>
+      <li>학년 변경 시 추천 학습 콘텐츠 자동 갱신</li>
+      <li>변경 완료 토스트 표시</li>
+    </ul>
+  </div>
+</div>
+<div class="event-item">
+  <span class="event-num">3</span><span class="event-title">알림 설정</span>
+  <div class="event-desc">
+    <ul>
+      <li>학습 리마인더: 매일 정해진 시간 학습 알림 (토글 ON/OFF)</li>
+      <li>주간 리포트: 매주 월요일 학습 요약 알림 (토글 ON/OFF)</li>
+      <li>PUT /api/users/settings 호출 — USER_SETTINGS 테이블 업데이트</li>
+      <li>알림 시간 설정 (리마인더 ON 시 시간 선택 가능)</li>
+    </ul>
+  </div>
+</div>
+<div class="event-item">
+  <span class="event-num">4</span><span class="event-title">배지 현황</span>
+  <div class="event-desc">
+    <ul>
+      <li>GET /api/users/badges 호출 — 획득 배지 + 미획득 배지 표시</li>
+      <li>획득 배지: 컬러 아이콘, 미획득: 🔒 잠금 아이콘</li>
+      <li>배지 클릭 시 획득 조건 안내</li>
+      <li>BADGE 테이블 + USER_BADGE 조인 데이터</li>
+    </ul>
+  </div>
+</div>
+<div class="event-item">
+  <span class="event-num">5</span><span class="event-title">TTS 자동재생 설정</span>
+  <div class="event-desc">
+    <ul>
+      <li>실생활 영어 화면 진입 시 자동 TTS 재생 여부 토글</li>
+      <li>PUT /api/users/settings 호출 — USER_SETTINGS.tts_autoplay</li>
+      <li>ON: 영어 문장 로드 시 자동 음성 재생</li>
+      <li>OFF: 수동 🔊 버튼 클릭 시에만 재생</li>
+    </ul>
+  </div>
+</div>
+<div class="event-item">
+  <span class="event-num">6</span><span class="event-title">로그아웃 버튼</span>
+  <div class="event-desc">
+    <ul>
+      <li>클릭 시 "로그아웃 하시겠습니까?" 확인 다이얼로그</li>
+      <li>확인 시 로컬 스토리지 JWT 토큰 삭제</li>
+      <li>로그인 화면(SCR-01-LOGIN)로 이동</li>
+      <li>POST /api/auth/logout 호출 — 서버 세션 정리</li>
+    </ul>
+  </div>
+</div>
+    </div>
+  </div>
+  <div class="footer">Copyright © 2026 Daily Study. All rights reserved.</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Daily Study 화면설계서 — 실생활 영어</title>
+<style>
+
+@import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: 'Pretendard', -apple-system, sans-serif;
+  background: #f0f2f5;
+  color: #1a1a2e;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+.page {
+  max-width: 1200px;
+  margin: 0 auto;
+  background: #fff;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+/* Top bar */
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 32px;
+  background: linear-gradient(90deg, #22B2FF, #4555FF);
+  color: #fff;
+  font-size: 15px;
+  font-weight: 600;
+}
+.topbar .nav-btns a {
+  color: #fff;
+  text-decoration: none;
+  padding: 4px 14px;
+  border: 1px solid rgba(255,255,255,0.5);
+  border-radius: 6px;
+  margin-left: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  transition: background .2s;
+}
+.topbar .nav-btns a:hover { background: rgba(255,255,255,0.2); }
+
+/* Header info */
+.spec-header {
+  display: flex;
+  gap: 0;
+  border-bottom: 2px solid #4555FF;
+  background: #f8faff;
+}
+.spec-header .field {
+  flex: 1;
+  padding: 12px 24px;
+  border-right: 1px solid #e0e6f0;
+}
+.spec-header .field:last-child { border-right: none; }
+.spec-header .label {
+  font-size: 11px;
+  color: #8899bb;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  margin-bottom: 2px;
+}
+.spec-header .value {
+  font-size: 15px;
+  color: #1a1a2e;
+  font-weight: 600;
+}
+
+/* Main content */
+.main-content {
+  display: flex;
+  flex: 1;
+  min-height: 500px;
+}
+.layout-section {
+  flex: 0 0 48%;
+  padding: 32px;
+  border-right: 1px solid #e0e6f0;
+  background: #fafbff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.events-section {
+  flex: 1;
+  padding: 32px;
+  background: #fff;
+}
+.events-section h3 {
+  font-size: 14px;
+  color: #4555FF;
+  margin-bottom: 20px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #e0e6f0;
+}
+.event-item {
+  margin-bottom: 24px;
+}
+.event-num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px; height: 28px;
+  background: linear-gradient(135deg, #22B2FF, #4555FF);
+  color: #fff;
+  border-radius: 50%;
+  font-size: 14px;
+  font-weight: 700;
+  margin-right: 8px;
+  vertical-align: middle;
+}
+.event-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: #1a1a2e;
+  vertical-align: middle;
+}
+.event-desc {
+  margin-left: 36px;
+  margin-top: 6px;
+  font-size: 13px;
+  color: #555;
+  line-height: 1.7;
+}
+.event-desc ul { padding-left: 16px; margin: 4px 0; }
+.event-desc li { margin-bottom: 2px; }
+
+/* Wireframe device frame */
+.device-frame {
+  width: 320px;
+  background: #fff;
+  border: 2px solid #d0d8e8;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.1);
+  position: relative;
+}
+.device-statusbar {
+  background: #f0f2f5;
+  padding: 6px 16px;
+  display: flex;
+  justify-content: space-between;
+  font-size: 10px;
+  color: #888;
+}
+.device-content {
+  padding: 20px 16px;
+  min-height: 400px;
+}
+.wf-label {
+  font-size: 11px;
+  color: #4555FF;
+  font-weight: 600;
+  margin: 8px 0 4px;
+}
+.wf-num {
+  display: inline-flex;
+  align-items: center; justify-content: center;
+  width: 20px; height: 20px;
+  background: #4555FF; color: #fff;
+  border-radius: 50%; font-size: 11px; font-weight: 700;
+  margin-right: 4px;
+  position: absolute;
+  z-index: 10;
+}
+.wf-input {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #d0d8e8;
+  border-radius: 8px;
+  font-size: 12px;
+  color: #999;
+  margin-bottom: 10px;
+  background: #f9fafb;
+}
+.wf-btn {
+  width: 100%;
+  padding: 12px;
+  border: none;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 600;
+  text-align: center;
+  margin-bottom: 8px;
+}
+.wf-btn-primary {
+  background: linear-gradient(90deg, #22B2FF, #4555FF);
+  color: #fff;
+}
+.wf-btn-secondary {
+  background: #f0f2f5;
+  color: #4555FF;
+}
+.wf-card {
+  background: #f8faff;
+  border: 1px solid #e0e6f0;
+  border-radius: 12px;
+  padding: 12px;
+  margin-bottom: 10px;
+}
+.wf-link {
+  font-size: 12px;
+  color: #4555FF;
+  text-decoration: underline;
+  text-align: center;
+  display: block;
+  margin: 8px 0;
+}
+.wf-text {
+  font-size: 12px; color: #333; margin-bottom: 8px;
+}
+.wf-badge {
+  display: inline-block; padding: 2px 8px; border-radius: 6px;
+  font-size: 10px; font-weight: 600;
+}
+.wf-progress {
+  height: 6px; background: #e0e6f0; border-radius: 3px; margin: 4px 0;
+}
+.wf-progress-fill {
+  height: 100%; background: linear-gradient(90deg, #22B2FF, #4555FF);
+  border-radius: 3px;
+}
+.wf-row { display: flex; gap: 8px; margin-bottom: 8px; }
+.wf-col { flex: 1; }
+.wf-grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.wf-grid3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px; }
+.wf-nav {
+  display: flex; justify-content: space-around;
+  padding: 8px 0; border-top: 1px solid #e0e6f0;
+  margin-top: 12px; background: #fff;
+}
+.wf-nav-item {
+  font-size: 9px; color: #889; text-align: center;
+}
+.wf-nav-item.active { color: #4555FF; font-weight: 600; }
+.wf-checkbox {
+  display: inline-block; width: 14px; height: 14px;
+  border: 1px solid #d0d8e8; border-radius: 3px;
+  vertical-align: middle; margin-right: 4px;
+}
+.wf-chart-bar {
+  display: flex; align-items: flex-end; gap: 6px;
+  height: 100px; margin: 8px 0;
+}
+.wf-bar {
+  flex: 1; background: linear-gradient(180deg, #22B2FF, #4555FF);
+  border-radius: 4px 4px 0 0;
+  display: flex; align-items: flex-start; justify-content: center;
+  font-size: 8px; color: #fff; padding-top: 2px;
+}
+
+/* Footer */
+.footer {
+  text-align: center;
+  padding: 16px;
+  font-size: 12px;
+  color: #8899bb;
+  border-top: 1px solid #e0e6f0;
+  background: #f8faff;
+}
+
+@media print {
+  body { background: #fff; }
+  .page { max-width: 100%; box-shadow: none; }
+  .topbar .nav-btns { display: none; }
+  .main-content { min-height: auto; }
+}
+
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="topbar">
+    <span>Daily Study 화면설계서 v1.0</span>
+    <span class="nav-btns"><a href="screen-08-wrong-answers.html">← 오답노트</a><a href="index.html">목차</a><a href="screen-10-statistics.html">학습 통계 →</a></span>
+  </div>
+  <div class="spec-header">
+    <div class="field"><div class="label">화면명</div><div class="value">실생활 영어</div></div>
+    <div class="field"><div class="label">화면ID</div><div class="value" style="font-family:monospace;font-size:13px;">SCR-09-ENGLISH</div></div>
+    <div class="field"><div class="label">DESCRIPTION</div><div class="value" style="font-size:13px;">오늘의 영어 문장과 상황별 카테고리, TTS 재생 기능</div></div>
+  </div>
+  <div class="main-content">
+    <div class="layout-section">
+      <div class="device-frame">
+  <div class="device-statusbar"><span>9:41</span><span>📶 🔋</span></div>
+  <div class="device-content">
+    <div style="font-size:16px;font-weight:800;color:#6366F1;margin-bottom:12px;">실생활 영어 💬</div>
+    <div style="position:relative;margin-bottom:16px;">
+      <span class="wf-num" style="top:0;left:-28px;">1</span>
+      <div class="wf-label">오늘의 문장</div>
+      <div class="wf-card" style="background:linear-gradient(135deg,#f0f4ff,#e4f1ff);">
+        <div style="font-size:13px;font-weight:700;color:#6366F1;">"Could you help me with this?"</div>
+        <div style="font-size:10px;color:#555;margin-top:4px;">도와주실 수 있나요?</div>
+        <div style="font-size:9px;color:#889;margin-top:4px;">카페 · 요청하기</div>
+        <div style="margin-top:8px;">
+          <span style="font-size:20px;cursor:pointer;">🔊</span>
+          <span style="font-size:11px;color:#4555FF;margin-left:4px;">TTS 재생</span>
+        </div>
+      </div>
+    </div>
+    <div style="position:relative;margin-bottom:12px;">
+      <span class="wf-num" style="top:4px;left:-28px;">2</span>
+      <div class="wf-label">상황별 카테고리</div>
+      <div class="wf-grid3">
+        <div class="wf-card" style="text-align:center;padding:8px;font-size:10px;">☕ 카페</div>
+        <div class="wf-card" style="text-align:center;padding:8px;font-size:10px;">🏪 편의점</div>
+        <div class="wf-card" style="text-align:center;padding:8px;font-size:10px;">🏫 학교</div>
+        <div class="wf-card" style="text-align:center;padding:8px;font-size:10px;">📞 전화</div>
+        <div class="wf-card" style="text-align:center;padding:8px;font-size:10px;">🍽️ 식당</div>
+        <div class="wf-card" style="text-align:center;padding:8px;font-size:10px;">✈️ 여행</div>
+      </div>
+    </div>
+    <div style="position:relative;margin-bottom:12px;">
+      <span class="wf-num" style="top:4px;left:-28px;">3</span>
+      <div class="wf-label">추가 문장</div>
+      <div class="wf-card" style="font-size:11px;">
+        <div style="font-weight:600;color:#6366F1;">"Can I get a latte, please?"</div>
+        <div style="font-size:9px;color:#889;">라떼 한 잔 주세요.</div>
+        <span style="font-size:14px;">🔊</span>
+      </div>
+      <div class="wf-card" style="font-size:11px;">
+        <div style="font-weight:600;color:#6366F1;">"How much is it?"</div>
+        <div style="font-size:9px;color:#889;">얼마인가요?</div>
+        <span style="font-size:14px;">🔊</span>
+      </div>
+    </div>
+    <div style="position:relative;">
+      <span class="wf-num" style="top:8px;left:-28px;">4</span>
+      <div class="wf-btn wf-btn-primary" style="background:linear-gradient(90deg,#6366F1,#4555FF);">🎭 롤플레이 시작</div>
+    </div>
+    <div class="wf-nav">
+      <div class="wf-nav-item">🏠 홈</div>
+      <div class="wf-nav-item">📚 과목</div>
+      <div class="wf-nav-item" style="font-size:18px;">✏️</div>
+      <div class="wf-nav-item">❌ 오답</div>
+      <div class="wf-nav-item active">💬 영어</div>
+    </div>
+  </div>
+</div>
+    </div>
+    <div class="events-section">
+      <h3>이벤트 설명</h3>
+      <div class="event-item">
+  <span class="event-num">1</span><span class="event-title">오늘의 영어 문장</span>
+  <div class="event-desc">
+    <ul>
+      <li>GET /api/english/today 호출 — 매일 1개 문장 자동 갱신</li>
+      <li>영어 문장 + 한국어 해석 + 상황 태그 표시</li>
+      <li>🔊 버튼 클릭 시 TTS 음성 재생</li>
+      <li>TTS 엔진: Edge TTS(무료) / OpenAI TTS(고품질) 설정 가능</li>
+      <li>사용자 설정의 TTS 자동재생 여부에 따라 진입 시 자동 재생</li>
+      <li>3-layer 캐싱: Redis → DB → 파일시스템</li>
+    </ul>
+  </div>
+</div>
+<div class="event-item">
+  <span class="event-num">2</span><span class="event-title">상황별 카테고리</span>
+  <div class="event-desc">
+    <ul>
+      <li>6개 카테고리: 카페 / 편의점 / 학교 / 전화 / 식당 / 여행</li>
+      <li>카테고리 클릭 시 GET /api/english?category={} 호출</li>
+      <li>해당 카테고리의 문장 목록으로 화면 전환</li>
+      <li>각 문장마다 개별 TTS 재생 버튼</li>
+    </ul>
+  </div>
+</div>
+<div class="event-item">
+  <span class="event-num">3</span><span class="event-title">추가 문장 목록</span>
+  <div class="event-desc">
+    <ul>
+      <li>선택한 카테고리 내 문장들을 스크롤 목록으로 표시</li>
+      <li>각 문장별 TTS 재생 버튼 (🔊)</li>
+      <li>북마크 기능 — 저장한 문장은 마이페이지에서 확인</li>
+      <li>문장 출처: AI 생성(GPT-4o-mini) + 웹 크롤링(Spring Batch)</li>
+    </ul>
+  </div>
+</div>
+<div class="event-item">
+  <span class="event-num">4</span><span class="event-title">롤플레이 버튼</span>
+  <div class="event-desc">
+    <ul>
+      <li>AI와 대화형 영어 연습 모드 시작</li>
+      <li>상황(카페 주문 등)에 맞는 역할극 시나리오 제공</li>
+      <li>사용자 응답 → AI(GPT-4o-mini) 응답 → TTS 재생</li>
+      <li>대화 종료 후 피드백 및 교정 제안</li>
+    </ul>
+  </div>
+</div>
+    </div>
+  </div>
+  <div class="footer">Copyright © 2026 Daily Study. All rights reserved.</div>
+</div>
+</body>
+</html>
