@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>단원 요약 — Daily Study</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
+<style>
+:root {
+  --primary: #10B981; --primary-focus: #059669;
+  --secondary: #6366F1; --accent: #F59E0B;
+  --base-100: #FFFFFF; --base-200: #F3F4F6; --base-300: #E5E7EB;
+  --base-content: #1F2937; --success: #22C55E; --error: #EF4444; --info: #3B82F6;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: "Pretendard", "Apple SD Gothic Neo", "Noto Sans KR", sans-serif; background: var(--base-200); color: var(--base-content); padding-bottom: 80px; }
+.header { position: sticky; top: 0; z-index: 50; height: 56px; background: rgba(255,255,255,0.95); backdrop-filter: blur(8px); border-bottom: 1px solid var(--base-200); display: flex; align-items: center; justify-content: space-between; padding: 0 16px; }
+.header-left { display: flex; align-items: center; gap: 8px; font-size: 16px; font-weight: 600; }
+.header-back { width: 36px; height: 36px; border: none; background: transparent; cursor: pointer; font-size: 18px; }
+.header-pdf { padding: 6px 12px; border: 2px solid var(--base-300); border-radius: 8px; background: var(--base-100); cursor: pointer; font-size: 14px; font-weight: 600; }
+.content { max-width: 1024px; margin: 0 auto; padding: 16px; }
+.unit-breadcrumb { font-size: 12px; color: #9CA3AF; margin-bottom: 8px; }
+.unit-title { font-size: 24px; font-weight: 700; margin-bottom: 20px; }
+.tabs { display: flex; gap: 4px; margin-bottom: 24px; border-bottom: 2px solid var(--base-200); }
+.tab { padding: 12px 20px; font-size: 15px; font-weight: 600; cursor: pointer; border-bottom: 3px solid transparent; margin-bottom: -2px; color: #6B7280; }
+.tab.active { color: var(--primary); border-bottom-color: var(--primary); }
+/* Summary Card */
+.summary-card { background: var(--base-100); border-radius: 16px; padding: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); margin-bottom: 16px; }
+.summary-card-title { font-size: 18px; font-weight: 600; margin-bottom: 12px; }
+.summary-item { margin-bottom: 16px; }
+.summary-item-title { font-size: 16px; font-weight: 600; margin-bottom: 4px; }
+.summary-item-body { font-size: 14px; line-height: 1.6; color: #4B5563; }
+.highlight-box { background: rgba(245,158,11,0.1); border-radius: 8px; padding: 12px 16px; margin-top: 12px; font-size: 14px; }
+.highlight-box strong { color: var(--accent); }
+.code-block { background: var(--base-200); border-radius: 8px; padding: 12px 16px; margin-top: 8px; font-family: "Courier New", monospace; font-size: 16px; }
+.btn-primary { display: block; width: 100%; padding: 14px; background: var(--primary); color: #FFF; border: none; border-radius: 12px; font-size: 16px; font-weight: 600; font-family: inherit; cursor: pointer; margin-top: 8px; }
+/* Flashcard */
+.flashcard-progress { font-size: 13px; color: #6B7280; margin-bottom: 8px; }
+.flashcard-dots { display: flex; gap: 6px; margin-bottom: 20px; }
+.flashcard-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--base-300); }
+.flashcard-dot.active { background: var(--primary); }
+.flashcard { background: var(--base-100); border-radius: 16px; padding: 40px 24px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); min-height: 256px; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; margin-bottom: 16px; }
+.flashcard-question { font-size: 22px; font-weight: 700; margin-bottom: 16px; }
+.flashcard-hint { font-size: 14px; color: #9CA3AF; }
+.flashcard-nav { display: flex; justify-content: space-between; gap: 12px; }
+.btn-outline { padding: 12px 24px; border: 2px solid var(--base-300); border-radius: 12px; font-size: 15px; font-weight: 600; cursor: pointer; background: var(--base-100); flex: 1; }
+/* TOC sidebar */
+.toc { display: none; }
+@media (min-width: 1024px) {
+  .content { padding: 32px; }
+  .main-layout { display: grid; grid-template-columns: 1fr 280px; gap: 24px; }
+  .toc { display: block; background: var(--base-100); border-radius: 16px; padding: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); height: fit-content; position: sticky; top: 72px; }
+  .toc-title { font-size: 16px; font-weight: 600; margin-bottom: 12px; }
+  .toc-item { padding: 8px 12px; font-size: 14px; cursor: pointer; border-radius: 8px; margin-bottom: 4px; }
+  .toc-item:hover { background: var(--base-200); }
+  .toc-item.active { background: rgba(16,185,129,0.1); color: var(--primary); font-weight: 600; }
+  .bottom-nav { display: none; }
+  body { padding-bottom: 0; }
+}
+/* Bottom Nav */
+.bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; height: 64px; background: var(--base-100); border-top: 1px solid var(--base-200); display: flex; align-items: center; justify-content: space-around; z-index: 50; max-width: 480px; margin: 0 auto; }
+.nav-item { display: flex; flex-direction: column; align-items: center; gap: 2px; font-size: 11px; color: #9CA3AF; cursor: pointer; flex: 1; }
+.nav-item.active { color: var(--primary); }
+.nav-icon { font-size: 20px; }
+.nav-center-btn { width: 52px; height: 52px; background: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px; color: #FFF; margin-top: -20px; box-shadow: 0 4px 12px rgba(16,185,129,0.3); }
+.nav-center-label { font-size: 11px; color: var(--primary); font-weight: 600; margin-top: 2px; }
+</style>
+</head>
+<body>
+<div class="header">
+  <div class="header-left"><button class="header-back">←</button> 수학 > 함수와 그래프</div>
+  <button class="header-pdf">📄 PDF</button>
+</div>
+<div class="content">
+  <div class="unit-breadcrumb">중학교 2학년 > 수학 > 3단원</div>
+  <div class="unit-title">함수와 그래프</div>
+  <div class="tabs">
+    <div class="tab active">📖 요약</div>
+    <div class="tab">🎴 플래시카드</div>
+  </div>
+  <div class="main-layout">
+    <div>
+      <!-- Summary Tab -->
+      <div class="summary-card">
+        <div class="summary-card-title">핵심 요약</div>
+        <div class="summary-item">
+          <div class="summary-item-title">1. 함수의 정의</div>
+          <div class="summary-item-body">함수는 어떤 입력값(x)에 대해 정확히 하나의 출력값(y)를 대응시키는 관계이다.</div>
+        </div>
+        <div class="summary-item">
+          <div class="summary-item-title">2. 함수의 그래프</div>
+          <div class="summary-item-body">좌표평면 위에 함수의 대응 관계를 나타낸 것. x축과 y축으로 구성된 평면에 점들을 찍어 나타낸다.</div>
+        </div>
+        <div class="highlight-box">
+          <strong>💡 핵심 포인트</strong><br>
+          x값이 주어지면 y값은 하나만 대응되어야 함!
+        </div>
+      </div>
+      <div class="summary-card">
+        <div class="summary-card-title">주요 공식</div>
+        <div class="code-block">y = ax + b &nbsp;&nbsp;(일차함수)</div>
+      </div>
+      <button class="btn-primary">문제 풀러 가기 →</button>
+    </div>
+    <div class="toc">
+      <div class="toc-title">단원 목차</div>
+      <div class="toc-item">1. 함수의 정의</div>
+      <div class="toc-item active">2. 함수의 그래프</div>
+      <div class="toc-item">3. 일차함수</div>
+      <div class="toc-item">4. 일차함수의 그래프</div>
+      <div class="toc-item">5. 함수의 활용</div>
+    </div>
+  </div>
+</div>
+<div class="bottom-nav">
+  <div class="nav-item"><div class="nav-icon">🏠</div>홈</div>
+  <div class="nav-item active"><div class="nav-icon">📚</div>과목</div>
+  <div class="nav-item center"><div class="nav-center-btn">✏️</div><div class="nav-center-label">풀기</div></div>
+  <div class="nav-item"><div class="nav-icon">📝</div>오답</div>
+  <div class="nav-item"><div class="nav-icon">💬</div>영어</div>
+</div>
+</body>
+</html>

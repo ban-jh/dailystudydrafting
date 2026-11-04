@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>회원가입 — Daily Study</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
+<style>
+:root {
+  --primary: #10B981; --primary-focus: #059669;
+  --secondary: #6366F1; --accent: #F59E0B;
+  --base-100: #FFFFFF; --base-200: #F3F4F6; --base-300: #E5E7EB;
+  --base-content: #1F2937; --success: #22C55E; --error: #EF4444;
+  --warning: #F59E0B; --info: #3B82F6;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: "Pretendard", "Apple SD Gothic Neo", "Noto Sans KR", sans-serif;
+  background: var(--base-200); color: var(--base-content);
+  min-height: 100vh; display: flex; align-items: center; justify-content: center;
+  padding: 16px;
+}
+.signup-container { width: 100%; max-width: 480px; }
+.signup-card {
+  background: var(--base-100); border-radius: 16px; padding: 40px 32px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+}
+.logo-area { text-align: center; margin-bottom: 28px; }
+.logo-icon {
+  width: 56px; height: 56px; background: var(--primary); border-radius: 16px;
+  display: inline-flex; align-items: center; justify-content: center;
+  font-size: 28px; margin-bottom: 12px;
+}
+.logo-text { font-size: 24px; font-weight: 700; }
+.logo-sub { font-size: 14px; color: #6B7280; margin-top: 4px; }
+.form-group { margin-bottom: 20px; }
+.form-label { display: block; font-size: 14px; font-weight: 600; margin-bottom: 8px; }
+.form-input {
+  width: 100%; padding: 12px 16px; border: 2px solid var(--base-300);
+  border-radius: 8px; font-size: 16px; font-family: inherit; background: var(--base-100);
+  transition: border-color 0.2s;
+}
+.form-input:focus { outline: none; border-color: var(--primary); }
+.form-input::placeholder { color: #9CA3AF; }
+.form-select {
+  width: 100%; padding: 12px 16px; border: 2px solid var(--base-300);
+  border-radius: 8px; font-size: 16px; font-family: inherit; background: var(--base-100);
+  cursor: pointer; appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%231F2937' viewBox='0 0 16 16'%3E%3Cpath d='M8 11L3 6h10z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat; background-position: right 16px center;
+}
+.form-select:focus { outline: none; border-color: var(--primary); }
+.subject-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.subject-chip {
+  padding: 10px 8px; border: 2px solid var(--base-300); border-radius: 12px;
+  text-align: center; font-size: 14px; font-weight: 600; cursor: pointer;
+  transition: all 0.2s; background: var(--base-100);
+}
+.subject-chip.selected { border-color: var(--primary); background: rgba(16,185,129,0.08); color: var(--primary); }
+.subject-chip .chip-icon { font-size: 20px; display: block; margin-bottom: 4px; }
+.btn-primary {
+  width: 100%; padding: 14px; background: var(--primary); color: #FFF;
+  border: none; border-radius: 12px; font-size: 16px; font-weight: 600;
+  font-family: inherit; cursor: pointer; transition: background 0.2s; margin-top: 8px;
+}
+.btn-primary:hover { background: var(--primary-focus); }
+.login-link { text-align: center; margin-top: 20px; font-size: 14px; color: #6B7280; }
+.login-link a { color: var(--primary); font-weight: 600; text-decoration: none; }
+@media (min-width: 768px) {
+  .signup-card { padding: 48px 40px; }
+}
+</style>
+</head>
+<body>
+<div class="signup-container">
+  <div class="signup-card">
+    <div class="logo-area">
+      <div class="logo-icon">📚</div>
+      <div class="logo-text">Daily Study</div>
+      <div class="logo-sub">회원가입하고 학습을 시작하세요</div>
+    </div>
+    <form>
+      <div class="form-group">
+        <label class="form-label">이메일</label>
+        <input type="email" class="form-input" placeholder="hello@dailystudy.com">
+      </div>
+      <div class="form-group">
+        <label class="form-label">비밀번호</label>
+        <input type="password" class="form-input" placeholder="8자 이상, 영문+숫자+특수문자">
+      </div>
+      <div class="form-group">
+        <label class="form-label">비밀번호 확인</label>
+        <input type="password" class="form-input" placeholder="비밀번호를 다시 입력하세요">
+      </div>
+      <div class="form-group">
+        <label class="form-label">이름</label>
+        <input type="text" class="form-input" placeholder="김민준">
+      </div>
+      <div class="form-group">
+        <label class="form-label">학년</label>
+        <select class="form-select">
+          <option value="">학년을 선택하세요</option>
+          <option>중학교 1학년</option>
+          <option>중학교 2학년</option>
+          <option>중학교 3학년</option>
+          <option>고등학교 1학년</option>
+          <option>고등학교 2학년</option>
+          <option>고등학교 3학년</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">관심 과목 (다중 선택)</label>
+        <div class="subject-grid">
+          <div class="subject-chip selected"><span class="chip-icon" style="color:#F43F5E;">📖</span>국어</div>
+          <div class="subject-chip selected"><span class="chip-icon" style="color:#3B82F6;">📐</span>수학</div>
+          <div class="subject-chip"><span class="chip-icon" style="color:#6366F1;">🌐</span>영어</div>
+          <div class="subject-chip selected"><span class="chip-icon" style="color:#10B981;">🔬</span>과학</div>
+          <div class="subject-chip"><span class="chip-icon" style="color:#F59E0B;">🌍</span>사회</div>
+          <div class="subject-chip"><span class="chip-icon" style="color:#92400E;">📜</span>역사</div>
+        </div>
+      </div>
+      <button type="submit" class="btn-primary">회원가입 완료</button>
+    </form>
+    <div class="login-link">
+      이미 계정이 있나요? <a href="login.html">로그인</a>
+    </div>
+  </div>
+</div>
+</body>
+</html>

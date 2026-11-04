@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>오답노트 — Daily Study</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
+<style>
+:root {
+  --primary: #10B981; --primary-focus: #059669;
+  --secondary: #6366F1; --accent: #F59E0B;
+  --base-100: #FFFFFF; --base-200: #F3F4F6; --base-300: #E5E7EB;
+  --base-content: #1F2937; --success: #22C55E; --error: #EF4444; --info: #3B82F6;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: "Pretendard", "Apple SD Gothic Neo", "Noto Sans KR", sans-serif; background: var(--base-200); color: var(--base-content); padding-bottom: 80px; }
+.header { position: sticky; top: 0; z-index: 50; height: 56px; background: rgba(255,255,255,0.95); backdrop-filter: blur(8px); border-bottom: 1px solid var(--base-200); display: flex; align-items: center; justify-content: space-between; padding: 0 16px; }
+.header-left { display: flex; align-items: center; gap: 8px; }
+.header-logo { width: 28px; height: 28px; background: var(--primary); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 14px; }
+.header-title { font-size: 18px; font-weight: 700; }
+.header-right { display: flex; align-items: center; gap: 12px; }
+.header-btn { width: 36px; height: 36px; border-radius: 50%; border: none; background: var(--base-200); cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 16px; }
+.header-avatar { width: 32px; height: 32px; border-radius: 50%; background: var(--secondary); color: #FFF; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 600; }
+.content { max-width: 1024px; margin: 0 auto; padding: 16px; }
+.page-title { font-size: 24px; font-weight: 700; }
+.page-sub { font-size: 14px; color: #6B7280; margin-top: 4px; margin-bottom: 20px; }
+.filter-card { background: var(--base-100); border-radius: 16px; padding: 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); margin-bottom: 16px; }
+.filter-label { font-size: 13px; font-weight: 600; color: #6B7280; margin-bottom: 8px; }
+.filter-chips { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 4px; }
+.filter-chips + .filter-label { margin-top: 12px; }
+.chip { padding: 6px 14px; border: 2px solid var(--base-300); border-radius: 999px; font-size: 13px; font-weight: 600; white-space: nowrap; cursor: pointer; background: var(--base-100); transition: all 0.2s; }
+.chip.selected { border-color: var(--primary); background: var(--primary); color: #FFF; }
+.wrong-count { font-size: 13px; color: #9CA3AF; margin-bottom: 16px; }
+.wrong-grid { display: grid; grid-template-columns: 1fr; gap: 12px; }
+.wrong-card { background: var(--base-100); border-radius: 16px; padding: 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
+.wrong-header { display: flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 600; margin-bottom: 8px; }
+.wrong-subject-icon { width: 24px; height: 24px; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 14px; }
+.wrong-question { font-size: 15px; font-weight: 500; margin-bottom: 12px; line-height: 1.5; }
+.wrong-answer { display: flex; gap: 16px; font-size: 14px; margin-bottom: 12px; }
+.wrong-answer-my { color: var(--error); }
+.wrong-answer-correct { color: var(--success); }
+.wrong-meta { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; }
+.wrong-badge { padding: 4px 10px; border-radius: 999px; font-size: 12px; font-weight: 600; }
+.badge-error { background: rgba(239,68,68,0.1); color: var(--error); }
+.wrong-date { font-size: 12px; color: #9CA3AF; }
+.wrong-btns { display: flex; gap: 8px; }
+.btn-ghost-sm { padding: 8px 16px; border: 2px solid var(--base-300); border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer; background: var(--base-100); }
+.btn-primary-sm { padding: 8px 16px; background: var(--primary); color: #FFF; border: none; border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer; }
+/* Expanded explanation */
+.wrong-explanation { background: var(--base-200); border-radius: 12px; padding: 14px 16px; margin-top: 12px; font-size: 13px; line-height: 1.6; color: #4B5563; }
+.explanation-label { font-size: 13px; font-weight: 600; color: var(--base-content); margin-bottom: 6px; }
+.btn-fab { display: block; width: 100%; padding: 14px; background: var(--primary); color: #FFF; border: none; border-radius: 12px; font-size: 16px; font-weight: 600; font-family: inherit; cursor: pointer; margin-top: 24px; }
+.bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; height: 64px; background: var(--base-100); border-top: 1px solid var(--base-200); display: flex; align-items: center; justify-content: space-around; z-index: 50; max-width: 480px; margin: 0 auto; }
+.nav-item { display: flex; flex-direction: column; align-items: center; gap: 2px; font-size: 11px; color: #9CA3AF; cursor: pointer; flex: 1; }
+.nav-item.active { color: var(--primary); }
+.nav-icon { font-size: 20px; }
+.nav-center-btn { width: 52px; height: 52px; background: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px; color: #FFF; margin-top: -20px; box-shadow: 0 4px 12px rgba(16,185,129,0.3); }
+.nav-center-label { font-size: 11px; color: var(--primary); font-weight: 600; margin-top: 2px; }
+@media (min-width: 768px) { .wrong-grid { grid-template-columns: 1fr 1fr; } }
+@media (min-width: 1024px) { .bottom-nav { display: none; } body { padding-bottom: 0; } .content { padding: 32px; } }
+</style>
+</head>
+<body>
+<div class="header">
+  <div class="header-left"><div class="header-logo">📚</div><div class="header-title">Daily Study</div></div>
+  <div class="header-right"><button class="header-btn">🔔</button><div class="header-avatar">민</div></div>
+</div>
+<div class="content">
+  <div class="page-title">오답노트</div>
+  <div class="page-sub">틀린 문제를 다시 풀어보세요</div>
+  <div class="filter-card">
+    <div class="filter-label">과목</div>
+    <div class="filter-chips">
+      <div class="chip selected">전체</div>
+      <div class="chip">수학</div>
+      <div class="chip">과학</div>
+      <div class="chip">국어</div>
+      <div class="chip">영어</div>
+    </div>
+    <div class="filter-label">기간</div>
+    <div class="filter-chips">
+      <div class="chip">오늘</div>
+      <div class="chip selected">이번주</div>
+      <div class="chip">이번달</div>
+      <div class="chip">전체</div>
+    </div>
+  </div>
+  <div class="wrong-count">총 23개 오답</div>
+  <div class="wrong-grid">
+    <div class="wrong-card">
+      <div class="wrong-header"><div class="wrong-subject-icon" style="background:rgba(59,130,246,0.1);">📐</div> 수학 > 함수와 그래프</div>
+      <div class="wrong-question">Q: 다음 중 함수가 아닌 것은?</div>
+      <div class="wrong-answer">
+        <span class="wrong-answer-my">내 답: ③</span>
+        <span class="wrong-answer-correct">→ 정답: ②</span>
+      </div>
+      <div class="wrong-meta">
+        <span class="wrong-badge badge-error">❌ 틀림</span>
+        <span class="wrong-date">2024.11.03</span>
+      </div>
+      <div class="wrong-btns">
+        <button class="btn-ghost-sm">해설 보기</button>
+        <button class="btn-primary-sm">다시 풀기</button>
+      </div>
+      <!-- Expanded explanation example -->
+      <div class="wrong-explanation">
+        <div class="explanation-label">📖 해설</div>
+        y² = x의 경우, x = 4일 때 y = 2 또는 -2로 출력값이 2개 → 함수 아님
+      </div>
+    </div>
+    <div class="wrong-card">
+      <div class="wrong-header"><div class="wrong-subject-icon" style="background:rgba(16,185,129,0.1);">🔬</div> 과학 > 광합성</div>
+      <div class="wrong-question">Q: 광합성의 산물로 옳은 것은?</div>
+      <div class="wrong-answer">
+        <span class="wrong-answer-my">내 답: ①</span>
+        <span class="wrong-answer-correct">→ 정답: ③</span>
+      </div>
+      <div class="wrong-meta">
+        <span class="wrong-badge badge-error">❌ 틀림</span>
+        <span class="wrong-date">2024.11.02</span>
+      </div>
+      <div class="wrong-btns">
+        <button class="btn-ghost-sm">해설 보기</button>
+        <button class="btn-primary-sm">다시 풀기</button>
+      </div>
+    </div>
+    <div class="wrong-card">
+      <div class="wrong-header"><div class="wrong-subject-icon" style="background:rgba(244,63,94,0.1);">📖</div> 국어 > 시의 화법</div>
+      <div class="wrong-question">Q: 다음 시에서 화자의 태도로 가장 적절한 것은?</div>
+      <div class="wrong-answer">
+        <span class="wrong-answer-my">내 답: ④</span>
+        <span class="wrong-answer-correct">→ 정답: ①</span>
+      </div>
+      <div class="wrong-meta">
+        <span class="wrong-badge badge-error">❌ 틀림</span>
+        <span class="wrong-date">2024.11.01</span>
+      </div>
+      <div class="wrong-btns">
+        <button class="btn-ghost-sm">해설 보기</button>
+        <button class="btn-primary-sm">다시 풀기</button>
+      </div>
+    </div>
+  </div>
+  <button class="btn-fab">💪 전체 오답 다시 풀기</button>
+</div>
+<div class="bottom-nav">
+  <div class="nav-item"><div class="nav-icon">🏠</div>홈</div>
+  <div class="nav-item"><div class="nav-icon">📚</div>과목</div>
+  <div class="nav-item center"><div class="nav-center-btn">✏️</div><div class="nav-center-label">풀기</div></div>
+  <div class="nav-item active"><div class="nav-icon">📝</div>오답</div>
+  <div class="nav-item"><div class="nav-icon">💬</div>영어</div>
+</div>
+</body>
+</html>

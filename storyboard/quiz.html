@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>문제 풀이 — Daily Study</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
+<style>
+:root {
+  --primary: #10B981; --primary-focus: #059669;
+  --secondary: #6366F1; --accent: #F59E0B;
+  --base-100: #FFFFFF; --base-200: #F3F4F6; --base-300: #E5E7EB;
+  --base-content: #1F2937; --success: #22C55E; --error: #EF4444; --info: #3B82F6;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: "Pretendard", "Apple SD Gothic Neo", "Noto Sans KR", sans-serif; background: var(--base-200); color: var(--base-content); padding-bottom: 80px; }
+.header { position: sticky; top: 0; z-index: 50; height: 56px; background: rgba(255,255,255,0.95); backdrop-filter: blur(8px); border-bottom: 1px solid var(--base-200); display: flex; align-items: center; justify-content: space-between; padding: 0 16px; }
+.header-left { display: flex; align-items: center; gap: 8px; font-size: 16px; font-weight: 600; }
+.header-back { width: 36px; height: 36px; border: none; background: transparent; cursor: pointer; font-size: 18px; }
+.header-timer { display: flex; align-items: center; gap: 6px; font-size: 16px; font-weight: 700; color: var(--accent); }
+.content { max-width: 720px; margin: 0 auto; padding: 16px; }
+/* Quiz Setup */
+.page-title { font-size: 24px; font-weight: 700; }
+.page-sub { font-size: 14px; color: #6B7280; margin-top: 4px; margin-bottom: 24px; }
+.setup-card { background: var(--base-100); border-radius: 16px; padding: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); margin-bottom: 16px; }
+.setup-card-title { font-size: 16px; font-weight: 600; margin-bottom: 12px; }
+.chip-row { display: flex; flex-wrap: wrap; gap: 8px; }
+.chip { padding: 8px 16px; border: 2px solid var(--base-300); border-radius: 999px; font-size: 14px; font-weight: 600; cursor: pointer; background: var(--base-100); transition: all 0.2s; }
+.chip.selected { border-color: var(--primary); background: var(--primary); color: #FFF; }
+.form-select { width: 100%; padding: 12px 16px; border: 2px solid var(--base-300); border-radius: 8px; font-size: 16px; font-family: inherit; background: var(--base-100); cursor: pointer; appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%231F2937' viewBox='0 0 16 16'%3E%3Cpath d='M8 11L3 6h10z'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 16px center; }
+.checkbox-row { display: flex; flex-direction: column; gap: 10px; }
+.checkbox-item { display: flex; align-items: center; gap: 8px; font-size: 15px; cursor: pointer; }
+.checkbox-box { width: 20px; height: 20px; border: 2px solid var(--base-300); border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 12px; }
+.checkbox-item.checked .checkbox-box { background: var(--primary); border-color: var(--primary); color: #FFF; }
+.btn-primary { display: block; width: 100%; padding: 16px; background: var(--primary); color: #FFF; border: none; border-radius: 12px; font-size: 17px; font-weight: 700; font-family: inherit; cursor: pointer; margin-top: 8px; }
+/* Quiz Session */
+.quiz-progress-bar { background: var(--base-100); border-radius: 12px; padding: 12px 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); margin-bottom: 16px; display: flex; align-items: center; gap: 12px; }
+.progress-track { flex: 1; height: 8px; background: var(--base-200); border-radius: 4px; overflow: hidden; }
+.progress-fill { height: 100%; background: var(--primary); border-radius: 4px; }
+.progress-text { font-size: 14px; font-weight: 600; white-space: nowrap; }
+.quiz-breadcrumb { font-size: 12px; color: #9CA3AF; margin-bottom: 4px; }
+.quiz-difficulty { font-size: 13px; color: var(--accent); margin-bottom: 16px; }
+.quiz-card { background: var(--base-100); border-radius: 16px; padding: 24px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); margin-bottom: 16px; }
+.quiz-question { font-size: 18px; font-weight: 600; margin-bottom: 20px; }
+.quiz-option { padding: 14px 16px; border: 2px solid var(--base-300); border-radius: 12px; margin-bottom: 10px; font-size: 15px; cursor: pointer; transition: all 0.2s; }
+.quiz-option:hover { border-color: var(--primary); }
+.quiz-option.selected { border-color: var(--primary); background: rgba(16,185,129,0.05); font-weight: 600; }
+.quiz-nav { display: flex; gap: 12px; }
+.btn-ghost { padding: 12px 24px; border: 2px solid var(--base-300); border-radius: 12px; font-size: 15px; font-weight: 600; cursor: pointer; background: var(--base-100); flex: 1; }
+.btn-submit { padding: 12px 24px; background: var(--primary); color: #FFF; border: none; border-radius: 12px; font-size: 15px; font-weight: 600; cursor: pointer; flex: 1; }
+/* Bottom Nav */
+.bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; height: 64px; background: var(--base-100); border-top: 1px solid var(--base-200); display: flex; align-items: center; justify-content: space-around; z-index: 50; max-width: 480px; margin: 0 auto; }
+.nav-item { display: flex; flex-direction: column; align-items: center; gap: 2px; font-size: 11px; color: #9CA3AF; cursor: pointer; flex: 1; }
+.nav-icon { font-size: 20px; }
+.nav-center-btn { width: 52px; height: 52px; background: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px; color: #FFF; margin-top: -20px; box-shadow: 0 4px 12px rgba(16,185,129,0.3); }
+.nav-center-label { font-size: 11px; color: var(--primary); font-weight: 600; margin-top: 2px; }
+@media (min-width: 1024px) { .bottom-nav { display: none; } body { padding-bottom: 0; } .content { padding: 32px; } }
+</style>
+</head>
+<body>
+<div class="header">
+  <div class="header-left"><button class="header-back">←</button> 문제 풀기</div>
+</div>
+<div class="content">
+  <!-- Setup Screen -->
+  <div class="page-title">문제 풀기</div>
+  <div class="page-sub">맞춤형 문제를 풀고 실력을 키워요</div>
+  <div class="setup-card">
+    <div class="setup-card-title">과목 선택</div>
+    <div class="chip-row">
+      <div class="chip selected">📐 수학</div>
+      <div class="chip">🔬 과학</div>
+      <div class="chip">📖 국어</div>
+      <div class="chip">🌐 영어</div>
+      <div class="chip">🌍 사회</div>
+      <div class="chip">📜 역사</div>
+    </div>
+  </div>
+  <div class="setup-card">
+    <div class="setup-card-title">단원 선택</div>
+    <select class="form-select"><option>전체 단원</option><option>3단원: 함수와 그래프</option><option>4단원: 일차함수</option></select>
+  </div>
+  <div class="setup-card">
+    <div class="setup-card-title">난이도</div>
+    <div class="chip-row">
+      <div class="chip">⭐ 쉬움</div>
+      <div class="chip selected">⭐⭐ 보통</div>
+      <div class="chip">⭐⭐⭐ 어려움</div>
+    </div>
+  </div>
+  <div class="setup-card">
+    <div class="setup-card-title">문제 유형</div>
+    <div class="checkbox-row">
+      <div class="checkbox-item checked"><div class="checkbox-box">✓</div> 객관식</div>
+      <div class="checkbox-item checked"><div class="checkbox-box">✓</div> 주관식</div>
+      <div class="checkbox-item"><div class="checkbox-box"></div> 서술형</div>
+    </div>
+  </div>
+  <div class="setup-card">
+    <div class="setup-card-title">문제 수</div>
+    <div class="chip-row">
+      <div class="chip">5문제</div>
+      <div class="chip selected">10문제</div>
+      <div class="chip">20문제</div>
+    </div>
+  </div>
+  <button class="btn-primary">AI 문제 출제 시작 ✨</button>
+
+  <!-- Session (shown below setup for storyboard) -->
+  <hr style="border:none;border-top:2px dashed var(--base-300);margin:32px 0;">
+  <div class="header-timer" style="margin-bottom:16px;">⏱️ 04:32</div>
+  <div class="quiz-progress-bar">
+    <div class="progress-text">Q3 / 10</div>
+    <div class="progress-track"><div class="progress-fill" style="width:30%;"></div></div>
+    <div class="progress-text">30%</div>
+  </div>
+  <div class="quiz-breadcrumb">수학 > 함수와 그래프</div>
+  <div class="quiz-difficulty">난이도 ⭐⭐ (보통)</div>
+  <div class="quiz-card">
+    <div class="quiz-question">다음 중 함수가 아닌 것은?</div>
+    <div class="quiz-option">① &nbsp; y = 2x + 1</div>
+    <div class="quiz-option selected">② &nbsp; y² = x</div>
+    <div class="quiz-option">③ &nbsp; y = x²</div>
+    <div class="quiz-option">④ &nbsp; y = |x|</div>
+  </div>
+  <div class="quiz-nav">
+    <button class="btn-ghost">이전 문제</button>
+    <button class="btn-submit">제출하기</button>
+  </div>
+</div>
+<div class="bottom-nav">
+  <div class="nav-item"><div class="nav-icon">🏠</div>홈</div>
+  <div class="nav-item"><div class="nav-icon">📚</div>과목</div>
+  <div class="nav-item center"><div class="nav-center-btn">✏️</div><div class="nav-center-label">풀기</div></div>
+  <div class="nav-item"><div class="nav-icon">📝</div>오답</div>
+  <div class="nav-item"><div class="nav-icon">💬</div>영어</div>
+</div>
+</body>
+</html>

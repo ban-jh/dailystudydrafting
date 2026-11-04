@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Daily Study — 스토리보드</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
+<style>
+:root {
+  --primary: #10B981; --primary-focus: #059669;
+  --secondary: #6366F1; --accent: #F59E0B;
+  --base-100: #FFFFFF; --base-200: #F3F4F6; --base-300: #E5E7EB;
+  --base-content: #1F2937; --success: #22C55E; --error: #EF4444; --info: #3B82F6;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: "Pretendard", "Apple SD Gothic Neo", "Noto Sans KR", sans-serif; background: var(--base-200); color: var(--base-content); min-height: 100vh; }
+.hero {
+  background: linear-gradient(135deg, #10B981, #059669); color: #FFF;
+  padding: 48px 24px; text-align: center;
+}
+.hero-logo { width: 64px; height: 64px; background: rgba(255,255,255,0.2); border-radius: 16px; display: inline-flex; align-items: center; justify-content: center; font-size: 32px; margin-bottom: 16px; }
+.hero-title { font-size: 32px; font-weight: 700; margin-bottom: 8px; }
+.hero-sub { font-size: 16px; opacity: 0.9; }
+.hero-meta { font-size: 14px; opacity: 0.7; margin-top: 16px; }
+.container { max-width: 1024px; margin: 0 auto; padding: 32px 16px; }
+.section-label { font-size: 20px; font-weight: 600; margin-bottom: 16px; }
+.grid { display: grid; grid-template-columns: 1fr; gap: 16px; }
+.card {
+  background: var(--base-100); border-radius: 16px; overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.08); transition: all 0.2s; text-decoration: none; color: inherit; display: block;
+}
+.card:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.12); transform: translateY(-2px); }
+.card-thumb {
+  height: 180px; display: flex; align-items: center; justify-content: center;
+  font-size: 48px; position: relative; overflow: hidden;
+}
+.card-thumb-label {
+  position: absolute; bottom: 0; left: 0; right: 0; padding: 8px 16px;
+  background: rgba(0,0,0,0.5); color: #FFF; font-size: 14px; font-weight: 600;
+}
+.card-body { padding: 16px; }
+.card-title { font-size: 17px; font-weight: 600; margin-bottom: 4px; }
+.card-desc { font-size: 14px; color: #6B7280; line-height: 1.5; }
+.card-num { font-size: 12px; font-weight: 700; color: var(--primary); margin-bottom: 4px; }
+@media (min-width: 640px) { .grid { grid-template-columns: 1fr 1fr; } }
+@media (min-width: 1024px) { .grid { grid-template-columns: 1fr 1fr 1fr; } }
+</style>
+</head>
+<body>
+<div class="hero">
+  <div class="hero-logo">📚</div>
+  <div class="hero-title">Daily Study</div>
+  <div class="hero-sub">사용자 화면 HTML 스토리보드</div>
+  <div class="hero-meta">중·고등학생 학습 보조 플랫폼 · 11개 화면</div>
+</div>
+<div class="container">
+  <div class="section-label">사용자 화면 11개</div>
+  <div class="grid">
+    <a href="login.html" class="card">
+      <div class="card-thumb" style="background:linear-gradient(135deg,#F3F4F6,#E5E7EB);">🔐<div class="card-thumb-label">/login</div></div>
+      <div class="card-body"><div class="card-num">01</div><div class="card-title">로그인</div><div class="card-desc">이메일/비밀번호, 소셜 로그인 (Google, Kakao, Naver)</div></div>
+    </a>
+    <a href="signup.html" class="card">
+      <div class="card-thumb" style="background:linear-gradient(135deg,#F3F4F6,#E5E7EB);">📝<div class="card-thumb-label">/signup</div></div>
+      <div class="card-body"><div class="card-num">02</div><div class="card-title">회원가입</div><div class="card-desc">이메일, 비밀번호, 이름, 학년 선택, 관심 과목 다중 선택</div></div>
+    </a>
+    <a href="dashboard.html" class="card">
+      <div class="card-thumb" style="background:linear-gradient(135deg,#10B981,#059669);">🏠<div class="card-thumb-label">/dashboard</div></div>
+      <div class="card-body"><div class="card-num">03</div><div class="card-title">홈/대시보드</div><div class="card-desc">환영 메시지, 오늘의 추천, 학습 현황, 빠른 접근, 스트릭</div></div>
+    </a>
+    <a href="subjects.html" class="card">
+      <div class="card-thumb" style="background:linear-gradient(135deg,#3B82F6,#6366F1);">📚<div class="card-thumb-label">/subjects</div></div>
+      <div class="card-body"><div class="card-num">04</div><div class="card-title">과목 목록</div><div class="card-desc">과목 카드 grid, 학년 필터, 진행률 바, 과목별 색상</div></div>
+    </a>
+    <a href="unit-summary.html" class="card">
+      <div class="card-thumb" style="background:linear-gradient(135deg,#6366F1,#8B5CF6);">📖<div class="card-thumb-label">/subjects/:id/units/:id</div></div>
+      <div class="card-body"><div class="card-num">05</div><div class="card-title">단원 요약</div><div class="card-desc">핵심 개념 요약, 플래시카드 (3D flip), PDF 내보내기</div></div>
+    </a>
+    <a href="quiz.html" class="card">
+      <div class="card-thumb" style="background:linear-gradient(135deg,#F59E0B,#10B981);">✏️<div class="card-thumb-label">/quiz</div></div>
+      <div class="card-body"><div class="card-num">06</div><div class="card-title">문제 풀이</div><div class="card-desc">설정(과목/단원/난이도/유형/문제수) → 풀이 세션(타이머)</div></div>
+    </a>
+    <a href="quiz-result.html" class="card">
+      <div class="card-thumb" style="background:linear-gradient(135deg,#22C55E,#10B981);">✅<div class="card-thumb-label">/quiz/result</div></div>
+      <div class="card-body"><div class="card-num">07</div><div class="card-title">문제 풀이 결과</div><div class="card-desc">정답/오답 배너, 해설, XP 획득, 세션 완료 요약</div></div>
+    </a>
+    <a href="wrong-answers.html" class="card">
+      <div class="card-thumb" style="background:linear-gradient(135deg,#EF4444,#F59E0B);">📝<div class="card-thumb-label">/wrong-answers</div></div>
+      <div class="card-body"><div class="card-num">08</div><div class="card-title">오답노트</div><div class="card-desc">오답 목록, 과목/기간 필터, 해설 보기, 재풀이 버튼</div></div>
+    </a>
+    <a href="english.html" class="card">
+      <div class="card-thumb" style="background:linear-gradient(135deg,#F59E0B,#6366F1);">💬<div class="card-thumb-label">/english</div></div>
+      <div class="card-body"><div class="card-num">09</div><div class="card-title">실생활 영어</div><div class="card-desc">오늘의 문장, 상황별 카테고리, TTS 재생, 롤플레이 모드</div></div>
+    </a>
+    <a href="statistics.html" class="card">
+      <div class="card-thumb" style="background:linear-gradient(135deg,#3B82F6,#10B981);">📈<div class="card-thumb-label">/statistics</div></div>
+      <div class="card-body"><div class="card-num">10</div><div class="card-title">학습 통계</div><div class="card-desc">과목별 정답률 차트, 학습 시간, 연속 학습일, 히트맵</div></div>
+    </a>
+    <a href="mypage.html" class="card">
+      <div class="card-thumb" style="background:linear-gradient(135deg,#10B981,#6366F1);">⚙️<div class="card-thumb-label">/profile</div></div>
+      <div class="card-body"><div class="card-num">11</div><div class="card-title">마이페이지</div><div class="card-desc">프로필, 학년 설정, 알림 설정, 배지 현황, TTS 자동재생</div></div>
+    </a>
+  </div>
+</div>
+</body>
+</html>

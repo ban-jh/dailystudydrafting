@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>마이페이지 — Daily Study</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
+<style>
+:root {
+  --primary: #10B981; --primary-focus: #059669;
+  --secondary: #6366F1; --accent: #F59E0B;
+  --base-100: #FFFFFF; --base-200: #F3F4F6; --base-300: #E5E7EB;
+  --base-content: #1F2937; --success: #22C55E; --error: #EF4444; --info: #3B82F6;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: "Pretendard", "Apple SD Gothic Neo", "Noto Sans KR", sans-serif; background: var(--base-200); color: var(--base-content); padding-bottom: 80px; }
+.header { position: sticky; top: 0; z-index: 50; height: 56px; background: rgba(255,255,255,0.95); backdrop-filter: blur(8px); border-bottom: 1px solid var(--base-200); display: flex; align-items: center; justify-content: space-between; padding: 0 16px; }
+.header-left { display: flex; align-items: center; gap: 8px; }
+.header-logo { width: 28px; height: 28px; background: var(--primary); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 14px; }
+.header-title { font-size: 18px; font-weight: 700; }
+.header-right { display: flex; align-items: center; gap: 12px; }
+.header-btn { width: 36px; height: 36px; border-radius: 50%; border: none; background: var(--base-200); cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 16px; }
+.header-avatar { width: 32px; height: 32px; border-radius: 50%; background: var(--secondary); color: #FFF; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 600; }
+.content { max-width: 720px; margin: 0 auto; padding: 16px; }
+/* Profile Card */
+.profile-card {
+  background: linear-gradient(135deg, #10B981, #059669); border-radius: 16px;
+  padding: 24px; color: #FFF; margin-bottom: 20px;
+}
+.profile-top { display: flex; align-items: center; gap: 16px; margin-bottom: 16px; }
+.profile-avatar { width: 56px; height: 56px; border-radius: 50%; background: rgba(255,255,255,0.25); display: flex; align-items: center; justify-content: center; font-size: 28px; }
+.profile-name { font-size: 20px; font-weight: 700; }
+.profile-level { font-size: 15px; margin-top: 2px; }
+.profile-grade { font-size: 14px; opacity: 0.85; }
+.profile-xp-text { font-size: 14px; margin-bottom: 6px; }
+.profile-xp-bar { height: 8px; background: rgba(255,255,255,0.2); border-radius: 4px; overflow: hidden; margin-bottom: 12px; }
+.profile-xp-fill { height: 100%; background: #FFF; border-radius: 4px; }
+.profile-stats { display: flex; gap: 24px; font-size: 14px; }
+/* Tabs */
+.tabs { display: flex; gap: 4px; margin-bottom: 24px; border-bottom: 2px solid var(--base-200); }
+.tab { padding: 12px 16px; font-size: 15px; font-weight: 600; cursor: pointer; border-bottom: 3px solid transparent; margin-bottom: -2px; color: #6B7280; }
+.tab.active { color: var(--primary); border-bottom-color: var(--primary); }
+/* Info Cards */
+.info-card { background: var(--base-100); border-radius: 16px; padding: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); margin-bottom: 16px; }
+.info-card-title { font-size: 16px; font-weight: 600; margin-bottom: 16px; }
+.info-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid var(--base-200); font-size: 15px; }
+.info-row:last-child { border-bottom: none; }
+.info-label { color: #6B7280; }
+.info-value { font-weight: 600; }
+.form-select { padding: 10px 16px; border: 2px solid var(--base-300); border-radius: 8px; font-size: 15px; font-family: inherit; background: var(--base-100); cursor: pointer; appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%231F2937' viewBox='0 0 16 16'%3E%3Cpath d='M8 11L3 6h10z'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 12px center; padding-right: 36px; }
+.btn-outline { padding: 8px 20px; border: 2px solid var(--base-300); border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer; background: var(--base-100); }
+.info-caption { font-size: 12px; color: #9CA3AF; margin-top: 8px; }
+/* Badge Grid */
+.badge-count { font-size: 13px; color: #6B7280; margin-bottom: 16px; }
+.badge-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.badge-item { text-align: center; }
+.badge-circle { width: 64px; height: 64px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 32px; margin: 0 auto 8px; }
+.badge-item.earned .badge-circle { background: linear-gradient(135deg, #F59E0B, #10B981); box-shadow: 0 2px 8px rgba(245,158,11,0.3); }
+.badge-item.locked .badge-circle { background: var(--base-200); filter: grayscale(1); opacity: 0.4; }
+.badge-name { font-size: 12px; font-weight: 600; }
+.badge-status { font-size: 11px; margin-top: 2px; }
+.badge-item.earned .badge-status { color: var(--success); }
+.badge-item.locked .badge-status { color: #9CA3AF; }
+/* Settings */
+.toggle-row { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid var(--base-200); }
+.toggle-row:last-child { border-bottom: none; }
+.toggle-info { flex: 1; }
+.toggle-label { font-size: 15px; font-weight: 500; }
+.toggle-desc { font-size: 12px; color: #9CA3AF; margin-top: 2px; }
+.toggle { width: 44px; height: 24px; border-radius: 12px; border: none; cursor: pointer; position: relative; transition: background 0.2s; }
+.toggle.on { background: var(--primary); }
+.toggle.off { background: var(--base-300); }
+.toggle::after { content: ''; position: absolute; top: 2px; width: 20px; height: 20px; border-radius: 50%; background: #FFF; transition: left 0.2s; }
+.toggle.on::after { left: 22px; }
+.toggle.off::after { left: 2px; }
+.btn-ghost { display: block; width: 100%; padding: 12px; border: none; border-radius: 8px; font-size: 15px; font-weight: 600; cursor: pointer; background: transparent; text-align: left; margin-bottom: 4px; }
+.btn-ghost.danger { color: var(--error); }
+.btn-ghost:hover { background: var(--base-200); }
+/* Bottom Nav */
+.bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; height: 64px; background: var(--base-100); border-top: 1px solid var(--base-200); display: flex; align-items: center; justify-content: space-around; z-index: 50; max-width: 480px; margin: 0 auto; }
+.nav-item { display: flex; flex-direction: column; align-items: center; gap: 2px; font-size: 11px; color: #9CA3AF; cursor: pointer; flex: 1; }
+.nav-item.active { color: var(--primary); }
+.nav-icon { font-size: 20px; }
+.nav-center-btn { width: 52px; height: 52px; background: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px; color: #FFF; margin-top: -20px; box-shadow: 0 4px 12px rgba(16,185,129,0.3); }
+.nav-center-label { font-size: 11px; color: var(--primary); font-weight: 600; margin-top: 2px; }
+@media (min-width: 1024px) { .bottom-nav { display: none; } body { padding-bottom: 0; } .content { padding: 32px; } }
+</style>
+</head>
+<body>
+<div class="header">
+  <div class="header-left"><div class="header-logo">📚</div><div class="header-title">Daily Study</div></div>
+  <div class="header-right"><button class="header-btn">🔔</button><div class="header-avatar">민</div></div>
+</div>
+<div class="content">
+  <!-- Profile Card -->
+  <div class="profile-card">
+    <div class="profile-top">
+      <div class="profile-avatar">👤</div>
+      <div>
+        <div class="profile-name">김민준</div>
+        <div class="profile-level">Lv.5 🌟</div>
+        <div class="profile-grade">중학교 2학년</div>
+      </div>
+    </div>
+    <div class="profile-xp-text">XP: 1,240 / 2,000</div>
+    <div class="profile-xp-bar"><div class="profile-xp-fill" style="width:62%;"></div></div>
+    <div class="profile-stats">
+      <span>🔥 12일 연속</span>
+      <span>⭐ 배지 8개</span>
+    </div>
+  </div>
+  <!-- Tabs -->
+  <div class="tabs">
+    <div class="tab active">👤 정보</div>
+    <div class="tab">🏆 배지</div>
+    <div class="tab">⚙️ 설정</div>
+  </div>
+  <!-- Info Tab -->
+  <div class="info-card">
+    <div class="info-card-title">회원 정보</div>
+    <div class="info-row"><span class="info-label">이름</span><span class="info-value">김민준</span></div>
+    <div class="info-row"><span class="info-label">이메일</span><span class="info-value">minjun@email.com</span></div>
+    <div class="info-row"><span class="info-label">학년</span><span class="info-value">중학교 2학년</span></div>
+    <div class="info-row"><span class="info-label">가입일</span><span class="info-value">2024.09.01</span></div>
+    <div style="margin-top:12px;"><button class="btn-outline">프로필 수정</button></div>
+  </div>
+  <div class="info-card">
+    <div class="info-card-title">학년 설정</div>
+    <select class="form-select">
+      <option>중학교 2학년</option>
+      <option>중학교 1학년</option>
+      <option>중학교 3학년</option>
+      <option>고등학교 1학년</option>
+      <option>고등학교 2학년</option>
+      <option>고등학교 3학년</option>
+    </select>
+    <div class="info-caption">학년 변경 시 맞춤형 콘텐츠가 제공됩니다.</div>
+  </div>
+  <!-- Badge Tab (shown for storyboard) -->
+  <div class="info-card" style="margin-top:24px;">
+    <div class="info-card-title">🏆 배지 현황</div>
+    <div class="badge-count">획득한 배지: 8/24</div>
+    <div class="badge-grid">
+      <div class="badge-item earned"><div class="badge-circle">🏆</div><div class="badge-name">첫 학습</div><div class="badge-status">✅</div></div>
+      <div class="badge-item earned"><div class="badge-circle">🔥</div><div class="badge-name">7일 연속</div><div class="badge-status">✅</div></div>
+      <div class="badge-item earned"><div class="badge-circle">📚</div><div class="badge-name">10단원</div><div class="badge-status">✅</div></div>
+      <div class="badge-item earned"><div class="badge-circle">⭐</div><div class="badge-name">100문제</div><div class="badge-status">✅</div></div>
+      <div class="badge-item earned"><div class="badge-circle">🎯</div><div class="badge-name">정답왕</div><div class="badge-status">✅</div></div>
+      <div class="badge-item locked"><div class="badge-circle">💯</div><div class="badge-name">만점왕</div><div class="badge-status">🔒</div></div>
+      <div class="badge-item locked"><div class="badge-circle">🌙</div><div class="badge-name">야행성</div><div class="badge-status">🔒</div></div>
+      <div class="badge-item locked"><div class="badge-circle">📅</div><div class="badge-name">매일 출석</div><div class="badge-status">🔒</div></div>
+      <div class="badge-item locked"><div class="badge-circle">🚀</div><div class="badge-name">레벨 10</div><div class="badge-status">🔒</div></div>
+    </div>
+  </div>
+  <!-- Settings Tab (shown for storyboard) -->
+  <div class="info-card" style="margin-top:24px;">
+    <div class="info-card-title">알림 설정</div>
+    <div class="toggle-row">
+      <div class="toggle-info"><div class="toggle-label">데일리 학습 알림</div><div class="toggle-desc">매일 정해진 시간에 알림</div></div>
+      <button class="toggle on"></button>
+    </div>
+    <div class="toggle-row">
+      <div class="toggle-info"><div class="toggle-label">오답 복습 알림</div><div class="toggle-desc">오답이 쌓이면 알림</div></div>
+      <button class="toggle on"></button>
+    </div>
+    <div class="toggle-row">
+      <div class="toggle-info"><div class="toggle-label">배지 획득 알림</div><div class="toggle-desc">새 배지 획득 시 알림</div></div>
+      <button class="toggle on"></button>
+    </div>
+    <div class="toggle-row">
+      <div class="toggle-info"><div class="toggle-label">TTS 자동재생</div><div class="toggle-desc">영어 문장 자동 음성 재생</div></div>
+      <button class="toggle off"></button>
+    </div>
+    <div class="info-row" style="margin-top:12px;">
+      <span class="info-label">알림 시간</span>
+      <select class="form-select" style="width:auto;"><option>오후 7:00</option><option>오후 8:00</option><option>오후 9:00</option></select>
+    </div>
+  </div>
+  <div class="info-card">
+    <div class="info-card-title">학습 설정</div>
+    <div class="info-row">
+      <span class="info-label">일일 목표 문제 수</span>
+      <select class="form-select" style="width:auto;"><option>10문제</option><option>5문제</option><option>20문제</option></select>
+    </div>
+    <div class="toggle-row">
+      <div class="toggle-info"><div class="toggle-label">사운드 효과</div></div>
+      <button class="toggle on"></button>
+    </div>
+  </div>
+  <div class="info-card">
+    <div class="info-card-title">계정</div>
+    <button class="btn-ghost">비밀번호 변경</button>
+    <button class="btn-ghost danger">로그아웃</button>
+  </div>
+</div>
+<div class="bottom-nav">
+  <div class="nav-item"><div class="nav-icon">🏠</div>홈</div>
+  <div class="nav-item"><div class="nav-icon">📚</div>과목</div>
+  <div class="nav-item center"><div class="nav-center-btn">✏️</div><div class="nav-center-label">풀기</div></div>
+  <div class="nav-item"><div class="nav-icon">📝</div>오답</div>
+  <div class="nav-item"><div class="nav-icon">💬</div>영어</div>
+</div>
+</body>
+</html>

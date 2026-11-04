@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>문제 풀이 결과 — Daily Study</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
+<style>
+:root {
+  --primary: #10B981; --primary-focus: #059669;
+  --secondary: #6366F1; --accent: #F59E0B;
+  --base-100: #FFFFFF; --base-200: #F3F4F6; --base-300: #E5E7EB;
+  --base-content: #1F2937; --success: #22C55E; --error: #EF4444; --info: #3B82F6;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: "Pretendard", "Apple SD Gothic Neo", "Noto Sans KR", sans-serif; background: var(--base-200); color: var(--base-content); padding-bottom: 80px; }
+.header { position: sticky; top: 0; z-index: 50; height: 56px; background: rgba(255,255,255,0.95); backdrop-filter: blur(8px); border-bottom: 1px solid var(--base-200); display: flex; align-items: center; justify-content: space-between; padding: 0 16px; }
+.header-left { display: flex; align-items: center; gap: 8px; font-size: 16px; font-weight: 600; }
+.header-back { width: 36px; height: 36px; border: none; background: transparent; cursor: pointer; font-size: 18px; }
+.content { max-width: 720px; margin: 0 auto; padding: 16px; }
+/* Result Banner */
+.result-banner { border-radius: 16px; padding: 32px 24px; text-align: center; margin-bottom: 16px; }
+.result-banner.correct { background: rgba(34,197,94,0.1); }
+.result-banner.wrong { background: rgba(239,68,68,0.1); }
+.result-emoji { font-size: 48px; margin-bottom: 8px; }
+.result-title { font-size: 24px; font-weight: 700; margin-bottom: 4px; }
+.result-title.correct { color: var(--success); }
+.result-title.wrong { color: var(--error); }
+.result-xp { font-size: 16px; }
+.result-answer { font-size: 16px; font-weight: 600; }
+/* Answer comparison */
+.answer-card { background: var(--base-100); border-radius: 16px; padding: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); margin-bottom: 16px; }
+.answer-row { padding: 12px 16px; border-radius: 8px; margin-bottom: 8px; font-size: 15px; }
+.answer-row.my { background: rgba(239,68,68,0.05); border-left: 4px solid var(--error); }
+.answer-row.correct { background: rgba(34,197,94,0.05); border-left: 4px solid var(--success); }
+.answer-label { font-size: 12px; color: #6B7280; margin-bottom: 2px; }
+/* Explanation */
+.explanation-card { background: var(--base-100); border-radius: 16px; padding: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); margin-bottom: 16px; }
+.explanation-title { font-size: 16px; font-weight: 600; margin-bottom: 12px; }
+.explanation-body { font-size: 14px; line-height: 1.6; color: #4B5563; margin-bottom: 12px; }
+.highlight-box { background: rgba(245,158,11,0.1); border-radius: 8px; padding: 12px 16px; font-size: 14px; }
+.highlight-box strong { color: var(--accent); }
+.auto-save { font-size: 12px; color: #9CA3AF; margin-top: 12px; }
+/* Buttons */
+.btn-row { display: flex; gap: 12px; }
+.btn-ghost { padding: 12px 24px; border: 2px solid var(--base-300); border-radius: 12px; font-size: 15px; font-weight: 600; cursor: pointer; background: var(--base-100); flex: 1; }
+.btn-primary { padding: 12px 24px; background: var(--primary); color: #FFF; border: none; border-radius: 12px; font-size: 15px; font-weight: 600; cursor: pointer; flex: 1; }
+/* Session Complete */
+.complete-icon { font-size: 64px; text-align: center; margin: 24px 0 16px; }
+.complete-title { font-size: 24px; font-weight: 700; text-align: center; margin-bottom: 24px; }
+.result-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 24px; }
+.result-stat { background: var(--base-100); border-radius: 16px; padding: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); text-align: center; }
+.result-stat-num { font-size: 28px; font-weight: 700; }
+.result-stat-label { font-size: 13px; color: #6B7280; margin-top: 4px; }
+.xp-card { background: var(--base-100); border-radius: 16px; padding: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); margin-bottom: 16px; }
+.xp-title { font-size: 16px; font-weight: 600; margin-bottom: 12px; }
+.xp-gained { font-size: 20px; font-weight: 700; color: var(--accent); margin-bottom: 8px; }
+.xp-total { font-size: 15px; color: #6B7280; margin-bottom: 12px; }
+.progress-bar { height: 8px; background: var(--base-200); border-radius: 4px; overflow: hidden; margin-bottom: 8px; }
+.progress-fill { height: 100%; background: var(--accent); border-radius: 4px; }
+.xp-next { font-size: 12px; color: #9CA3AF; }
+.q-results { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; margin-bottom: 24px; }
+.q-result-item { background: var(--base-100); border-radius: 8px; padding: 8px 4px; text-align: center; font-size: 13px; font-weight: 600; box-shadow: 0 1px 2px rgba(0,0,0,0.06); }
+.q-result-item.ok { color: var(--success); }
+.q-result-item.no { color: var(--error); }
+.divider-label { text-align: center; font-size: 13px; color: #9CA3AF; margin: 32px 0 16px; position: relative; }
+.divider-label::before, .divider-label::after { content: ''; position: absolute; top: 50%; width: 40%; height: 1px; background: var(--base-300); }
+.divider-label::before { left: 0; }
+.divider-label::after { right: 0; }
+/* Bottom Nav */
+.bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; height: 64px; background: var(--base-100); border-top: 1px solid var(--base-200); display: flex; align-items: center; justify-content: space-around; z-index: 50; max-width: 480px; margin: 0 auto; }
+.nav-item { display: flex; flex-direction: column; align-items: center; gap: 2px; font-size: 11px; color: #9CA3AF; cursor: pointer; flex: 1; }
+.nav-icon { font-size: 20px; }
+.nav-center-btn { width: 52px; height: 52px; background: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px; color: #FFF; margin-top: -20px; box-shadow: 0 4px 12px rgba(16,185,129,0.3); }
+.nav-center-label { font-size: 11px; color: var(--primary); font-weight: 600; margin-top: 2px; }
+@media (min-width: 1024px) { .bottom-nav { display: none; } body { padding-bottom: 0; } .content { padding: 32px; } }
+</style>
+</head>
+<body>
+<div class="header">
+  <div class="header-left"><button class="header-back">←</button> 문제 풀이</div>
+</div>
+<div class="content">
+  <!-- Wrong Answer Result -->
+  <div class="result-banner wrong">
+    <div class="result-emoji">❌</div>
+    <div class="result-title wrong">틀렸어요</div>
+    <div class="result-answer" style="color:var(--error);">정답: ② y² = x</div>
+  </div>
+  <div class="answer-card">
+    <div class="answer-row my">
+      <div class="answer-label">내 답</div>
+      <div>③ y = x²</div>
+    </div>
+    <div class="answer-row correct">
+      <div class="answer-label">정답</div>
+      <div>② y² = x</div>
+    </div>
+  </div>
+  <div class="explanation-card">
+    <div class="explanation-title">📖 해설</div>
+    <div class="explanation-body">y² = x의 경우, x = 4일 때 y = 2 또는 y = -2로 출력값이 두 개가 되므로 함수가 아닙니다.</div>
+    <div class="highlight-box">
+      <strong>💡 함수의 정의</strong><br>
+      하나의 입력에 정확히 하나의 출력 대응
+    </div>
+    <div class="auto-save">📌 오답노트에 자동 저장됨</div>
+  </div>
+  <div class="btn-row">
+    <button class="btn-ghost">다시 풀기</button>
+    <button class="btn-primary">다음 문제 →</button>
+  </div>
+
+  <div class="divider-label">세션 완료 화면</div>
+
+  <!-- Session Complete -->
+  <div class="complete-icon">🎉</div>
+  <div class="complete-title">문제 풀이 완료!</div>
+  <div class="result-grid">
+    <div class="result-stat"><div class="result-stat-num" style="color:var(--primary);">8/10</div><div class="result-stat-label">정답</div></div>
+    <div class="result-stat"><div class="result-stat-num" style="color:var(--secondary);">80%</div><div class="result-stat-label">정답률</div></div>
+    <div class="result-stat"><div class="result-stat-num" style="color:var(--accent);">4:32</div><div class="result-stat-label">소요</div></div>
+  </div>
+  <div class="xp-card">
+    <div class="xp-title">⭐ XP 획득</div>
+    <div class="xp-gained">획득: +80 XP 🎉</div>
+    <div class="xp-total">총 XP: 1,240</div>
+    <div class="progress-bar"><div class="progress-fill" style="width:80%;"></div></div>
+    <div class="xp-next">Lv.5 → Lv.6까지 320 XP &nbsp; (80%)</div>
+  </div>
+  <div class="explanation-card">
+    <div class="explanation-title">📊 문제별 결과</div>
+    <div class="q-results">
+      <div class="q-result-item ok">Q1 ✅</div>
+      <div class="q-result-item ok">Q2 ✅</div>
+      <div class="q-result-item no">Q3 ❌</div>
+      <div class="q-result-item ok">Q4 ✅</div>
+      <div class="q-result-item ok">Q5 ✅</div>
+      <div class="q-result-item no">Q6 ❌</div>
+      <div class="q-result-item ok">Q7 ✅</div>
+      <div class="q-result-item ok">Q8 ✅</div>
+      <div class="q-result-item ok">Q9 ✅</div>
+      <div class="q-result-item ok">Q10 ✅</div>
+    </div>
+  </div>
+  <div class="btn-row">
+    <button class="btn-ghost">오답 다시 풀기</button>
+    <button class="btn-primary">다른 문제 풀기</button>
+  </div>
+</div>
+<div class="bottom-nav">
+  <div class="nav-item"><div class="nav-icon">🏠</div>홈</div>
+  <div class="nav-item"><div class="nav-icon">📚</div>과목</div>
+  <div class="nav-item center"><div class="nav-center-btn">✏️</div><div class="nav-center-label">풀기</div></div>
+  <div class="nav-item active"><div class="nav-icon">📝</div>오답</div>
+  <div class="nav-item"><div class="nav-icon">💬</div>영어</div>
+</div>
+</body>
+</html>
