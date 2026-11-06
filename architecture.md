@@ -2,7 +2,8 @@
 
 > **중·고등학생 학습 보조 플랫폼**  
 > Spring Boot 4.0 + MyBatis + MariaDB 11 + Redis + Vue 3 + Vite + Pinia + TailwindCSS  
-> 작성일: 2026-11-04 / v1.0
+> 작성일: 2026-11-06 / v2.0
+> 메뉴구조도 반영본: 사용자 FE·사용자 BE·관리자 FE·관리자 BE 4개 독립 배포 단위
 
 ---
 
@@ -24,6 +25,22 @@
 ## 1. 전체 시스템 아키텍처
 
 ### 1.1 아키텍처 개요
+
+**기준 구조(v2.0):** 사용자 FE, 사용자 BE, 관리자 FE, 관리자 BE를 각각 독립 빌드·배포합니다. 바로 아래의 기존 단일 앱 다이어그램은 이전 초안의 참고 그림이며 현재 목표 구조가 아닙니다.
+
+~~~text
+학생·학부모 → 사용자 FE → /api/user/** → 사용자 BE
+관리자       → 관리자 FE → /api/admin/** → 관리자 BE
+                         └──── 공유 인프라 ────┘
+                  MariaDB(서비스 권한 분리), Redis, 파일 저장소
+
+관리자 BE owns: 학교·학년도·학년별 과목·교과서·목차·세션·단계 콘텐츠·검수·게시·일정
+사용자 BE owns: 학습 시도·완료·개인 복습·진행 기록
+학생에게는 게시 및 배정된 세션만 노출하며, 보호자는 연결된 자녀 범위만 조회합니다.
+~~~
+
+세부 데이터 원칙: 관리자 BE가 게시된 학습 자료의 원본을 관리합니다. 사용자 BE에는 게시 카탈로그 읽기 권한과 사용자 학습 기록 쓰기 권한만 부여하고, 초안·검수 대기 자료는 노출하지 않습니다. 운영 진행 현황은 관리자 BE가 사용자 BE의 내부 집계 API를 통해 조회합니다.
+
 
 ```
 ┌─────────────────────────────────────────────────────────────────────────┐
@@ -389,11 +406,25 @@ src/main/resources/
 
 ### 3.1 API 설계 원칙
 
+### 3.1.1 서비스별 API 경계
+
+- 사용자 BE는 /api/user/**, 관리자 BE는 /api/admin/**를 소유하며 각 FE는 대응하는 BE만 호출합니다.
+- 아래 API 표의 /api/auth, /api/subjects, /api/summaries, /api/quizzes, /api/dashboard 등은 단일 백엔드 초안 경로입니다. 실제 구현 시 학생·학부모 기능은 /api/user 아래로, 운영·편성·검수 기능은 /api/admin 아래로 이관합니다.
+- 인증은 /api/user/auth/* 또는 /api/admin/auth/*로 분리하고, 과목 조회와 과목 편성 CRUD도 각 BE의 책임에 맞게 나눕니다.
+- 관리자 진행 현황은 사용자 BE 내부 집계 API로 조회하고, 관리자 BE가 사용자 학습 원본을 직접 수정하지 않습니다.
+
+
 - RESTful 리소스 기반 URL 설계
 - `/api` 접두어 + 복수형 명사
 - HTTP 메서드语义: GET(조회), POST(생성), PUT(수정), DELETE(삭제)
 - 응답 래퍼: `{ "success": boolean, "data": T, "message": string, "error": string }`
 - 페이지네이션: `?page=1&size=20` → `PageResponse<T>`
+
+### 3.1.2 공통 코드 계약과 이용 기간 검사
+
+공통 코드의 안정된 code 값은 사용자 BE·관리자 BE API 계약에 포함하고, FE 표시는 displayName으로 처리합니다. 권한 코드·이용 상태·검수 상태 등 여러 앱에서 쓰는 코드는 버전 관리되는 API 스키마 또는 공통 계약 패키지에서 정의하며 라벨 문구를 조건 분기에 사용하지 않습니다. 코드 키 삭제·변경은 금지하고 비활성화로 신규 사용만 제한합니다.
+
+사용자 BE는 학생·학부모 보호 API에서 계정 상태, 이용 시작/종료 시각, 역할, 대상 관계를 확인합니다. 종료일은 Asia/Seoul 날짜의 끝까지 유효합니다. 만료면 403 ACCESS_EXPIRED, 시작 전이면 403 ACCESS_NOT_STARTED, 운영 정지면 403 ACCESS_SUSPENDED를 반환합니다. 사용자 FE는 만료 오류에서 학습 데이터를 삭제하지 않고 /access-expired 안내 화면으로 이동합니다.
 
 ### 3.2 전체 API 목록
 
@@ -1294,6 +1325,11 @@ public class CrawlScheduler {
 
 ### 7.1 인증 아키텍처
 
+### 7.1.1 4개 서비스 인증·인가 경계
+
+사용자 FE와 관리자 FE는 분리된 앱이며 두 BE가 각각 인증·인가를 수행합니다. JWT에는 issuer, audience, 사용자 ID, 역할을 포함하고 각 BE는 자신의 audience와 서명을 검증합니다. 사용자 BE는 STUDENT/PARENT를 허용하며 보호자 요청에서 연결된 자녀 범위를 매번 확인합니다. 관리자 BE는 ADMIN만 허용하고 학교 운영 권한을 검사합니다. FE 라우트 가드는 편의 기능이며 권한의 최종 판단은 BE에서 합니다. 인증 발급과 계정 저장소는 공통 issuer 설정으로 연동하며 별도 인증 서버는 MVP에서 추가하지 않습니다.
+
+
 ```
 ┌──────────────────────────────────────────────────────────────────┐
 │                    인증 플로우                                    │
@@ -1315,6 +1351,14 @@ public class CrawlScheduler {
 │       → Controller                                               │
 └──────────────────────────────────────────────────────────────────┘
 ```
+
+### 7.1.2 세부 역할 및 이용 기간
+
+관리자 권한은 역할 기반 권한(RBAC)과 허용 학교 범위로 판정합니다. 관리자 BE는 매 요청에서 권한 코드와 대상 학교를 검증하며 역할 부여·회수, 학교 범위 변경, 계정 정지 시 토큰을 폐기하고 감사 로그에 남깁니다. 최소 권한을 기본으로 하며 시스템 관리자만 전체 학교 범위와 시스템 역할을 부여할 수 있습니다.
+
+사용자 접근은 역할(STUDENT/PARENT), 계정 상태, 이용 시작/종료 기간, 학생 배정 및 보호자 연결 조건을 모두 만족해야 합니다. 만료·정지 차단은 FE 라우트 가드뿐 아니라 사용자 BE의 모든 보호 API에서 강제합니다. 공개 로그인·로그아웃·만료 안내 경로는 접근 제한의 예외로 두어 안내와 로그아웃이 가능합니다. 기간 변경은 관리자 권한 및 감사 이벤트로 기록합니다.
+
+공통 코드 관리 화면은 운영 코드의 라벨·정렬·활성 여부를 제어합니다. 코드 키는 API/FE/BE 계약에 연결되므로 시스템 키 변경·삭제를 금지하고, 참조 중 코드는 비활성 처리만 허용합니다.
 
 ### 7.2 Spring Security 설정
 
@@ -1716,256 +1760,37 @@ public class RateLimitInterceptor implements HandlerInterceptor {
 
 ### 9.1 디렉토리 구조
 
-```
-dailyStudyView/
-├── public/
-│   ├── favicon.ico
-│   └── index.html
-├── src/
-│   ├── api/                               # API 클라이언트
-│   │   ├── index.ts                       # Axios 인스턴스 + 인터셉터
-│   │   ├── authApi.ts                     # 인증 API
-│   │   ├── userApi.ts                     # 사용자 API
-│   │   ├── subjectApi.ts                  # 과목/단원 API
-│   │   ├── summaryApi.ts                  # 요약 API
-│   │   ├── quizApi.ts                     # 문제/풀이 API
-│   │   ├── englishApi.ts                  # 실생활 영어 API
-│   │   ├── dashboardApi.ts               # 대시보드 API
-│   │   ├── badgeApi.ts                    # 배지 API
-│   │   ├── adminApi.ts                    # 관리자 API
-│   │   └── fileApi.ts                     # 파일 업로드 API
-│   │
-│   ├── assets/                            # 정적 자산
-│   │   ├── images/
-│   │   └── styles/
-│   │       └── tailwind.css               # TailwindCSS entry
-│   │
-│   ├── components/                        # 재사용 컴포넌트
-│   │   ├── common/
-│   │   │   ├── BaseButton.vue             # 버튼 (variant: primary, secondary, danger)
-│   │   │   ├── BaseCard.vue               # 카드
-│   │   │   ├── BaseModal.vue              # 모달
-│   │   │   ├── BaseInput.vue              # 입력 필드
-│   │   │   ├── BaseSelect.vue             # 셀렉트
-│   │   │   ├── BaseBadge.vue              # 배지/태그
-│   │   │   ├── BaseProgress.vue           # 진행률 바
-│   │   │   ├── BaseSpinner.vue            # 로딩 스피너
-│   │   │   ├── BaseEmpty.vue              # 데이터 없음
-│   │   │   ├── BaseToast.vue              # 토스트 알림
-│   │   │   └── Pagination.vue             # 페이지네이션
-│   │   ├── layout/
-│   │   │   ├── AppSidebar.vue             # 사이드바 네비게이션
-│   │   │   ├── AppHeader.vue              # 헤더 (햄버거, 프로필)
-│   │   │   └── AppFooter.vue              # 푸터
-│   │   ├── study/
-│   │   │   ├── SummaryCard.vue            # 요약 카드
-│   │   │   ├── SummaryContent.vue         # 요약 내용 렌더러 (Markdown)
-│   │   │   ├── QuizCard.vue               # 문제 카드
-│   │   │   ├── QuizOption.vue             # 문제 보기
-│   │   │   ├── QuizResult.vue             # 풀이 결과
-│   │   │   ├── WrongNoteItem.vue          # 오답노트 아이템
-│   │   │   └── DifficultyBadge.vue        # 난이도 배지
-│   │   ├── english/
-│   │   │   ├── EnglishSentenceCard.vue    # 영어 문장 카드
-│   │   │   └── TtsPlayer.vue              # TTS 음성 재생기
-│   │   ├── dashboard/
-│   │   │   ├── StatCard.vue               # 통계 카드
-│   │   │   ├── WeeklyChart.vue            # 주간 학습 차트
-│   │   │   ├── StudyCalendar.vue          # 학습 캘린더
-│   │   │   └── RecentActivity.vue         # 최근 활동
-│   │   └── gamification/
-│   │       ├── BadgeDisplay.vue           # 배지 표시
-│   │       ├── LevelProgress.vue          # 레벨 진행률
-│   │       └── StreakCounter.vue          # 연속 학습일 카운터
-│   │
-│   ├── composables/                       # Vue Composables
-│   │   ├── useAuth.ts                     # 인증 상태 관리
-│   │   ├── useApi.ts                      # API 호출 공통 로직
-│   │   ├── useToast.ts                    # 토스트 알림
-│   │   ├── usePagination.ts              # 페이지네이션
-│   │   ├── useTimer.ts                    # 타이머 (문제 풀이 시간)
-│   │   └── useTheme.ts                    # 테마 (다크/라이트)
-│   │
-│   ├── layouts/                           # 레이아웃 컴포넌트
-│   │   ├── DefaultLayout.vue              # 사이드바 + 헤더 + RouterView
-│   │   ├── AuthLayout.vue                 # 로그인/회원가입용 (센터 정렬)
-│   │   └── AdminLayout.vue                # 관리자 전용 레이아웃
-│   │
-│   ├── router/                            # Vue Router
-│   │   └── index.ts                       # 라우트 정의 + 가드
-│   │
-│   ├── stores/                            # Pinia Stores
-│   │   ├── auth.ts                        # 인증 상태 (token, user, role)
-│   │   ├── user.ts                        # 사용자 정보 + 설정
-│   │   ├── subject.ts                     # 과목/단원 상태
-│   │   ├── quiz.ts                        # 문제 풀이 상태
-│   │   ├── dashboard.ts                   # 대시보드 데이터
-│   │   └── notification.ts               # 알림 상태
-│   │
-│   ├── views/                             # 페이지 뷰
-│   │   ├── auth/
-│   │   │   ├── LoginView.vue
-│   │   │   └── SignupView.vue
-│   │   ├── DashboardView.vue              # 홈/대시보드
-│   │   ├── subject/
-│   │   │   ├── SubjectListView.vue        # 과목 목록
-│   │   │   └── UnitListView.vue           # 단원 목록
-│   │   ├── summary/
-│   │   │   ├── SummaryListView.vue        # 요약 목록
-│   │   │   └── SummaryDetailView.vue      # 요약 상세
-│   │   ├── quiz/
-│   │   │   ├── QuizListView.vue           # 문제 목록
-│   │   │   ├── QuizSolveView.vue          # 문제 풀이
-│   │   │   └── WrongNoteView.vue          # 오답노트
-│   │   ├── english/
-│   │   │   ├── EnglishListView.vue        # 실생활 영어 목록
-│   │   │   └── EnglishDetailView.vue      # 영어 문장 상세 + TTS
-│   │   ├── stats/
-│   │   │   └── StatsView.vue              # 학습 통계
-│   │   ├── MyPageView.vue                 # 마이페이지
-│   │   └── admin/
-│   │       ├── AdminDashboardView.vue     # 관리자 대시보드
-│   │       ├── AdminUserListView.vue      # 사용자 관리
-│   │       ├── AdminContentView.vue       # 콘텐츠 관리
-│   │       └── AdminStatsView.vue         # 플랫폼 통계
-│   │
-│   ├── App.vue                            # 루트 컴포넌트
-│   ├── main.ts                            # 앱 진입점 (Pinia + Router + Tailwind)
-│   └── env.d.ts                           # 타입 정의
-│
-├── docker/
-│   └── nginx.conf                         # Nginx 설정 (Docker용)
-├── index.html
-├── package.json
-├── tsconfig.json
-├── vite.config.ts
-├── tailwind.config.js
+두 프론트엔드는 별도 저장소 또는 독립 빌드 디렉토리와 배포 파이프라인을 가집니다. 공유 UI 컴포넌트는 선택 사항이며, 런타임 앱이나 배포 서버를 합치지 않습니다.
+
+~~~text
+user-fe/
+├── src/api/ (userAuth, subjects, sessions, schedule, reviews, records, parent)
+├── src/layouts/ (StudentLayout, ParentLayout, AuthLayout)
+├── src/views/
+│   ├── auth/ (Login, Signup)
+│   ├── student/ (Dashboard, SubjectSessions, StudySession, Review, WeekSchedule, LearningRecords, MyPage)
+│   └── parent/ (Dashboard, ChildProgress, ChildSchedule, ChildActivity, Children, Profile)
 └── Dockerfile
-```
+
+admin-fe/
+├── src/api/ (adminAuth, schools, curriculum, textbooks, sessions, contents, reviews, schedules, students, users, stats)
+├── src/layouts/ (AdminLayout, AuthLayout)
+├── src/views/
+│   ├── dashboard/ (OperationsSummary)
+│   ├── basic-info/ (Schools, AcademicYears, GradeSubjects, Textbooks, Chapters)
+│   ├── learning/ (Sessions, ContentLibrary, ReviewApproval)
+│   ├── schedules/ (Readiness, Editor, PublishHistory, Progress)
+│   └── users/ (Students, Accounts, ParentLinks, Statistics)
+└── Dockerfile
+~~~
 
 ### 9.2 라우터 설계
 
-```typescript
-// src/router/index.ts
-import { createRouter, createWebHistory } from 'vue-router'
-import { useAuthStore } from '@/stores/auth'
-import DefaultLayout from '@/layouts/DefaultLayout.vue'
-import AuthLayout from '@/layouts/AuthLayout.vue'
-import AdminLayout from '@/layouts/AdminLayout.vue'
+사용자 FE는 만료 안내 /access-expired를 공개 안내 라우트로 두고, STUDENT/PARENT 역할에 따라 별도 메뉴와 라우트 메타데이터를 적용합니다. 학생 주요 경로는 /dashboard, /subjects, /study-sessions/:sessionId, /review/:reviewId, /schedule/week, /learning-records, /mypage입니다. 학부모 경로는 /parent/dashboard, /parent/children/:childId/progress, /parent/children/:childId/schedule, /parent/children/:childId/activity, /parent/children, /parent/profile입니다.
 
-const router = createRouter({
-  history: createWebHistory(import.meta.env.BASE_URL),
-  routes: [
-    // 인증 라우트 (사이드바 없음)
-    {
-      path: '/login',
-      component: AuthLayout,
-      children: [
-        { path: '', name: 'login', component: () => import('@/views/auth/LoginView.vue') },
-      ],
-    },
-    {
-      path: '/signup',
-      component: AuthLayout,
-      children: [
-        { path: '', name: 'signup', component: () => import('@/views/auth/SignupView.vue') },
-      ],
-    },
+관리자 FE는 /admin 진입 후 /admin/schools, /admin/schools/:schoolId/academic-years, /admin/subjects, /admin/textbooks, /admin/textbooks/:textbookId/chapters, /admin/sessions, /admin/contents, /admin/reviews, /admin/schedules, /admin/schedules/new, /admin/schedules/:scheduleId, /admin/schedules/:scheduleId/progress, /admin/students, /admin/users, /admin/parent-links, /admin/stats를 제공합니다. 실제 메뉴구조도의 제안 경로이므로 현재 구현 라우트와 구분해 개발 시 추가합니다.
 
-    // 메인 라우트 (사이드바 + 헤더)
-    {
-      path: '/',
-      component: DefaultLayout,
-      children: [
-        { path: '', redirect: '/dashboard' },
-
-        // 대시보드
-        { path: 'dashboard', name: 'dashboard',
-          component: () => import('@/views/DashboardView.vue') },
-
-        // 과목/단원
-        { path: 'subjects', name: 'subjectList',
-          component: () => import('@/views/subject/SubjectListView.vue') },
-        { path: 'subjects/:subjectId/units', name: 'unitList',
-          component: () => import('@/views/subject/UnitListView.vue') },
-
-        // 요약
-        { path: 'summaries', name: 'summaryList',
-          component: () => import('@/views/summary/SummaryListView.vue') },
-        { path: 'summaries/:id', name: 'summaryDetail',
-          component: () => import('@/views/summary/SummaryDetailView.vue') },
-
-        // 문제
-        { path: 'quizzes', name: 'quizList',
-          component: () => import('@/views/quiz/QuizListView.vue') },
-        { path: 'quizzes/solve/:id', name: 'quizSolve',
-          component: () => import('@/views/quiz/QuizSolveView.vue') },
-        { path: 'quizzes/wrong-note', name: 'wrongNote',
-          component: () => import('@/views/quiz/WrongNoteView.vue') },
-
-        // 실생활 영어
-        { path: 'english', name: 'englishList',
-          component: () => import('@/views/english/EnglishListView.vue') },
-        { path: 'english/:id', name: 'englishDetail',
-          component: () => import('@/views/english/EnglishDetailView.vue') },
-
-        // 통계
-        { path: 'stats', name: 'stats',
-          component: () => import('@/views/stats/StatsView.vue') },
-
-        // 마이페이지
-        { path: 'mypage', name: 'mypage',
-          component: () => import('@/views/MyPageView.vue') },
-      ],
-    },
-
-    // 관리자 라우트
-    {
-      path: '/admin',
-      component: AdminLayout,
-      meta: { requiresAdmin: true },
-      children: [
-        { path: '', redirect: '/admin/dashboard' },
-        { path: 'dashboard', name: 'adminDashboard',
-          component: () => import('@/views/admin/AdminDashboardView.vue') },
-        { path: 'users', name: 'adminUsers',
-          component: () => import('@/views/admin/AdminUserListView.vue') },
-        { path: 'contents', name: 'adminContents',
-          component: () => import('@/views/admin/AdminContentView.vue') },
-        { path: 'stats', name: 'adminStats',
-          component: () => import('@/views/admin/AdminStatsView.vue') },
-      ],
-    },
-  ],
-})
-
-// 라우터 가드
-router.beforeEach((to, from, next) => {
-  const auth = useAuthStore()
-
-  // 공개 라우트
-  if (to.path === '/login' || to.path === '/signup') {
-    next()
-    return
-  }
-
-  // 인증 확인
-  if (!auth.isSessionValid()) {
-    next('/login')
-    return
-  }
-
-  // 관리자 권한 확인
-  if (to.meta.requiresAdmin && !auth.isAdmin) {
-    next('/dashboard')
-    return
-  }
-
-  next()
-})
-
-export default router
-```
+세션 목록은 과목·학기·단원·학습 상태·제목 필터를 지원하며, 사용자 BE가 게시 및 학생 배정 여부를 확인한 결과만 렌더링합니다. 주간 일정은 별도 화면으로 새 학습과 복습 일정을 함께 표시합니다. 학부모 화면은 자녀 연결 API가 허용한 범위의 읽기 전용 데이터만 요청합니다.
 
 ### 9.3 Pinia Store 설계
 
@@ -2212,119 +2037,42 @@ export default {
 
 ## 10. 배포 아키텍처
 
-### 10.1 Docker Compose 전체 구성
+### 10.1 4개 서비스 배포 구성
 
-```yaml
-# docker-compose.yml
-# Daily Study 전체 서비스 orchestration
-# 사용법:
-#   docker compose up -d          # 전체 서비스 시작
-#   docker compose down           # 전체 서비스 중지
-#   docker compose logs -f        # 로그 실시간 확인
-#   docker compose restart backend # 백엔드만 재시арт
+운영 배포에는 네 개의 독립 앱 컨테이너가 있습니다. 앞단 Nginx 또는 동등한 게이트웨이가 두 FE와 두 BE를 연결합니다. 도메인은 예시이며 실제 도메인·인증서 설정은 배포 환경에서 주입합니다.
 
+~~~text
+study.example.com       → user-fe 정적 파일
+study.example.com/api/user/** → user-be:8081
+admin.example.com       → admin-fe 정적 파일
+admin.example.com/api/admin/** → admin-be:8082
+
+공유 인프라: MariaDB(서비스별 계정/스키마 권한), Redis, 파일 저장소
+~~~
+
+~~~yaml
 services:
-  # ── MariaDB 11 데이터베이스 ──
+  user-fe:
+    build: ./user-fe
+  user-be:
+    build: ./user-be
+    environment: [SPRING_PROFILES_ACTIVE=prod, DB_SCHEMA=user_service]
+  admin-fe:
+    build: ./admin-fe
+  admin-be:
+    build: ./admin-be
+    environment: [SPRING_PROFILES_ACTIVE=prod, DB_SCHEMA=admin_service]
   mariadb:
     image: mariadb:11
-    container_name: dailystudy-db
-    restart: unless-stopped
-    environment:
-      MARIADB_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:-rootpass}
-      MARIADB_DATABASE: dailystudy
-      MARIADB_USER: ${DB_USER:-shaloman}
-      MARIADB_PASSWORD: ${DB_PASSWORD:-123321}
-    ports:
-      - "3306:3306"
-    volumes:
-      - db_data:/var/lib/mysql
-      - ./docker/init-db.sql:/docker-entrypoint-initdb.d/init-db.sql
-    networks:
-      - dailystudy-net
-    healthcheck:
-      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-
-  # ── Redis 7 캐시/세션 ──
   redis:
     image: redis:7-alpine
-    container_name: dailystudy-redis
-    restart: unless-stopped
-    ports:
-      - "6379:6379"
-    volumes:
-      - redis_data:/data
-    networks:
-      - dailystudy-net
-    command: redis-server --appendonly yes --maxmemory 256mb --maxmemory-policy allkeys-lru
-    healthcheck:
-      test: ["CMD", "redis-cli", "ping"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
+~~~
 
-  # ── Spring Boot 백엔드 ──
-  backend:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    container_name: dailystudy-backend
-    restart: unless-stopped
-    depends_on:
-      mariadb:
-        condition: service_healthy
-      redis:
-        condition: service_healthy
-    ports:
-      - "8080:8080"
-    networks:
-      - dailystudy-net
-    environment:
-      - SPRING_PROFILES_ACTIVE=prod
-      - SPRING_DATASOURCE_URL=jdbc:mariadb://mariadb:3306/dailystudy
-      - SPRING_DATASOURCE_USERNAME=${DB_USER:-shaloman}
-      - SPRING_DATASOURCE_PASSWORD=${DB_PASSWORD:-123321}
-      - SPRING_DATA_REDIS_HOST=redis
-      - SPRING_DATA_REDIS_PORT=6379
-      - JWT_SECRET=${JWT_SECRET:-dailystudy-secret-key-2026}
-      - GLM_API_KEY=${GLM_API_KEY}
-      - OPENAI_API_KEY=${OPENAI_API_KEY}
-      - GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID:-}
-      - GOOGLE_CLIENT_SECRET=${GOOGLE_CLIENT_SECRET:-}
-      - KAKAO_CLIENT_ID=${KAKAO_CLIENT_ID:-}
-      - KAKAO_CLIENT_SECRET=${KAKAO_CLIENT_SECRET:-}
-    volumes:
-      - uploads_data:/opt/dailystudy/uploads
+위 Compose는 배포 단위와 권한 분리를 나타내는 개략 예시입니다. 실제 구성에서는 비밀번호·JWT 키·AI 키를 secret으로 주입하고, DB 포트는 외부에 공개하지 않으며, 각 FE의 Nginx SPA fallback과 API upstream을 별도로 설정합니다. 관리자 BE의 운영 통계 요청은 내부 네트워크로 사용자 BE 집계 API를 호출합니다. 같은 MariaDB 인스턴스를 쓰더라도 사용자 BE 계정은 게시 카탈로그 조회와 사용자 기록 쓰기만, 관리자 BE 계정은 운영 도메인 관리 권한만 갖도록 제한합니다.
 
-  # ── Nginx 프론트엔드 ──
-  frontend:
-    build:
-      context: ../dailyStudyView
-      dockerfile: Dockerfile
-    container_name: dailystudy-frontend
-    restart: unless-stopped
-    depends_on:
-      - backend
-    ports:
-      - "80:80"
-      # - "443:443"  # Phase 2: HTTPS
-    networks:
-      - dailystudy-net
-    volumes:
-      - ./docker/nginx.conf:/etc/nginx/conf.d/default.conf:ro
-      # - ./docker/ssl:/etc/nginx/ssl:ro  # Phase 2: SSL 인증서
+### 10.1.1 프론트엔드·백엔드 빌드 산출물
 
-volumes:
-  db_data:
-  redis_data:
-  uploads_data:
-
-networks:
-  dailystudy-net:
-    driver: bridge
-```
+user-fe와 admin-fe는 각각 정적 파일을 포함한 Nginx 이미지로 빌드합니다. user-be와 admin-be는 각자의 Spring Boot 애플리케이션 이미지로 빌드하며, 배포·롤백·헬스체크도 서비스별로 수행합니다. 기존 10.2·10.3의 단일 Dockerfile 예시는 각각의 서비스 디렉토리에서 재사용할 수 있는 참고 예시이며, 하나의 이미지로 합치지 않습니다.
 
 ### 10.2 백엔드 Dockerfile
 
@@ -2391,75 +2139,28 @@ EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]
 ```
 
-### 10.4 Nginx 설정 (Docker용)
+### 10.4 게이트웨이 라우팅 원칙
 
-```nginx
-# docker/nginx.conf
+게이트웨이는 호스트별로 사용자 FE와 관리자 FE를 제공하고, 해당 호스트의 API prefix만 대응하는 BE로 전달합니다. 아래는 핵심 라우팅의 예시이며 실제 TLS·압축·보안 헤더 설정은 환경별 Nginx 설정에 적용합니다.
+
+~~~nginx
 server {
-    listen 80;
-    server_name _;
-
-    # Vue.js 정적 파일 서빙
-    root /usr/share/nginx/html;
-    index index.html;
-
-    # 보안 헤더
-    add_header X-Frame-Options "SAMEORIGIN" always;
-    add_header X-Content-Type-Options "nosniff" always;
-    add_header X-XSS-Protection "1; mode=block" always;
-    add_header Referrer-Policy "strict-origin-when-cross-origin" always;
-
-    # index.html — 캐시 방지
-    location = /index.html {
-        add_header Cache-Control "no-cache, no-store, must-revalidate" always;
-        expires 0;
-    }
-
-    # SPA 라우팅
-    location / {
-        add_header Cache-Control "no-cache, no-store, must-revalidate" always;
-        try_files $uri $uri/ /index.html;
-    }
-
-    # 정적 자산 — 장기 캐싱
-    location ~* \.(js|css|png|jpg|jpeg|gif|ico|svg|woff|woff2|ttf|eot)$ {
-        expires 1y;
-        add_header Cache-Control "public, immutable";
-    }
-
-    # API 프록시
-    location /api/ {
-        proxy_pass http://backend:8080;
-        proxy_set_header Host $host;
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        proxy_set_header X-Forwarded-Proto $scheme;
-        proxy_connect_timeout 10s;
-        proxy_read_timeout 60s;
-        # AI 생성 API는 타임아웃 연장
-        location /api/ai/ {
-            proxy_pass http://backend:8080;
-            proxy_read_timeout 120s;
-        }
-    }
-
-    # Swagger UI 프록시 (dev만)
-    location /swagger-ui/ {
-        proxy_pass http://backend:8080;
-        proxy_set_header Host $host;
-    }
-    location /v3/api-docs {
-        proxy_pass http://backend:8080;
-        proxy_set_header Host $host;
-    }
-
-    # 업로드 파일 프록시
-    location /uploads/ {
-        proxy_pass http://backend:8080;
-        proxy_set_header Host $host;
-    }
+    listen 443 ssl;
+    server_name study.example.com;
+    root /usr/share/nginx/user-fe;
+    location /api/user/ { proxy_pass http://user-be:8081; }
+    location / { try_files $uri $uri/ /index.html; }
 }
-```
+server {
+    listen 443 ssl;
+    server_name admin.example.com;
+    root /usr/share/nginx/admin-fe;
+    location /api/admin/ { proxy_pass http://admin-be:8082; }
+    location / { try_files $uri $uri/ /index.html; }
+}
+~~~
+
+사용자 호스트에서 /api/admin/**를, 관리자 호스트에서 /api/user/**를 호출하는 요청은 허용하지 않습니다. 각 FE와 BE의 CORS 허용 출처도 대응 도메인으로 제한합니다.
 
 ### 10.5 환경 변수 (.env)
 
@@ -2483,48 +2184,28 @@ KAKAO_CLIENT_SECRET=your-kakao-client-secret
 
 ### 10.6 배포 디렉토리 구조
 
-```
-/opt/dailystudy/                        # 배포 루트
-├── docker-compose.yml                  # Docker Compose 설정
-├── .env                                # 환경 변수
-├── docker/
-│   ├── init-db.sql                     # DB 초기화 스크립트
-│   ├── nginx.conf                      # Nginx 설정
-│   └── ssl/                            # SSL 인증서 (Phase 2)
-│       ├── fullchain.pem
-│       └── privkey.pem
-├── uploads/                            # 업로드 파일
-└── logs/                               # 로그
-    ├── backend/
-    └── nginx/
-```
+~~~text
+/opt/dailystudy/
+├── compose.yaml
+├── .env (또는 secret manager)
+├── gateway/ (Nginx 설정·인증서 참조)
+├── user-fe/ (빌드 산출물 또는 이미지 설정)
+├── user-be/ (앱 설정·마이그레이션)
+├── admin-fe/ (빌드 산출물 또는 이미지 설정)
+├── admin-be/ (앱 설정·마이그레이션)
+├── database/ (초기화·마이그레이션 자료)
+└── logs/ (중앙 수집 권장)
+~~~
 
 ### 10.7 배포 절차
 
-```bash
-# 1. 저장소 클론
-git clone https://github.com/ban-jh/dailystudy.git
-git clone https://github.com/ban-jh/dailyStudyView.git
+1. 네 앱의 이미지(user-fe, user-be, admin-fe, admin-be)를 각각 빌드하고 버전을 고정합니다.
+2. secret manager 또는 배포 환경 변수로 DB 계정, JWT 검증 키, AI/TTS 키를 주입합니다.
+3. DB 마이그레이션을 적용하고 서비스별 DB 권한을 확인합니다.
+4. MariaDB·Redis와 네 앱을 배포한 뒤 각 BE health endpoint 및 FE 도메인을 점검합니다.
+5. 게이트웨이에서 study 도메인은 user-fe와 user-be만, admin 도메인은 admin-fe와 admin-be만 연결되는지 확인합니다.
 
-# 2. 환경 변수 설정
-cd dailystudy
-cp .env.example .env
-vi .env  # API 키, 비밀번호 설정
-
-# 3. DB 초기화 스크립트 생성
-mysqldump -u shaloman -p dailystudy --single-transaction --routines --triggers > docker/init-db.sql
-
-# 4. 전체 서비스 빌드 및 시작
-docker compose up -d --build
-
-# 5. 서비스 상태 확인
-docker compose ps
-docker compose logs -f backend
-
-# 6. 헬스체크
-curl http://localhost:8080/api/auth/me
-curl http://localhost/
-```
+이전 단일 저장소 clone 및 단일 backend 실행 명령은 현재 4개 서비스 구성에 맞지 않으므로 구현 저장소와 파이프라인이 확정된 뒤 별도 배포 runbook으로 작성합니다.
 
 ---
 
@@ -2534,13 +2215,13 @@ curl http://localhost/
 
 | 항목 | 상세 |
 |------|------|
-| 인증 | 이메일 회원가입/로그인, JWT |
-| 과목 | 3과목 (수학, 영어, 과학) + 단원 구조 |
-| 요약 | AI 요약 생성 (GLM-5.2), 요약 조회 |
-| 문제 | 관리자 문제 생성(AI/크롤링/직접) + 승인 시스템, 승인된 문제 풀이, 채점 |
-| 대시보드 | 학습 통계, 최근 활동 |
-| 프론트엔드 | 로그인, 대시보드, 과목목록, 요약, 문제풀이 |
-| 인프라 | Docker Compose (MariaDB + Backend + Nginx) |
+| 기초정보 | 학교·학년도·학년별 과목·교과서 판본·목차 관리 (관리자 FE/BE) |
+| 학습 콘텐츠 | 단원별 세션 목표와 단계 콘텐츠 작성, 검수·승인·게시 |
+| 일정 | 학생별 또는 대상별 주간 학습·복습 편성 및 게시 |
+| 학생 학습 | 오늘 요약, 과목별 게시 세션 목록, 세션 수행, 개인 복습, 주간 계획, 학습 기록 |
+| 보호자 | 자녀 연결 및 연결 자녀의 진도·일정·학습 기록 조회 |
+| 서비스 구성 | 사용자 FE + 사용자 BE + 관리자 FE + 관리자 BE 독립 빌드·배포 |
+| 인프라 | MariaDB·Redis·파일 저장소와 4개 앱 서비스 구성 |
 
 ### Phase 2 — 확장 (4주)
 
