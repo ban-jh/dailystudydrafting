@@ -89,6 +89,10 @@
 └──────────┘   └──────────┘   └──────────┘   └──────────────────┘
 ```
 
+### 1.1.2 학과 편성
+
+관리자 메뉴는 /admin/curriculum 하나로 학교·학년도·학년·학기별 과목 편성 목록을 제공합니다. 목록은 연도, 학교, 학년, 학기, 과목 요약(예: 국어 외 3개), 상태를 표시합니다. 상세는 왼쪽 과목 목록과 오른쪽 편집 영역으로 나눕니다. 교과서 관련 정보는 출판사만 유지하고 목차는 단원별 행(상위 단원, 순서, 단원명, 요약, 연결 문제, 성취 기준, 상태)으로 관리합니다. 목차 행은 UNIT 레코드에 저장하며 문제는 unit_id로 연결하고, 학생의 성취도는 풀이 기록에서 집계합니다. 학년 값은 학교급별 공통 코드로 고정합니다: 중학교 MIDDLE_1~MIDDLE_3, 고등학교 HIGH_1~HIGH_3.
+
 ### 1.2 핵심 설계 원칙
 
 | 원칙 | 설명 |
@@ -727,9 +731,13 @@ src/main/resources/
 |--------|------|------|------|
 | unit_id | BIGINT | PK, AUTO_INCREMENT | 단원 ID |
 | subject_id | BIGINT | FK → SUBJECT, NOT NULL | 과목 ID |
+| parent_unit_id | BIGINT | FK → UNIT, NULL | 상위 단원 ID; 최상위 단원은 NULL |
 | unit_number | INT | NOT NULL | 단원 번호 |
 | unit_title | VARCHAR(200) | NOT NULL | 단원 제목 |
 | description | TEXT | NULL | 단원 설명 |
+| unit_summary | TEXT | NULL | 목차 행에 저장하는 단원 요약 |
+| achievement_standard | TEXT | NULL | 이 단원에서 기대하는 학습 성취 기준 |
+| status | VARCHAR(20) | NOT NULL, DEFAULT 'DRAFT' | 초안/확인/적용/종료 |
 | sort_order | INT | DEFAULT 0 | 정렬 순서 |
 | created_at | DATETIME | NOT NULL, DEFAULT CURRENT_TIMESTAMP | 생성일시 |
 | updated_at | DATETIME | NOT NULL, DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP | 수정일시 |
@@ -1788,7 +1796,7 @@ admin-fe/
 
 사용자 FE는 만료 안내 /access-expired를 공개 안내 라우트로 두고, STUDENT/PARENT 역할에 따라 별도 메뉴와 라우트 메타데이터를 적용합니다. 학생 주요 경로는 /dashboard, /subjects, /study-sessions/:sessionId, /review/:reviewId, /schedule/week, /learning-records, /mypage입니다. 학부모 경로는 /parent/dashboard, /parent/children/:childId/progress, /parent/children/:childId/schedule, /parent/children/:childId/activity, /parent/children, /parent/profile입니다.
 
-관리자 FE는 /admin 진입 후 /admin/schools, /admin/schools/:schoolId/academic-years, /admin/subjects, /admin/textbooks, /admin/textbooks/:textbookId/chapters, /admin/sessions, /admin/contents, /admin/reviews, /admin/schedules, /admin/schedules/new, /admin/schedules/:scheduleId, /admin/schedules/:scheduleId/progress, /admin/students, /admin/users, /admin/parent-links, /admin/stats를 제공합니다. 실제 메뉴구조도의 제안 경로이므로 현재 구현 라우트와 구분해 개발 시 추가합니다.
+관리자 FE는 /admin 진입 후 /admin/schools, /admin/curriculum(목록·상세), /admin/sessions, /admin/contents, /admin/reviews, /admin/schedules, /admin/schedules/new, /admin/schedules/:scheduleId, /admin/schedules/:scheduleId/progress, /admin/students, /admin/users, /admin/parent-links, /admin/stats를 제공합니다. 실제 메뉴구조도의 제안 경로이므로 현재 구현 라우트와 구분해 개발 시 추가합니다.
 
 세션 목록은 과목·학기·단원·학습 상태·제목 필터를 지원하며, 사용자 BE가 게시 및 학생 배정 여부를 확인한 결과만 렌더링합니다. 주간 일정은 별도 화면으로 새 학습과 복습 일정을 함께 표시합니다. 학부모 화면은 자녀 연결 API가 허용한 범위의 읽기 전용 데이터만 요청합니다.
 

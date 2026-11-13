@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#315efb">
+  <title>Daily Study · 학습 화면 시안</title>
+  <link rel="stylesheet" href="design.css">
+</head>
+<body>
+  <div class="topline"><div class="shell"><span>서울한빛중학교 · 2학년</span><a href="main.html#school-calendar">학교 일정</a><a href="login.html">로그아웃</a></div></div>
+  <header class="site-header">
+    <div class="shell header-inner">
+      <a class="brand" href="main.html"><span class="brand-mark">D</span><span class="brand-name">Daily Study<small>MY DAILY LEARNING</small></span></a>
+      <nav class="main-nav" aria-label="주요 메뉴"><a href="main.html">오늘 학습</a><a class="active" href="learning.html">학습 콘텐츠</a><a href="main.html#school-calendar">학습 일정</a><a href="main.html#today-plan">오늘 학습 목록</a></nav>
+      <div class="header-actions"><button class="profile-button"><span class="profile-dot">민</span><span class="profile-label">민준 학생⌄</span></button></div>
+      <button class="mobile-menu" aria-label="메뉴">☰</button>
+    </div>
+  </header>
+
+  <main class="shell" style="padding-top:25px;padding-bottom:54px">
+    <div class="breadcrumb"><a href="main.html">오늘의 학습</a><span>›</span><span>수학</span><span>›</span><strong>일차함수와 그래프</strong></div>
+    <div class="study-layout">
+      <div class="study-main">
+        <header class="study-title"><span class="eyebrow">오늘의 학습 · 수학</span><h1>일차함수와 그래프</h1><p>개념을 익히고 기초 문제로 확인한 다음, 원하는 난이도의 문제를 풀어보세요.</p></header>
+        <div class="surface stepper" aria-label="학습 단계"><div class="step active"><span class="step-index">1</span><span>핵심 개념</span></div><div class="step"><span class="step-index">2</span><span>기초 확인</span></div><div class="step"><span class="step-index">3</span><span>기본 문제</span></div><div class="step"><span class="step-index">4</span><span>심화 문제</span></div></div>
+        <article class="surface concept-card">
+          <div class="row" style="display:flex;justify-content:space-between;align-items:center;gap:10px"><span class="tag tag-blue">핵심 개념 01</span><span style="font-size:11px;color:#8a95a7">읽기 약 3분</span></div>
+          <h2 style="margin-top:18px">기울기는 그래프의 변화를 나타내요</h2>
+          <p>일차함수 <strong>y = ax + b</strong>의 그래프는 직선이에요. 여기서 <strong>a</strong>는 기울기, <strong>b</strong>는 y절편을 나타냅니다.</p>
+          <div class="formula">x가 1만큼 변할 때 y가 변하는 양 = 기울기 a</div>
+          <div class="concept-visual" aria-label="양의 기울기를 가진 직선 그래프">
+            <svg viewBox="0 0 620 116" role="img" aria-label="x가 증가할수록 y가 증가하는 그래프">
+              <path d="M56 12V99H586" fill="none" stroke="#cdd5e3" stroke-width="2"/>
+              <path d="M77 87L535 28" fill="none" stroke="#315efb" stroke-width="5" stroke-linecap="round"/>
+              <circle cx="250" cy="65" r="6" fill="#ff8d75"/><circle cx="425" cy="43" r="6" fill="#ff8d75"/>
+              <path d="M250 65H425V43" fill="none" stroke="#ff8d75" stroke-width="2" stroke-dasharray="5 5"/>
+              <text x="435" y="40" fill="#536174" font-size="13" font-family="sans-serif">x + 1</text><text x="427" y="73" fill="#536174" font-size="13" font-family="sans-serif">y + a</text>
+            </svg>
+          </div>
+          <div class="concept-foot"><span>한 줄 정리: x의 계수 a가 기울기예요.</span><span>학습자료 출처 · Daily Study 수학 개념</span></div>
+        </article>
+
+        <article class="surface check-card" id="concept-check">
+          <div class="check-card-head"><span class="tag tag-green">개념 확인 · 기초 문제</span><span style="font-size:11px;color:#8a95a7">1문항</span></div>
+          <h2>기울기 개념을 이해했는지 확인해 보세요</h2>
+          <p class="question">함수 y = 2x + 3의 기울기는 얼마일까요?</p>
+          <div class="choice-list"><button class="choice-button" data-answer="1">① 1</button><button class="choice-button" data-answer="2">② 2</button><button class="choice-button" data-answer="3">③ 3</button><button class="choice-button" data-answer="5">④ 5</button></div>
+          <div id="check-feedback" class="feedback" role="status"></div>
+          <div class="study-footer-actions"><button id="check-answer" class="button button-primary" disabled>정답 확인</button><a class="button button-white" href="main.html">오늘 학습 목록</a></div>
+        </article>
+
+        <section class="section hidden" id="practice-choice" style="margin-top:22px">
+          <div class="section-head"><div><h2>문제 유형 선택</h2><p>개념 확인 후 기본 문제와 심화 문제 중 원하는 유형을 풀어보세요.</p></div></div>
+          <div class="subject-grid" style="grid-template-columns:repeat(2,1fr)">
+            <article class="surface" style="padding:19px"><span class="tag tag-blue">개념 적용</span><h3 style="margin:13px 0 5px;font-size:17px">기본 문제</h3><p style="margin:0 0 15px;color:var(--muted);font-size:12px">핵심 개념을 익히는 객관식 8문제</p><button class="button button-soft button-small" data-practice="basic">기본 문제 시작 →</button></article>
+            <article class="surface" style="padding:19px"><span class="tag tag-yellow">한 단계 더</span><h3 style="margin:13px 0 5px;font-size:17px">심화 문제</h3><p style="margin:0 0 15px;color:var(--muted);font-size:12px">개념을 연결해 푸는 응용 4문제</p><button class="button button-dark button-small" data-practice="advanced">심화 문제 도전 →</button></article>
+          </div>
+        </section>
+        <section id="practice-panel" class="surface check-card hidden" style="margin-top:16px">
+          <div class="check-card-head"><span id="practice-tag" class="tag tag-blue">기본 문제</span><span id="practice-count" style="font-size:11px;color:#8a95a7">1 / 8</span></div>
+          <h2 id="practice-title">기본 문제를 시작해요</h2><p id="practice-question" class="question">함수 y = 2x + 3에서 x가 1 증가할 때 y는 어떻게 변할까요?</p>
+          <div class="choice-list"><button class="choice-button">① 1 증가한다</button><button class="choice-button selected">② 2 증가한다</button><button class="choice-button">③ 3 증가한다</button><button class="choice-button">④ 5 증가한다</button></div>
+          <div class="study-footer-actions"><button class="button button-white button-small">← 이전 문제</button><button class="button button-primary button-small">답안 제출</button></div>
+        </section>
+      </div>
+
+      <aside class="surface study-rail">
+        <h2 class="rail-heading">오늘의 학습</h2><p class="rail-sub">11월 13일 금요일 · 수학</p>
+        <div class="rail-item"><strong>일차함수와 그래프</strong><span>핵심 개념 · 기본 8문제 · 심화 4문제</span></div>
+        <div class="rail-item"><strong>과학 · 물질의 구성</strong><span>다음 학습 · 기본 6문제</span></div>
+        <div class="rail-box"><b>오늘의 학습 순서</b><p>개념을 확인하고 기초 문제를 푼 뒤, 기본 또는 심화 유형을 선택해요.</p></div>
+        <a class="button button-white button-small" style="width:100%;margin-top:15px" href="main.html">학습 목록으로</a>
+      </aside>
+    </div>
+  </main>
+  <script>
+    const answers=document.querySelectorAll('[data-answer]');let selectedAnswer=null;
+    answers.forEach(button=>button.addEventListener('click',()=>{answers.forEach(item=>item.classList.remove('selected'));button.classList.add('selected');selectedAnswer=button.dataset.answer;document.getElementById('check-answer').disabled=false}));
+    document.getElementById('check-answer').addEventListener('click',()=>{if(!selectedAnswer)return;const feedback=document.getElementById('check-feedback');feedback.textContent=selectedAnswer==='2'?'정답이에요. 일차함수 y = ax + b에서 x의 계수 a가 기울기예요.':'다시 확인해 볼까요? y = ax + b의 기울기는 x의 계수 a예요. 이 식에서는 2입니다.';feedback.classList.add('show');document.getElementById('practice-choice').classList.remove('hidden');document.getElementById('practice-choice').scrollIntoView({behavior:'smooth',block:'start'})});
+    document.querySelectorAll('[data-practice]').forEach(button=>button.addEventListener('click',()=>{const advanced=button.dataset.practice==='advanced';document.getElementById('practice-tag').textContent=advanced?'심화 문제':'기본 문제';document.getElementById('practice-count').textContent=advanced?'1 / 4':'1 / 8';document.getElementById('practice-title').textContent=advanced?'심화 문제에 도전해요':'기본 문제를 시작해요';document.getElementById('practice-question').textContent=advanced?'일차함수 y = ax + b가 두 점 (1, 5), (3, 9)를 지날 때 y절편 b를 구해 보세요.':'함수 y = 2x + 3에서 x가 1 증가할 때 y는 어떻게 변할까요?';document.getElementById('practice-panel').classList.remove('hidden');document.getElementById('practice-panel').scrollIntoView({behavior:'smooth',block:'center'})}));
+  </script>
+</body>
+</html>
